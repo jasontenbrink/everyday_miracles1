@@ -6,6 +6,8 @@ app.controller('AddEventController',['$scope', '$http', function ($scope, $http)
   $scope.eventSchedule = [];
   $scope.gridOptions = {};
 
+  $scope.eventScheduleAdd = {};
+
   $scope.event.eventId = 1;
 
   $scope.submitEvent = function() {
@@ -99,6 +101,12 @@ app.controller('AddEventController',['$scope', '$http', function ($scope, $http)
       };
 
     });
+  }
+
+  $scope.submitEventSchedule = function() {
+    console.log("event schedule add ", $scope.eventScheduleAdd);
+    console.log("event data ", $scope.event);
+
   }
 
 }]);
