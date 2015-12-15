@@ -1,51 +1,24 @@
-pageTitle Choose Class Dates
-doctype html
-html(lang="en")
-  head
-    title Choose Class Dates
-    script
-      console.log("hi from choose class dates page")
 
-body
-  div
-  p
+div
+  h2
     | Class Dates
 
-
+div
   h1
-    Choose the dates you would like to attend class
+    | Choose the dates you would like to attend class
 
 
-  input(type='checkbox', name='choose', checked=false)
 
-  p
-    | Friday, January 15, 2016
-
-  input(type='checkbox', name='choose', checked=false)
-
-  p
-    | Friday, January 22, 2016
-
-  input(type='checkbox', name='choose')
-
-  p
-    | Friday, January 29, 2016
-
-  input(type='checkbox', name='choose')
-
-  p
-    | Friday, February 5, 2016
-
-  input(type='checkbox', name='choose')
-
-  p
-    | Friday, February 12, 2016
-
-  input(type='button', name='Sign Up', placeholder='Sign Up')
-
-
-  input(type='button', name='Go Back', placeholder='Go Back')
+.classdates-input
+a(href=url, data-active=isActive)
+input(type="checkbox" checked=False)
+label classdates
 
 
 
 
+.signup-button
+md-button(class="md-raised" aria-label="Sign Up" value="Sign Up" ng-click=False) Sign Up
+
+.goback-button
+md-button(class="md-raised" aria-label="Go Back" value="Go Back" ng-click=False) Go Back

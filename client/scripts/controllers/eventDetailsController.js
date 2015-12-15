@@ -1,5 +1,5 @@
 app.controller('EventDetailsController',['$scope', '$http', function ($scope, $http) {
-  console.log('hi, from event details controller Controller');
+  console.log('hi, from event details controller');
   $scope.x = 'angular';
   $scope.y = 'bye';
   // $http.get('/jade')
