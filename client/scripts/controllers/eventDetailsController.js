@@ -1,4 +1,5 @@
 app.controller('EventDetailsController',['$scope', '$http', function ($scope, $http) {
+
   console.log('hi, from event details controller Controller');
   $scope.user = {};
 
