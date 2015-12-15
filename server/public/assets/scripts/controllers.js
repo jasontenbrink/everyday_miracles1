@@ -320,23 +320,23 @@ app.controller('UiCalendarController', ["$scope", "$http", "CalendarFactory", fu
             $scope.tempEvents = $scope.calendarFactory.eventsData();
             console.log("tempEvents after the call: ", $scope.tempEvents);
 
-            //loop through results from factory call to set event info in calendar
+            //loop through results from factory call to set event info into calendar
             for (var i = 0; i < $scope.tempEvents.length; i++) {
                 $scope.eventSources.events[i] = {};
                 $scope.eventSources.events[i].allDay = false;
                 $scope.eventSources.events[i].title = $scope.tempEvents[i].title;
 
-                //$scope.eventSources.events[i].start = "2015-12-20 16:00";
-                //$scope.eventSources.events[i].end = "2015-12-20 17:00";
                 $scope.eventSources.events[i].start = $scope.tempEvents[i].start_datetime;
                 $scope.eventSources.events[i].end = $scope.tempEvents[i].end_datetime;
 
                 //$scope.eventSources.events[i].description = $scope.tempEvents[i].description;
+
+                //unique id for event
+                //corresponds to property event_schedule_id in the database
                 $scope.eventSources.events[i].id = $scope.tempEvents[i].event_schedule_id;
 
             }
 
-            console.log("eventSources.events after the loop ", $scope.eventSources);
             //uiConfigurations for experimentation
             $scope.uiConfig = {
                 calendar:{
@@ -376,22 +376,3 @@ $scope.loadCalendar();
 
 }]);
 
-////sample eventSources data
-//// we can populate eventSources with data from a get call to the server
-//$scope.eventSources = {
-//    events:[
-//
-//    {
-//        title: "Event 1",
-//        start: '2015-12-11'
-//    },
-//    {
-//        title: "Event 2",
-//        start: '2015-12-12'
-//    },
-//    {
-//        title: "Event 3",
-//        start: '2015-12-16'
-//    }
-//]
-//};
