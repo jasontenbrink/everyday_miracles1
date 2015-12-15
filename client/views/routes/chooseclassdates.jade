@@ -15,11 +15,12 @@ div
 
   ul(ng-repeat="date in classdates")
 
-    input(type="checkbox" checked=False)
+    md-checkbox(md-no-ink aria-label="Class Picker Checkbox" class="md-primary" ng-checked=False)
     p {{date}}
 
 
 .sign-up-button
   md-button(class="md-raised" ng-click="signUp(event)") Sign Up
+
 .go-back-button
   md-button(class="md-raised" ng-click="goBack(event)") Go Back
