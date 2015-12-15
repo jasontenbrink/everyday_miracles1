@@ -1,0 +1,12 @@
+body{
+  background-color: blue;
+}
+
+.calendar {
+  background-color: white;
+}
+.my-grid{
+  width: 400px;
+  height: 400px;
+}
+
