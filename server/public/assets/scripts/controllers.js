@@ -1,3 +1,7 @@
+app.controller('AddEventController',['$scope', '$http', function ($scope, $http) {
+  console.log('hi, from add event Controller');
+}]);
+
 app.controller('CalendarController',['$scope', function ($scope) {
   console.log('hi, from calendarController');
   $scope.x = 'hi';
@@ -10,6 +14,30 @@ app.controller('CalendarController',['$scope', function ($scope) {
 }]);
 
 
+app.controller('ChooseClassDatesController',['$scope', '$http', function ($scope, $http) {
+  console.log('hi, from choose class dates Controller');
+}]);
+
+app.controller('ConfirmClassSignupController',['$scope', '$http', function ($scope, $http) {
+  console.log('hi, from confirm class signup Controller');
+}]);
+
+app.controller('EditEventController',['$scope', '$http', function ($scope, $http) {
+  console.log('hi, from edit event Controller');
+}]);
+
+app.controller('EventDetailsController',['$scope', '$http', function ($scope, $http) {
+  console.log('hi, from event details controller Controller');
+  $scope.x = 'angular';
+  $scope.y = 'bye';
+  // $http.get('/jade')
+  //   .then(function (response) {
+  //     console.log(response.data);
+  //     $scope.y = response.data;
+  //   });
+
+}]);
+
 app.controller('JadeController',['$scope', '$http', function ($scope, $http) {
   console.log('hi, from jade Controller');
   $scope.x = 'angular';
@@ -20,6 +48,10 @@ app.controller('JadeController',['$scope', '$http', function ($scope, $http) {
   //     $scope.y = response.data;
   //   });
 
+}]);
+
+app.controller('LoginController',['$scope', '$http', function ($scope, $http) {
+  console.log('hi, from Login Controller');
 }]);
 
 app.controller('TestSqlController',['$scope', '$http', function ($scope, $http) {
@@ -206,8 +238,8 @@ app.controller('TestSqlController',['$scope', '$http', function ($scope, $http) 
         var event = {
             eventId: 1,
             scheduleDate: '2015-12-22',
-            startTime: '04:04:04',
-            endTime: '05:05:05',
+            startDateTime: '04:04:04',
+            endDateTime: '05:05:05',
             teacherUserId: null
         };
 
@@ -222,8 +254,8 @@ app.controller('TestSqlController',['$scope', '$http', function ($scope, $http) 
             eventScheduleId: 1,
             eventId: 1,
             scheduleDate: '2011-12-22',
-            startTime: '11:04:04',
-            endTime: '12:05:05',
+            startDateTime: '11:04:04',
+            endDateTime: '12:05:05',
             teacherUserId: null
         };
 
