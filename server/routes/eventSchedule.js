@@ -29,7 +29,7 @@ router.get('/byEventId', function(req,res){
         FROM event_schedule \
         WHERE event_id = $1;", [queryOptions.event_id]);
         //console.log(query);
-        // Stream results back one row at a time, push into results array
+        // Stream results back one row at a time, push into results arrayd
         query.on('row', function (row) {
             results.push(row);
         });
