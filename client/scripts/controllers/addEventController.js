@@ -1,10 +1,12 @@
 app.controller('AddEventController',['$scope', '$http', function ($scope, $http) {
 
   $scope.insertMode = false;
-  $scope.event.eventId = 1;
+
 
   $scope.event = {};
   $scope.eventSchedule = [];
+
+  $scope.event.eventId = 1;
 
   $scope.submitEvent = function() {
     var event = {
@@ -56,8 +58,31 @@ app.controller('AddEventController',['$scope', '$http', function ($scope, $http)
     data: $scope.eventSchedule
   };
 
-  $scope.selectEventSchedule = function() {
+  $scope.loadData = function() {
+    var passingEvent = {eventId: $scope.event.eventId};
 
+    console.log("Input to get /event/byEventId ", passingEvent);
+    $http.get('/event/byEventId', {params: passingEvent}).then(function(response){
+      console.log("Output from get /event/byEventId ", response.data);
+      // Set scope values
+      $scope.event.eventId = response.data[0].event_id;
+      $scope.event.title = response.data[0].title;
+      $scope.event.description = response.data[0].description;
+      $scope.event.eventCategoryId = response.data[0].event_category_id;
+      $scope.event.repeatType = response.data[0].repeat_type;
+      $scope.event.repeatSundayInd = response.data[0].repeat_sunday_ind;
+      $scope.event.repeatMondayInd = response.data[0].repeat_monday_ind;
+      $scope.event.repeatTuesdayInd = response.data[0].repeat_tuesday_ind;
+      $scope.event.repeatWednesdayInd = response.data[0].repeat_wednesday_ind;
+      $scope.event.repeatThursdayInd = response.data[0].repeat_thursday_ind;
+      $scope.event.repeatFridayInd = response.data[0].repeat_friday_ind;
+      $scope.event.repeatSaturdayInd = response.data[0].repeat_saturday_ind;
+
+    });
+  }
+
+  if (!$scope.insertMode) {
+    $scope.loadData();
   }
 
 }]);
