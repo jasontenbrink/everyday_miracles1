@@ -6,6 +6,7 @@ var path = require('path');
 var bodyParser = require('body-parser');
 //var passport = require('./strategies/user');
 var session = require('express-session');
+var twilio = require('twilio');
 
 var index = require('./routes/index.js');
 var jadeTest = require('./routes/jadeTest.js');
@@ -15,7 +16,7 @@ var event = require('./routes/event');
 var eventSchedule = require('./routes/eventSchedule');
 var usersEventSchedule = require('./routes/usersEventSchedule');
 
-app.set( 'views', path.join(__dirname,'./public/assets/views/'));
+app.set('views', path.join(__dirname,'./public/assets/views/'));
 app.set('view options', {layout: false});
 app.set('view engine', 'jade');
 
