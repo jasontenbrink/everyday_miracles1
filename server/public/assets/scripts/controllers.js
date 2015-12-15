@@ -82,8 +82,26 @@ app.controller('EditEventController',['$scope', '$http', function ($scope, $http
 
 app.controller('EventDetailsController',['$scope', '$http', function ($scope, $http) {
   console.log('hi, from event details controller Controller');
-  $scope.x = 'angular';
-  $scope.y = 'bye';
+  $scope.user = {};
+
+  $scope.user.loginstatus = true;
+
+  $scope.user.role = "student";
+
+  //sample data in eventDate
+  //can change it to be something else
+  $scope.event = {
+    start:"2015-12-05T14:00:00Z",
+    end:"2015-12-05T15:00:00Z",
+    title: "Mom-to-Mom Group",
+    description: "Need a moment to stop, connect, and breathe? Free and on-going for expecting, new, and experienced mothers. This group, put on by The Nursing Nook, offers gentle yoga and meditation, mother-to-mother support, local breastfeeding resources, playdate for breastfeeding babes, monthly guest speakers. Childcare for older siblings may be available. Please pre-register."
+  };
+
+  //need the click stuff
+
+  //get the event stuff from the server
+
+
   // $http.get('/jade')
   //   .then(function (response) {
   //     console.log(response.data);
@@ -385,8 +403,23 @@ app.controller('TestSqlController',['$scope', '$http', function ($scope, $http) 
         $http.get('/usersEventSchedule/delete', {params: event}).then(function(response){
             console.log("output from delete userseventSchedule ", response.data);
         });
+    };
+
+    $scope.classCancelled = function() {
+        var textMessage = {
+            userId: "Dana",
+            classTitle: '"Mom to mom" class',
+            dateTime: 'Dec. 17th 6:00pm',
+            comments: 'cancelled'
+        };
+
+        console.log(textMessage);
+        $http.get('/usersEventSchedule/classCancelled/data', {params: textMessage}).then(function(response){
+            console.log("output from classCancelled ", response.data);
+        });
 
     };
+
 }]);
 
 app.controller('UiCalendarController', ["$scope", "$http", "CalendarFactory", function($scope, $http, CalendarFactory) {
