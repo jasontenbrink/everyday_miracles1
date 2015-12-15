@@ -275,7 +275,7 @@ app.controller('TestSqlController',['$scope', '$http', function ($scope, $http) 
         $http.get('/usersEventSchedule/delete', {params: event}).then(function(response){
             console.log("output from delete userseventSchedule ", response.data);
         });
-
+    };
 
     $scope.classCancelled = function() {
         var textMessage = {
