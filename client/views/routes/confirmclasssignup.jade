@@ -1,2 +1,22 @@
-div.
-  this is confirmclasssignup
+//student navbar
+  //includes Home MyClasses Profile
+
+.class-register-info
+  p Name: {{user.name}}
+
+  p Registering for:
+  p {{event.title}}
+
+  .class-dates(ng-repeat = "date in event.dates")
+    p {{date}}
+
+  .additional-comments
+    md-input-container
+      label Additional Comments
+      textarea(ng-model = "event.comments")
+
+.confirm-class-button
+  md-button(class = "md-raised" ng-click = "confirmClass(event)") Confirm Class
+
+.go-back
+  md-button(class = "md-raised" ng-click = "goBack()") Go Back
