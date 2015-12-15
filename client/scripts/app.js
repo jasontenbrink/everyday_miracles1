@@ -23,7 +23,31 @@ app.config(['$routeProvider', function($routeProvider){
                 .when('/anotherroute', {
                     templateUrl: '/templates/routeTest.jade',
                     controller: "JadeController"
-                });
+                })
+                .when('/eventdetails', {
+                    templateUrl: '/templates/eventdetails.jade',
+                    controller: "EventDetailsController"
+                 })
+                 .when('/addevent', {
+                     templateUrl: '/templates/addevent.jade',
+                     controller: "AddEventController"
+                 })
+                 .when('/chooseclassdates', {
+                     templateUrl: '/templates/chooseclassdates.jade',
+                     controller: "ChooseClassDatesController"
+                 })
+                 .when('/confirmclasssignup', {
+                     templateUrl: '/templates/confirmclasssignup.jade',
+                     controller: "ConfirmClassSignupController"
+                 })
+                 .when('/editevent', {
+                     templateUrl: '/templates/editevent.jade',
+                     controller: "EditEventController"
+                 })
+                 .when('/login', {
+                     templateUrl: '/templates/login.jade',
+                     controller: "LoginController"
+                 });
 
 
 }]);
