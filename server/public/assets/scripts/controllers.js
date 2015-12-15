@@ -331,8 +331,23 @@ app.controller('TestSqlController',['$scope', '$http', function ($scope, $http) 
         $http.get('/usersEventSchedule/delete', {params: event}).then(function(response){
             console.log("output from delete userseventSchedule ", response.data);
         });
+    };
+
+    $scope.classCancelled = function() {
+        var textMessage = {
+            userId: "Dana",
+            classTitle: '"Mom to mom" class',
+            dateTime: 'Dec. 17th 6:00pm',
+            comments: 'cancelled'
+        };
+
+        console.log(textMessage);
+        $http.get('/usersEventSchedule/classCancelled/data', {params: textMessage}).then(function(response){
+            console.log("output from classCancelled ", response.data);
+        });
 
     };
+
 }]);
 
 app.controller('UiCalendarController', ["$scope", "$http", "CalendarFactory", function($scope, $http, CalendarFactory) {
