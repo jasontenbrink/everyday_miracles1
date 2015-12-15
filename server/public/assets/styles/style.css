@@ -10,6 +10,10 @@ button{
   margin: 10px;
 }
 
+p{
+  display: inline;
+}
+
 .calendar {
   background-color: white;
 }

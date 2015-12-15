@@ -17,7 +17,7 @@ app.controller('CalendarController',['$scope', function ($scope) {
 app.controller('ChooseClassDatesController',['$scope', '$http', function ($scope, $http) {
   console.log('hi, from choose class dates Controller');
 
-  var classdates = [
+  $scope.classdates = [
     "Friday, January 15, 2016",
     "Friday, January 22, 2016",
     "Friday, January 29, 2016",
@@ -25,10 +25,10 @@ app.controller('ChooseClassDatesController',['$scope', '$http', function ($scope
     "Friday, February 12, 2016"
   ];
 
-  for (i=0; i<classdates.length; i++) {
-    return classdates;
-    console.log(classdates);
-  }
+  //for (i=0; i<classdates.length; i++) {
+  //  return classdates;
+  //  console.log(classdates);
+  //}
 
 }]);
 

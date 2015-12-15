@@ -1,24 +1,25 @@
 
 div
-  h2
+  h1
     | Class Dates
 
 div
-  h1
-    | Choose the dates you would like to attend class
+  h2
+    | Please choose the dates you
+    br
+    | would like to attend class
 
 
 
 .classdates-input
-a(href=url, data-active=isActive)
-input(type="checkbox" checked=False)
-label classdates
+
+  ul(ng-repeat="date in classdates")
+
+    input(type="checkbox" checked=False)
+    p {{date}}
 
 
-
-
-.signup-button
-md-button(class="md-raised" aria-label="Sign Up" value="Sign Up" ng-click=False) Sign Up
-
-.goback-button
-md-button(class="md-raised" aria-label="Go Back" value="Go Back" ng-click=False) Go Back
+.sign-up-button
+  md-button(class="md-raised" ng-click="signUp(event)") Sign Up
+.go-back-button
+  md-button(class="md-raised" ng-click="goBack(event)") Go Back
