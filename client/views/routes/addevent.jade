@@ -10,6 +10,9 @@ md-content(layout-padding)
     md-input-container(flex)
       label  Category
       input(type='text' name='eventCategoryId' ng-model="event.eventCategoryId")
+
+    md-button(ng-click="submitEvent()" class="md-raised md-primary") Submit Event
+
     .layout-row
       md-input-container(flex)
         label Repeat Type
@@ -29,6 +32,6 @@ md-content(layout-padding)
       md-checkbox(ng-model="event.repeatFridayInd" class="") Friday
       md-checkbox(ng-model="event.repeatSaturdayInd" class="") Saturday
 
-    md-button(ng-click="submitEvent()" class="md-raised md-primary") Submit
+    md-button(ng-click="submitEventSchedule()" class="md-raised md-primary") Create Event Schedule
 
     <div ui-grid="gridOptions" class="conditionGrid"></div>

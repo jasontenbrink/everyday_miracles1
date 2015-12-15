@@ -2,9 +2,9 @@ app.controller('AddEventController',['$scope', '$http', function ($scope, $http)
 
   $scope.insertMode = false;
 
-
   $scope.event = {};
   $scope.eventSchedule = [];
+  $scope.gridOptions = {};
 
   $scope.event.eventId = 1;
 
@@ -43,22 +43,7 @@ app.controller('AddEventController',['$scope', '$http', function ($scope, $http)
     }
   };
 
-  $scope.gridOptions = {
-    columnDefs : [
-      { name: 'eventScheduleId', displayName: 'Event Schedule ID'},
-      { name: 'eventId', displayName: 'Event ID'},
-      { name: 'scheduleDate', displayName: 'Schedule Date' },
-      { name: 'teacherUserId', displayName: 'Teacher User Id' },
-      { name: 'startDateTime', displayName: 'Start Date Time'},
-      { name: 'endDateTime', displayName: 'End Date Time'},
-      {name: 'Action',
-        cellEditableCondition: false,
-        cellTemplate: '<button ng-click="grid.appScope.deleteEventSchedule(row.entity)" ' +
-        'class="md-raised md-primary">Delete</button>' }],
-    data: $scope.eventSchedule
-  };
-
-  $scope.loadData = function() {
+  $scope.loadEventData = function() {
     var passingEvent = {eventId: $scope.event.eventId};
 
     console.log("Input to get /event/byEventId ", passingEvent);
@@ -70,6 +55,8 @@ app.controller('AddEventController',['$scope', '$http', function ($scope, $http)
       $scope.event.description = response.data[0].description;
       $scope.event.eventCategoryId = response.data[0].event_category_id;
       $scope.event.repeatType = response.data[0].repeat_type;
+      $scope.event.repeatFromDate = new Date(response.data[0].repeat_from_date);
+      $scope.event.repeatToDate = new Date(response.data[0].repeat_to_date);
       $scope.event.repeatSundayInd = response.data[0].repeat_sunday_ind;
       $scope.event.repeatMondayInd = response.data[0].repeat_monday_ind;
       $scope.event.repeatTuesdayInd = response.data[0].repeat_tuesday_ind;
@@ -78,11 +65,40 @@ app.controller('AddEventController',['$scope', '$http', function ($scope, $http)
       $scope.event.repeatFridayInd = response.data[0].repeat_friday_ind;
       $scope.event.repeatSaturdayInd = response.data[0].repeat_saturday_ind;
 
+      $scope.loadEventScheduleData();
     });
+
+
   }
 
   if (!$scope.insertMode) {
-    $scope.loadData();
+    $scope.loadEventData();
+  }
+
+  $scope.loadEventScheduleData = function() {
+    var passingEvent = {eventId: $scope.event.eventId};
+    // load up the event schedule grid
+    console.log("Input to get /eventSchedule/byEventId ", passingEvent);
+    $http.get('/eventSchedule/byEventId', {params: passingEvent}).then(function(response){
+      console.log("Output from get /eventSchedule/byEventId ", response.data);
+      $scope.eventSchedule = response.data;
+
+      $scope.gridOptions = {
+        columnDefs : [
+          { name: 'event_schedule_id', displayName: 'Event Schedule ID'},
+          { name: 'event_id', displayName: 'Event ID'},
+          { name: 'schedule_date', displayName: 'Schedule Date' },
+          { name: 'teacher_user_id', displayName: 'Teacher User Id' },
+          { name: 'start_datetime', displayName: 'Start Date Time'},
+          { name: 'end_datetime', displayName: 'End Date Time'},
+          {name: 'Action',
+            cellEditableCondition: false,
+            cellTemplate: '<button ng-click="grid.appScope.deleteEventSchedule(row.entity)" ' +
+            'class="md-raised md-primary">Delete</button>' }],
+        data: $scope.eventSchedule
+      };
+
+    });
   }
 
 }]);
