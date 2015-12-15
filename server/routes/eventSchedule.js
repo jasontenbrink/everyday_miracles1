@@ -23,8 +23,8 @@ router.get('/byEventId', function(req,res){
             event_schedule_id, \
             event_id, \
             schedule_date, \
-            start_time, \
-            end_time, \
+            start_datetime, \
+            end_datetime, \
             teacher_user_id \
         FROM event_schedule \
         WHERE event_id = $1;", [queryOptions.event_id]);
@@ -53,8 +53,8 @@ router.post('/', function(req,res){
     var queryOptions = {
         event_id: req.body.eventId,
         schedule_date: req.body.scheduleDate,
-        start_time: req.body.startTime,
-        end_time: req.body.endTime,
+        start_datetime: req.body.startDateTime,
+        end_datetime: req.body.endDateTime,
         teacher_user_id : req.body.teacherUserId
     };
 
@@ -62,15 +62,15 @@ router.post('/', function(req,res){
 
         client.query("INSERT INTO event_schedule (event_id, \
             schedule_date, \
-            start_time, \
-            end_time, \
+            start_datetime, \
+            end_datetime, \
             teacher_user_id) \
         VALUES \
         ($1, $2, $3, $4, $5);",
             [queryOptions.event_id,
                 queryOptions.schedule_date,
-                queryOptions.start_time,
-                queryOptions.end_time,
+                queryOptions.start_datetime,
+                queryOptions.end_datetime,
                 queryOptions.teacher_user_id],
             function(err, result) {
                 if(err) {
@@ -90,8 +90,8 @@ router.put('/', function(req,res){
         event_schedule_id: req.body.eventScheduleId,
         event_id: req.body.eventId,
         schedule_date: req.body.scheduleDate,
-        start_time: req.body.startTime,
-        end_time: req.body.endTime,
+        start_datetime: req.body.startDateTime,
+        end_datetime: req.body.endDateTime,
         teacher_user_id : req.body.teacherUserId
     };
 
@@ -100,14 +100,14 @@ router.put('/', function(req,res){
         client.query("UPDATE event_schedule \
                     SET event_id = $1, \
                         schedule_date = $2, \
-                        start_time = $3, \
-                        end_time = $4, \
+                        start_datetime = $3, \
+                        end_datetime = $4, \
                         teacher_user_id = $5 \
                     WHERE event_schedule_id = $6;",
             [queryOptions.event_id,
                 queryOptions.schedule_date,
-                queryOptions.start_time,
-                queryOptions.end_time,
+                queryOptions.start_datetime,
+                queryOptions.end_datetime,
                 queryOptions.teacher_user_id,
                 queryOptions.event_schedule_id],
             function(err, result) {

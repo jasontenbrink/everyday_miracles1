@@ -24,8 +24,8 @@ router.get('/byUserId', function(req,res){
             users_event_schedule.status, \
             users_event_schedule.comments, \
             event_schedule.schedule_date, \
-            event_schedule.start_time, \
-            event_schedule.end_time, \
+            event_schedule.start_datetime, \
+            event_schedule.end_datetime, \
             event_category.name \
         FROM \
         event \
@@ -72,8 +72,8 @@ router.get('/byEventScheduleId', function(req,res){
             users_event_schedule.status, \
             users_event_schedule.comments, \
             event_schedule.schedule_date, \
-            event_schedule.start_time, \
-            event_schedule.end_time, \
+            event_schedule.start_datetime, \
+            event_schedule.end_datetime, \
             event_category.name, \
             users.first_name, \
             users.last_name, \

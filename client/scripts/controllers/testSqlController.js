@@ -182,8 +182,8 @@ app.controller('TestSqlController',['$scope', '$http', function ($scope, $http) 
         var event = {
             eventId: 1,
             scheduleDate: '2015-12-22',
-            startTime: '04:04:04',
-            endTime: '05:05:05',
+            startDateTime: '04:04:04',
+            endDateTime: '05:05:05',
             teacherUserId: null
         };
 
@@ -198,8 +198,8 @@ app.controller('TestSqlController',['$scope', '$http', function ($scope, $http) 
             eventScheduleId: 1,
             eventId: 1,
             scheduleDate: '2011-12-22',
-            startTime: '11:04:04',
-            endTime: '12:05:05',
+            startDateTime: '11:04:04',
+            endDateTime: '12:05:05',
             teacherUserId: null
         };
 

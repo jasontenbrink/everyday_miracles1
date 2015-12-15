@@ -93,8 +93,8 @@ router.get('/byEventIdEventScheduleId', function(req,res){
             event_category.name as event_category_name, \
             event_schedule.event_schedule_id, \
             event_schedule.schedule_date, \
-            event_schedule.start_time, \
-            event_schedule.end_time, \
+            event_schedule.start_datetime, \
+            event_schedule.end_datetime, \
             event_schedule.teacher_user_id, \
             users.first_name as teacher_first_name, \
             users.last_name as teacher_last_name \
