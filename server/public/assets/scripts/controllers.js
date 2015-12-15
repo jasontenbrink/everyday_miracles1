@@ -155,6 +155,9 @@ app.controller('JadeController',['$scope', '$http', function ($scope, $http) {
 
 app.controller('LoginController',['$scope', '$http', function ($scope, $http) {
   console.log('hi, from Login Controller');
+
+  $scope.user = {};
+
 }]);
 
 app.controller('TestSqlController',['$scope', '$http', function ($scope, $http) {
