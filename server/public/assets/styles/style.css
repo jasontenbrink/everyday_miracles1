@@ -15,7 +15,7 @@ button{
   margin: 10px;
 }
 
-p{
+p.buttonDates {
   display: inline;
 }
 
@@ -27,4 +27,3 @@ p{
   width: 400px;
   height: 400px;
 }
-

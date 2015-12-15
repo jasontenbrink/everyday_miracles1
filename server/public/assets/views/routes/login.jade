@@ -1,2 +1,13 @@
-div.
-  this is login
+md-content(layout-padding)
+  h1 Log In
+  form(name="login-form" action="/login" method="post")
+    md-input-container
+      input(ng-model="user.username")
+      label username
+    md-input-container
+      input(type="password" ng-model="user.password")
+      label password
+    md-button submit
+  p or:  
+  md-button(ng-click="") Log In With Facebook
+  md-button(ng-click="") Log In With Google
