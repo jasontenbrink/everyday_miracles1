@@ -1,2 +1,34 @@
-div.
-  this is addevent
+md-content(layout-padding)
+
+  form(id='addEventForm')
+    md-input-container(class='md-block')
+      label Title
+      input(type='text' name='title' ng-model="event.title")
+    md-input-container(class='md-block')
+      label Description
+      input(type='text' name='description' ng-model="event.description")
+    md-input-container(flex)
+      label  Category
+      input(type='text' name='eventCategoryId' ng-model="event.eventCategoryId")
+    .layout-row
+      md-input-container(flex)
+        label Repeat Type
+        input(type='text' name='repeattype' ng-model="event.repeatType")
+      md-input-container(flex)
+        label Repeat From Date
+        input(type='date' name='repeatfromdate' ng-model="event.repeatFromDate")
+      md-input-container(flex)
+        label Repeat To Date
+        input(type='date' name='title' ng-model="event.repeatToDate")
+    .layout-row
+      md-checkbox(ng-model="event.repeatSundayInd" class="") Sunday
+      md-checkbox(ng-model="event.repeatMondayInd" class="") Monday
+      md-checkbox(ng-model="event.repeatTuesdayInd" class="") Tuesday
+      md-checkbox(ng-model="event.repeatWednesdayInd" class="") Wednesday
+      md-checkbox(ng-model="event.repeatThursdayInd" class="") Thursday
+      md-checkbox(ng-model="event.repeatFridayInd" class="") Friday
+      md-checkbox(ng-model="event.repeatSaturdayInd" class="") Saturday
+
+    md-button(ng-click="submitEvent()" class="md-raised md-primary") Submit
+
+    <div ui-grid="gridOptions" class="conditionGrid"></div>

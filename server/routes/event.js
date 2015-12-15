@@ -205,7 +205,7 @@ router.post('/', function(req,res){
             repeat_friday_ind, \
             repeat_saturday_ind) \
         VALUES \
-        ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13);",
+        ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) RETURNING event_id;",
             [queryOptions.title,
                 queryOptions.description,
                 queryOptions.event_category_id,
@@ -222,9 +222,9 @@ router.post('/', function(req,res){
             function(err, result) {
                 if(err) {
                     console.log("Error inserting data: ", err);
-                    res.send(false);
+                    res.send(result);
                 }
-                res.send(true);
+                res.send(result);
             });
     });
 
