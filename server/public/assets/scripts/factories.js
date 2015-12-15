@@ -4,17 +4,14 @@ app.factory("CalendarFactory", ["$http", function($http){
 
     var selectEvent = function() {
 
-        //var dateRange = {
-        //    startDate: '2015-01-01',
-        //    endDate: '2015-12-31'
-        //};
-
-        var getMonth = function() {
+        //sets dateRange to the present month
+        var setDateRange = function() {
             var today = new Date();
             var todayMonth = today.getMonth();
             todayMonth++;
             var todayYear = today.getFullYear();
 
+            //sets var dateRange
             dateRange = {
                 startDate: todayYear+'-'+todayMonth+'-'+'01',
                 endDate: todayYear+'-'+todayMonth+'-'+'31'
@@ -22,7 +19,7 @@ app.factory("CalendarFactory", ["$http", function($http){
 
         };
 
-        getMonth();
+        setDateRange();
         console.log("Input to get /event/byDateRange ", dateRange);
         var promise = $http.get('/event/byDateRange', {params: dateRange}).then(function (response) {
             console.log("Output from get /event/byDateRange ", response.data);
