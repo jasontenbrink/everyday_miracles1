@@ -1,0 +1,65 @@
+//
+   Created by PaulZimmel on 12/16/15.
+
+
+.basic-user-info
+   md-input-container
+     label First Name
+     input(type = "text" ng-model = "user.firstName" disabled)
+
+   md-input-container
+     label Last Name
+     input(type = "text" ng-model = "user.lastName" disabled)
+
+   md-input-container
+     label Username
+     input(type = "text" ng-model = "user.userName" disabled)
+
+   md-input-container
+     label Password
+     input(type = "password" ng-model = "user.password" disabled)
+
+   md-input-container
+     label Confirm Password
+     input(type = "password" ng-model = "user.password" disabled)
+
+   md-input-container
+     label Role
+     input(type = "text" ng-model = "user.role" disabled)
+
+   md-input-container
+     label Date of Birth
+     input(type = "date" ng-model = "user.dateOfBirth" disabled)
+
+   md-input-container
+     label Phone Number
+     input(type = "text" ng-model = "user.phoneNumber" ng-pattern="/^([0-9]{3}) [0-9]{3}-[0-9]{4}$/")
+
+   md-input-container
+     label Email Address
+     input(type = "text" ng-model = "user.emailAdress")
+
+   md-input-container
+     label Contact Type
+     input(type = "text" ng-model = "user.contactType")
+
+     //this needs work md-radio-group
+   md-input-container
+     label Payment Type
+     input(type = "radio" ng-model = "user.paymentType")
+    //this needs work
+   md-input-container
+     label Are you an Everyday Miracles Client?
+     //md-checkbox or something
+
+   md-input-container
+     label Doula
+     input(type = "text" ng-model = "user.doula")
+
+   md-input-container
+     label Expected Birth Date
+     input(type = "dateTime-local" ng-model = "user.expectedBirthDate")
+
+   .save-button
+       md-button(class = "md-raised" ng-click = "saveProfile(user)") Save
+
