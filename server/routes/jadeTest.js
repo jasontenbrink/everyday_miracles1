@@ -6,8 +6,15 @@ var path = require('path');
 router.get('/:name', function (req, res) {
   var name = req.params.name;
   console.log('on the jade route. ', name);
-  //res.send('hi');
-  res.render('routes/' + name, {message: 'Hello there!'});
+
+  if (name === 'nav.jade'){
+    res.render('templates/' + name, {message: 'Hello there!'});
+  }
+  else{
+    res.render('routes/' + name, {message: 'Hello there!'});
+  }
 });
+
+
 
 module.exports = router;
