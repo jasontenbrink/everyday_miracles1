@@ -16,6 +16,20 @@ app.controller('CalendarController',['$scope', function ($scope) {
 
 app.controller('ChooseClassDatesController',['$scope', '$http', function ($scope, $http) {
   console.log('hi, from choose class dates Controller');
+
+  $scope.classdates = [
+    "Friday, January 15, 2016",
+    "Friday, January 22, 2016",
+    "Friday, January 29, 2016",
+    "Friday, February 5, 2016",
+    "Friday, February 12, 2016"
+  ];
+
+  //for (i=0; i<classdates.length; i++) {
+  //  return classdates;
+  //  console.log(classdates);
+  //}
+
 }]);
 
 app.controller('ConfirmClassSignupController',['$scope', '$http', function ($scope, $http) {
@@ -59,6 +73,7 @@ app.controller('EditEventController',['$scope', '$http', function ($scope, $http
 }]);
 
 app.controller('EventDetailsController',['$scope', '$http', function ($scope, $http) {
+
   console.log('hi, from event details controller Controller');
   $scope.user = {};
 
