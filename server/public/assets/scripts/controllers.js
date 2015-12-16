@@ -570,22 +570,56 @@ app.controller('TestSqlController',['$scope', '$http', function ($scope, $http) 
 
 }]);
 
-app.controller('UiCalendarController', ["$scope", "$http", "CalendarFactory", function($scope, $http, CalendarFactory) {
+app.controller('UiCalendarController', ["$scope", "$http", function($scope, $http) {
     console.log("hi from ui calendar controller");
     /* config object */
     $scope.tempEvents;
     $scope.eventSources = {};
     $scope.eventSources.events = [];
     $scope.uiConfig = {};
-    $scope.calendarFactory = CalendarFactory;
+    $scope.today;
+    $scope.previousMonth = 0;
+    $scope.nextMonth = 0;
+    $scope.startYear = 0;
+    $scope.endYear = 0;
+
+    //$scope.calendarFactory = CalendarFactory;
 
     //load the calendar
     $scope.loadCalendar = function() {
 
+        //sets dateRange to the present month
+        $scope.setDateRange = function() {
+            $scope.today = new Date();
+            $scope.previousMonth = $scope.today.getMonth();
+            $scope.startYear = $scope.today.getFullYear();
+            $scope.endYear = $scope.today.getFullYear();
+
+            if ($scope.previousMonth == 11){
+                $scope.nextMonth = 1;
+                $scope.endYear += 1;
+            } else if ($scope.previousMonth == 0){
+                $scope.previousMonth = 12;
+                $scope.startYear -= 1;
+            } else {
+                $scope.nextMonth = $scope.previousMonth+2;
+            }
+
+
+
+            //sets var dateRange
+            $scope.dateRange = {
+                startDate: $scope.startYear+'-'+$scope.previousMonth+'-'+'01',
+                endDate: $scope.endYear+'-'+$scope.nextMonth+'-'+'31'
+            };
+
+        };
+
+        $scope.setDateRange();
         //get the events to populate calendar
-        $scope.calendarFactory.retrieveEvents().then(function() {
-            $scope.tempEvents = $scope.calendarFactory.eventsData();
-            console.log("tempEvents after the call: ", $scope.tempEvents);
+        $http.get('/event/byDateRange', {params: $scope.dateRange}).then(function (response) {
+            console.log("Output from get /event/byDateRange ", response.data);
+            $scope.tempEvents = response.data;
 
             //loop through results from factory call to set event info into calendar
             for (var i = 0; i < $scope.tempEvents.length; i++) {
@@ -603,7 +637,6 @@ app.controller('UiCalendarController', ["$scope", "$http", "CalendarFactory", fu
                 $scope.eventSources.events[i].id = $scope.tempEvents[i].event_schedule_id;
 
             }
-
             //uiConfigurations for experimentation
             $scope.uiConfig = {
                 calendar:{
@@ -620,8 +653,8 @@ app.controller('UiCalendarController', ["$scope", "$http", "CalendarFactory", fu
                     eventClick: $scope.eventClick
                 }
             };
-
         });
+
 
         //functions
         $scope.eventClick = function(event, jsEvent, view){
