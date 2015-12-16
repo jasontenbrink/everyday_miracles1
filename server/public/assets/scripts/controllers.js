@@ -89,7 +89,7 @@ app.controller('AddEventController',['$scope', '$http', function ($scope, $http)
         columnDefs : [
           { name: 'event_schedule_id', displayName: 'Event Schedule ID'},
           { name: 'event_id', displayName: 'Event ID'},
-          { name: 'schedule_date', displayName: 'Schedule Date' },
+          { name: 'schedule_date', cellFilter:"date: 'fullDate':'-1200'", displayName: 'Schedule Date' },
           { name: 'teacher_user_id', displayName: 'Teacher User Id' },
           { name: 'start_datetime', cellFilter:"date: 'shortTime':'-1200'", displayName: 'Start Time'},
           { name: 'end_datetime', cellFilter:"date: 'shortTime':'-1200'", displayName: 'End Time'},
