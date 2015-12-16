@@ -11,8 +11,6 @@ app.controller('UiCalendarController', ["$scope", "$http", function($scope, $htt
     $scope.startYear = 0;
     $scope.endYear = 0;
 
-    //$scope.calendarFactory = CalendarFactory;
-
     //load the calendar
     $scope.loadCalendar = function() {
 
