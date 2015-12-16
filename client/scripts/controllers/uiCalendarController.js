@@ -1,10 +1,13 @@
-app.controller('UiCalendarController', ["$scope", "$http", function($scope, $http) {
+app.controller('UiCalendarController', ["$scope", "$http", "RegisterForClassFactory", "$location",
+    function($scope, $http, RegisterForClassFactory, $location) {
     console.log("hi from ui calendar controller");
     /* config object */
     $scope.tempEvents;
     $scope.eventSources = {};
     $scope.eventSources.events = [];
     $scope.uiConfig = {};
+    $scope.registerForClassFactory = RegisterForClassFactory;
+    //dateRange related variables
     $scope.today;
     $scope.previousMonth = 0;
     $scope.nextMonth = 0;
@@ -47,7 +50,7 @@ app.controller('UiCalendarController', ["$scope", "$http", function($scope, $htt
         $http.get('/event/byDateRange', {params: $scope.dateRange}).then(function (response) {
             console.log("Output from get /event/byDateRange ", response.data);
             $scope.tempEvents = response.data;
-
+            console.log("the tempEvents", $scope.tempEvents);
             //loop through results from factory call to set event info into calendar
             for (var i = 0; i < $scope.tempEvents.length; i++) {
                 $scope.eventSources.events[i] = {};
@@ -59,9 +62,14 @@ app.controller('UiCalendarController', ["$scope", "$http", function($scope, $htt
 
                 //$scope.eventSources.events[i].description = $scope.tempEvents[i].description;
 
-                //unique id for event
+                //unique id for a event
                 //corresponds to property event_schedule_id in the database
-                $scope.eventSources.events[i].id = $scope.tempEvents[i].event_schedule_id;
+                //use this to get information like attendance about a particular class
+                $scope.eventSources.events[i].eventScheduleId = $scope.tempEvents[i].event_schedule_id;
+
+                //sets event id
+                //use this to get multiple dates for the same event from the database
+                $scope.eventSources.events[i].eventId = $scope.tempEvents[i].event_id;
 
             }
 
@@ -85,10 +93,14 @@ app.controller('UiCalendarController', ["$scope", "$http", function($scope, $htt
 
 
         //functions
+        //saves the unique id of the clicked on class
         $scope.eventClick = function(event, jsEvent, view){
-            console.log("this is variable event: ", event);
-            console.log("this is jsEvent: ",jsEvent);
-            console.log("this is view: ", view);
+
+            console.log("this is event: ",event);
+            $scope.registerForClassFactory.setEvent(event);
+            console.log("factory test: ", $scope.registerForClassFactory.getEvent());
+
+            $location.path("/eventdetails");
 
         };
         $scope.alertEventOnClick = function(date, jsEvent, view) {
