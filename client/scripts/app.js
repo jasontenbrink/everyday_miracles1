@@ -47,6 +47,10 @@ app.config(['$routeProvider', function($routeProvider){
                  .when('/login', {
                      templateUrl: '/templates/login.jade',
                      controller: "LoginController"
+                 })
+                 .when('/userregistration', {
+                     templateUrl: '/templates/userregistration.jade',
+                     controller: "UserRegistrationController"
                  });
 
 
