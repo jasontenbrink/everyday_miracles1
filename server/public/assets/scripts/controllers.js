@@ -91,7 +91,7 @@ app.controller('AddEventController',['$scope', '$http', function ($scope, $http)
           { name: 'event_id', displayName: 'Event ID'},
           { name: 'schedule_date', displayName: 'Schedule Date' },
           { name: 'teacher_user_id', displayName: 'Teacher User Id' },
-          { name: 'start_datetime', displayName: 'Start Date Time'},
+          { name: 'start_datetime', cellFilter:'date: "yyyy-MM-dd HH:mm:ss.sss"', displayName: 'Start Date Time'},
           { name: 'end_datetime', displayName: 'End Date Time'},
           {name: 'Action',
             cellEditableCondition: false,
@@ -104,8 +104,51 @@ app.controller('AddEventController',['$scope', '$http', function ($scope, $http)
   }
 
   $scope.submitEventSchedule = function() {
-    console.log("event schedule add ", $scope.eventScheduleAdd);
-    console.log("event data ", $scope.event);
+
+    var month = new Date($scope.eventScheduleAdd.scheduleDate).getMonth();
+    var day = new Date($scope.eventScheduleAdd.scheduleDate).getDate();
+    var year = new Date($scope.eventScheduleAdd.scheduleDate).getFullYear();
+
+    var startHours = new Date($scope.eventScheduleAdd.startDateTime).getHours();
+    var startMinutes = new Date($scope.eventScheduleAdd.startDateTime).getMinutes();
+
+    var endHours = new Date($scope.eventScheduleAdd.endDateTime).getHours();
+    var endMinutes = new Date($scope.eventScheduleAdd.endDateTime).getMinutes();
+
+    var startDateTime = new Date(year, month, day, startHours, startMinutes, 0);
+    var endDateTime = new Date(year, month, day, endHours, endMinutes, 0)
+
+    console.log("start date ", startDateTime, " end date ", endDateTime );
+
+    var addEventSchedule = {
+      eventId: $scope.event.eventId,
+      scheduleDate: $scope.eventScheduleAdd.scheduleDate,
+      startDateTime: startDateTime,
+      endDateTime: endDateTime,
+      teacherUserId: $scope.eventScheduleAdd.teacherUserId
+    };
+
+    console.log("Input to post /eventSchedule ", addEventSchedule);
+    $http.post('/eventSchedule', addEventSchedule).then(function (response) {
+      console.log("Output from post /eventSchedule ", response.data);
+      $scope.loadEventScheduleData();
+    });
+  }
+
+  $scope.deleteEventSchedule = function(deleteObject) {
+    console.log("object ", deleteObject);
+
+    var answer = confirm("Are you sure you want to delete event schedule id " + deleteObject.event_schedule_id + "?")
+    if (answer){
+      $http.delete('/eventSchedule/delete'+ deleteObject.event_schedule_id).then(function(response){
+        $scope.loadEventScheduleData();
+      });
+    }
+    else {
+      console.log("nothing");
+    }
+
+
 
   }
 
