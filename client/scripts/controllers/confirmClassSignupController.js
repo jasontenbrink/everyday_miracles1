@@ -1,4 +1,4 @@
-app.controller('ConfirmClassSignupController',['$scope', '$http', function ($scope, $http) {
+app.controller('ConfirmClassSignupController',['$scope', '$http', '$location', function ($scope, $http, $location) {
   console.log('hi, from confirm class signup Controller');
   $scope.user = {};
   $scope.event = {};
@@ -16,6 +16,7 @@ app.controller('ConfirmClassSignupController',['$scope', '$http', function ($sco
   };
 
   $scope.goBack = function() {
+    $location.path('/chooseclassdates');
     console.log("I hit the go back button: ");
   };
 

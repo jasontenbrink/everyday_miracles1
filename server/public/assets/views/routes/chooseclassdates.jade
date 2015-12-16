@@ -1,22 +1,19 @@
 
 div
   h1
-    | Class Dates
+    | {{eventFromFactory.title}} Class Dates
 
 div
   h2
     | Please choose the date(s) that you
     br
-    | would like to attend the class
+    | would like to attend the {{eventFromFactory.title}} class
 
 
 
 .class-dates
-  md-checkbox(ng-repeat="date in event" md-no-ink row="row" aria-label="Class Picker Checkbox" class="md-primary"       ng-checked=False)
-    div(rowspan="date")
-      p.class-dates(rowspan="date") {{date.schedule_date|date:'fullDate':'-12:00'}} {{date.start_datetime|date:'shortTime':'-12:00'}} {{date.end_datetime|date:'shortTime':'-12:00'}}
-
-      //p.class-dates {{date}}
+  md-checkbox(ng-repeat="date in event track by date.event_schedule_id" md-no-ink row="row" aria-label="Class Picker Checkbox" class="md-primary"       ng-checked=False)
+      p.class-dates(rowspan="date") {{date.schedule_date|date:'fullDate':'+12:00'}} {{date.start_datetime|date:'shortTime':'+12:00'}} {{date.end_datetime|date:'shortTime':'+12:00'}}
 
 
 .sign-up-button

@@ -1,34 +1,39 @@
-app.controller('ChooseClassDatesController',['$scope', '$http', function ($scope, $http) {
+app.controller('ChooseClassDatesController',['$scope', '$http', "RegisterForClassFactory", '$location', function ($scope, $http, RegisterForClassFactory, $location) {
   console.log('hi, from choose class dates Controller');
 
   //$scope.user = {};
   //$scope.user.name = "Jane Doe";
-  //
-  //$scope.title = "Mom-to-Mom Group";
-  //console.log("this is the class registered for: ", title);
-  //$scope.event.schedule_date = ["Tues Nov 5, 2015", "Thurs Dec 20, 2015", "Fri Dec 25, 2015"];
 
+  console.log("this is the class registered for: ", event.event_id, event.title);
 
-  $scope.loadData = function() {
-    var event = {eventId: 1};
+  $scope.registerForClassFactory = RegisterForClassFactory;
 
-    console.log("Input to get /eventSchedule/byEventId ", event);
-    $http.get('/eventSchedule/byEventId', {params: event}).then(function(response){
+  $scope.eventFromFactory = $scope.registerForClassFactory.getEvent();
+
+  $scope.loadEventData =  function(event) {
+    var eventId = {
+      eventId: event.eventId
+    };
+    console.log("Input to get /eventSchedule/byEventId ", eventId);
+    $http.get('/eventSchedule/byEventId', {params: eventId}).then(function(response){
       console.log("Output from get /eventSchedule/byEventId ", response.data);
       $scope.event = response.data;
+      console.log("$scope.event ",$scope.event);
     });
   };
 
-  $scope.loadData();
+  $scope.loadEventData($scope.eventFromFactory);
 
 
 
   $scope.signUp = function() {
-    console.log("these are the dates signed up for: ");
+    $location.path('/confirmclasssignup');
+    console.log("these are the dates signed up for: ", $scope.event);
     //$scope.insertUsersEventSchedule(userEvent);
   };
 
   $scope.goBack = function() {
+    $location.path('/eventdetails');
     console.log("I hit the go back button: ");
   };
 
