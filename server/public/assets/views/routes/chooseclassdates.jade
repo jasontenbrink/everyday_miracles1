@@ -12,8 +12,9 @@ div
 
 
 .class-dates
-  md-checkbox(ng-repeat="date in event" md-no-ink row aria-label="Class Picker Checkbox" class="md-primary"       ng-checked=False)
-    p.class-dates {{date.schedule_date|date:'fullDate':'-12:00'}} {{date.start_datetime|date:'shortTime':'-12:00'}} {{date.end_datetime|date:'shortTime':'-12:00'}}
+  md-checkbox(ng-repeat="date in event" md-no-ink row="row" aria-label="Class Picker Checkbox" class="md-primary"       ng-checked=False)
+    div(rowspan="date")
+      p.class-dates(rowspan="date") {{date.schedule_date|date:'fullDate':'-12:00'}} {{date.start_datetime|date:'shortTime':'-12:00'}} {{date.end_datetime|date:'shortTime':'-12:00'}}
 
       //p.class-dates {{date}}
 

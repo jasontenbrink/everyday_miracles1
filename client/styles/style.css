@@ -5,16 +5,12 @@ body{
 }
 
 
-md-checkbox{
-  display: inline;
-}
-
 button{
   padding: 10px;
   margin: 10px;
 }
 
-p.buttonDates {
+p.class-dates {
   display: inline;
 }
 
