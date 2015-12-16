@@ -418,8 +418,8 @@ app.controller('TestSqlController',['$scope', '$http', function ($scope, $http) 
 
 }]);
 
-app.controller('UiCalendarController', ["$scope", "$http", "RegisterForClassFactory",
-    function($scope, $http, RegisterForClassFactory) {
+app.controller('UiCalendarController', ["$scope", "$http", "RegisterForClassFactory", "$location",
+    function($scope, $http, RegisterForClassFactory, $location) {
     console.log("hi from ui calendar controller");
     /* config object */
     $scope.tempEvents;
@@ -485,7 +485,7 @@ app.controller('UiCalendarController', ["$scope", "$http", "RegisterForClassFact
                 //unique id for a event
                 //corresponds to property event_schedule_id in the database
                 //use this to get information like attendance about a particular class
-                $scope.eventSources.events[i].id = $scope.tempEvents[i].event_schedule_id;
+                $scope.eventSources.events[i].eventScheduleId = $scope.tempEvents[i].event_schedule_id;
 
                 //sets event id
                 //use this to get multiple dates for the same event from the database
@@ -517,9 +517,10 @@ app.controller('UiCalendarController', ["$scope", "$http", "RegisterForClassFact
         $scope.eventClick = function(event, jsEvent, view){
 
             console.log("this is event: ",event);
-            $scope.registerForClassFactory.setEventIds(event.id, event.eventId);
-            console.log("factory test: ", $scope.registerForClassFactory.getEventIds());
+            $scope.registerForClassFactory.setEvent(event);
+            console.log("factory test: ", $scope.registerForClassFactory.getEvent());
 
+            $location.path("/eventdetails");
 
         };
         $scope.alertEventOnClick = function(date, jsEvent, view) {
