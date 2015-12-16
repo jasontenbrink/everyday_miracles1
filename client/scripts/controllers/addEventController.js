@@ -1,6 +1,6 @@
 app.controller('AddEventController',['$scope', '$http', function ($scope, $http) {
 
-  $scope.insertMode = false;
+  $scope.insertMode = true;
 
   $scope.event = {};
   $scope.eventSchedule = [];
@@ -8,7 +8,7 @@ app.controller('AddEventController',['$scope', '$http', function ($scope, $http)
 
   $scope.eventScheduleAdd = {};
 
-  $scope.event.eventId = 1;
+  //$scope.event.eventId = 1;
 
   $scope.submitEvent = function() {
     var event = {
@@ -89,7 +89,7 @@ app.controller('AddEventController',['$scope', '$http', function ($scope, $http)
         columnDefs : [
           { name: 'event_schedule_id', displayName: 'Event Schedule ID'},
           { name: 'event_id', displayName: 'Event ID'},
-          { name: 'schedule_date', cellFilter:"date: 'fullDate':'-1200'", displayName: 'Schedule Date' },
+          { name: 'schedule_date', cellFilter:"date: 'fullDate'", displayName: 'Schedule Date' },
           { name: 'teacher_user_id', displayName: 'Teacher User Id' },
           { name: 'start_datetime', cellFilter:"date: 'shortTime':'-1200'", displayName: 'Start Time'},
           { name: 'end_datetime', cellFilter:"date: 'shortTime':'-1200'", displayName: 'End Time'},
@@ -104,6 +104,8 @@ app.controller('AddEventController',['$scope', '$http', function ($scope, $http)
   }
 
   $scope.submitEventSchedule = function() {
+
+    var addEventScheduleArray = [];
 
     var month = new Date($scope.eventScheduleAdd.scheduleDate).getMonth();
     var day = new Date($scope.eventScheduleAdd.scheduleDate).getDate();
@@ -122,39 +124,52 @@ app.controller('AddEventController',['$scope', '$http', function ($scope, $http)
 
     var repeatType = $scope.event.repeatType;
     var repeatBoolean = true;
+    var insertDate = $scope.eventScheduleAdd.scheduleDate;
 
     do {
-      //do an insert always
 
-      // if repeat type = none
-      // repeat = false
-      // if repeat type = daily
-      // add 1 to the date
-      // if repeat type = weekly
-      // add 7 to the date
-      // if repeat type = monthly
-      // add 1 to the month
-      // if new date >= repeatToDate
-      // repeat = false
-    }
-    while (repeatBoolean);
-  }
+      addEventScheduleArray.push({
+        eventId: $scope.event.eventId,
+        scheduleDate: insertDate,
+        startDateTime: startDateTime,
+        endDateTime: endDateTime,
+        teacherUserId: $scope.eventScheduleAdd.teacherUserId
+      });
 
+      if (repeatType == "None") {
+        repeatBoolean = false;
+      } else if (repeatType == "Daily") {
+        insertDate = new Date(moment(insertDate).add(1, 'days'));
+        startDateTime = new Date(moment(startDateTime).add(1, 'days'));
+        endDateTime = new Date(moment(endDateTime).add(1, 'days'));
+      } else if (repeatType == "Weekly") {
+        insertDate = new Date(moment(insertDate).add(1, 'weeks'));
+        startDateTime = new Date(moment(startDateTime).add(1, 'weeks'));
+        endDateTime = new Date(moment(endDateTime).add(1, 'weeks'));
+      } else if (repeatType == "Monthly") {
+        insertDate = new Date(moment(insertDate).add(1, 'months'));
+        startDateTime = new Date(moment(startDateTime).add(1, 'months'));
+        endDateTime = new Date(moment(endDateTime).add(1, 'months'));
+      } else {
+        repeatBoolean = false;
+      }
 
+      if (insertDate > $scope.event.repeatToDate) {
+        repeatBoolean = false;
+      }
 
-      //var addEventSchedule = {
-      //  eventId: $scope.event.eventId,
-      //  scheduleDate: $scope.eventScheduleAdd.scheduleDate,
-      //  startDateTime: startDateTime,
-      //  endDateTime: endDateTime,
-      //  teacherUserId: $scope.eventScheduleAdd.teacherUserId
-      //};
-      //
-      //console.log("Input to post /eventSchedule ", addEventSchedule);
-      //$http.post('/eventSchedule', addEventSchedule).then(function (response) {
-      //  console.log("Output from post /eventSchedule ", response.data);
-      //  $scope.loadEventScheduleData();
-      //});
+    } while (repeatBoolean);
+
+    console.log("adding event sched ", addEventScheduleArray);
+    //do an insert always
+    console.log("Input to post /eventSchedule ", addEventScheduleArray);
+    $http.post('/eventSchedule', addEventScheduleArray).then(function (response) {
+      console.log("Output from post /eventSchedule ", response.data);
+      $scope.loadEventScheduleData();
+    });
+
+  };
+
 
 
   $scope.deleteEventSchedule = function(deleteObject) {

@@ -50,35 +50,32 @@ router.get('/byEventId', function(req,res){
 // Insert
 router.post('/', function(req,res){
 
-    var queryOptions = {
-        event_id: req.body.eventId,
-        schedule_date: req.body.scheduleDate,
-        start_datetime: req.body.startDateTime,
-        end_datetime: req.body.endDateTime,
-        teacher_user_id : req.body.teacherUserId
-    };
+    var queryOptionsArray = req.body;
 
     pg.connect(connectionString, function (err, client) {
 
-        client.query("INSERT INTO event_schedule (event_id, \
-            schedule_date, \
-            start_datetime, \
-            end_datetime, \
-            teacher_user_id) \
-        VALUES \
-        ($1, $2, $3, $4, $5);",
-            [queryOptions.event_id,
-                queryOptions.schedule_date,
-                queryOptions.start_datetime,
-                queryOptions.end_datetime,
-                queryOptions.teacher_user_id],
-            function(err, result) {
-                if(err) {
+        for (var i = 0; i < queryOptionsArray.length; i++) {
+
+            client.query("INSERT INTO event_schedule (event_id, \
+                schedule_date, \
+                start_datetime, \
+                end_datetime, \
+                teacher_user_id) \
+            VALUES \
+            ($1, $2, $3, $4, $5);",
+            [queryOptionsArray[i].eventId,
+                queryOptionsArray[i].scheduleDate,
+                queryOptionsArray[i].startDateTime,
+                queryOptionsArray[i].endDateTime,
+                queryOptionsArray[i].teacherUserId],
+            function (err, result) {
+                if (err) {
                     console.log("Error inserting data: ", err);
                     res.send(false);
                 }
-                res.send(true);
             });
+        }
+        res.send(true);
     });
 
 });
