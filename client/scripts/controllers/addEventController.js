@@ -91,7 +91,7 @@ app.controller('AddEventController',['$scope', '$http', function ($scope, $http)
           { name: 'event_id', displayName: 'Event ID'},
           { name: 'schedule_date', displayName: 'Schedule Date' },
           { name: 'teacher_user_id', displayName: 'Teacher User Id' },
-          { name: 'start_datetime', cellFilter:'date: "yyyy-MM-dd HH:mm:ss.sss"', displayName: 'Start Date Time'},
+          { name: 'start_datetime', cellFilter:"date: 'shortTime':'-1200'", displayName: 'Start Date Time'},
           { name: 'end_datetime', displayName: 'End Date Time'},
           {name: 'Action',
             cellEditableCondition: false,

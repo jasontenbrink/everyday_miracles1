@@ -91,7 +91,7 @@ app.controller('AddEventController',['$scope', '$http', function ($scope, $http)
           { name: 'event_id', displayName: 'Event ID'},
           { name: 'schedule_date', displayName: 'Schedule Date' },
           { name: 'teacher_user_id', displayName: 'Teacher User Id' },
-          { name: 'start_datetime', cellFilter:'date: "yyyy-MM-dd HH:mm:ss.sss"', displayName: 'Start Date Time'},
+          { name: 'start_datetime', cellFilter:"date: 'shortTime':'-1200'", displayName: 'Start Date Time'},
           { name: 'end_datetime', displayName: 'End Date Time'},
           {name: 'Action',
             cellEditableCondition: false,
@@ -583,8 +583,6 @@ app.controller('UiCalendarController', ["$scope", "$http", function($scope, $htt
     $scope.startYear = 0;
     $scope.endYear = 0;
 
-    //$scope.calendarFactory = CalendarFactory;
-
     //load the calendar
     $scope.loadCalendar = function() {
 
@@ -616,6 +614,7 @@ app.controller('UiCalendarController', ["$scope", "$http", function($scope, $htt
         };
 
         $scope.setDateRange();
+
         //get the events to populate calendar
         $http.get('/event/byDateRange', {params: $scope.dateRange}).then(function (response) {
             console.log("Output from get /event/byDateRange ", response.data);
@@ -637,6 +636,7 @@ app.controller('UiCalendarController', ["$scope", "$http", function($scope, $htt
                 $scope.eventSources.events[i].id = $scope.tempEvents[i].event_schedule_id;
 
             }
+
             //uiConfigurations for experimentation
             $scope.uiConfig = {
                 calendar:{
