@@ -17,19 +17,45 @@ app.controller('CalendarController',['$scope', function ($scope) {
 app.controller('ChooseClassDatesController',['$scope', '$http', function ($scope, $http) {
   console.log('hi, from choose class dates Controller');
 
-  $scope.classdates = [
-    "Friday, January 15, 2016",
-    "Friday, January 22, 2016",
-    "Friday, January 29, 2016",
-    "Friday, February 5, 2016",
-    "Friday, February 12, 2016"
-  ];
+// Select
+//  $scope.chooseEventDates = function() {
+    $http.get('/byEventId', function(req,res){
+      var queryOptions = {
+        event_id: req.query.eventId
+      };
 
-  //for (i=0; i<classdates.length; i++) {
-  //  return classdates;
-  //  console.log(classdates);
-  //}
+      $scope.classdates = [];
 
+      //SQL Query > SELECT data from table
+      pg.connect(connectionString, function (err, client, done) {
+        var query = client.query("SELECT \
+              event_schedule_id, \
+              event_id, \
+              schedule_date, \
+              start_datetime, \
+              end_datetime, \
+              teacher_user_id \
+          FROM event_schedule \
+          WHERE event_id = $1;", [queryOptions.event_id]);
+        console.log(query);
+
+        // Stream results back one row at a time, push into results arrayd
+        query.on('row', function (row) {
+          results.push(row);
+        });
+
+        // After all data is returned, close connection and return results
+        query.on('end', function () {
+          client.end();
+          return res.json(results);
+        });
+
+        // Handle Errors
+        if (err) {
+          console.log(err);
+        }
+      });
+    });
 }]);
 
 app.controller('ConfirmClassSignupController',['$scope', '$http', function ($scope, $http) {
@@ -431,8 +457,6 @@ app.controller('UiCalendarController', ["$scope", "$http", function($scope, $htt
     $scope.startYear = 0;
     $scope.endYear = 0;
 
-    //$scope.calendarFactory = CalendarFactory;
-
     //load the calendar
     $scope.loadCalendar = function() {
 
@@ -464,6 +488,7 @@ app.controller('UiCalendarController', ["$scope", "$http", function($scope, $htt
         };
 
         $scope.setDateRange();
+
         //get the events to populate calendar
         $http.get('/event/byDateRange', {params: $scope.dateRange}).then(function (response) {
             console.log("Output from get /event/byDateRange ", response.data);
@@ -485,6 +510,7 @@ app.controller('UiCalendarController', ["$scope", "$http", function($scope, $htt
                 $scope.eventSources.events[i].id = $scope.tempEvents[i].event_schedule_id;
 
             }
+
             //uiConfigurations for experimentation
             $scope.uiConfig = {
                 calendar:{
