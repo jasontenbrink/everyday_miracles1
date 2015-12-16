@@ -431,8 +431,6 @@ app.controller('UiCalendarController', ["$scope", "$http", function($scope, $htt
     $scope.startYear = 0;
     $scope.endYear = 0;
 
-    //$scope.calendarFactory = CalendarFactory;
-
     //load the calendar
     $scope.loadCalendar = function() {
 
@@ -464,6 +462,7 @@ app.controller('UiCalendarController', ["$scope", "$http", function($scope, $htt
         };
 
         $scope.setDateRange();
+
         //get the events to populate calendar
         $http.get('/event/byDateRange', {params: $scope.dateRange}).then(function (response) {
             console.log("Output from get /event/byDateRange ", response.data);
@@ -485,6 +484,7 @@ app.controller('UiCalendarController', ["$scope", "$http", function($scope, $htt
                 $scope.eventSources.events[i].id = $scope.tempEvents[i].event_schedule_id;
 
             }
+
             //uiConfigurations for experimentation
             $scope.uiConfig = {
                 calendar:{
