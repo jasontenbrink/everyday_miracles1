@@ -17,45 +17,37 @@ app.controller('CalendarController',['$scope', function ($scope) {
 app.controller('ChooseClassDatesController',['$scope', '$http', function ($scope, $http) {
   console.log('hi, from choose class dates Controller');
 
-// Select
-//  $scope.chooseEventDates = function() {
-    $http.get('/byEventId', function(req,res){
-      var queryOptions = {
-        event_id: req.query.eventId
-      };
+  //$scope.user = {};
+  //$scope.user.name = "Jane Doe";
+  //
+  //$scope.title = "Mom-to-Mom Group";
+  //console.log("this is the class registered for: ", title);
+  //$scope.event.schedule_date = ["Tues Nov 5, 2015", "Thurs Dec 20, 2015", "Fri Dec 25, 2015"];
 
-      $scope.classdates = [];
 
-      //SQL Query > SELECT data from table
-      pg.connect(connectionString, function (err, client, done) {
-        var query = client.query("SELECT \
-              event_schedule_id, \
-              event_id, \
-              schedule_date, \
-              start_datetime, \
-              end_datetime, \
-              teacher_user_id \
-          FROM event_schedule \
-          WHERE event_id = $1;", [queryOptions.event_id]);
-        console.log(query);
+  $scope.loadData = function() {
+    var event = {eventId: 1};
 
-        // Stream results back one row at a time, push into results arrayd
-        query.on('row', function (row) {
-          results.push(row);
-        });
-
-        // After all data is returned, close connection and return results
-        query.on('end', function () {
-          client.end();
-          return res.json(results);
-        });
-
-        // Handle Errors
-        if (err) {
-          console.log(err);
-        }
-      });
+    console.log("Input to get /eventSchedule/byEventId ", event);
+    $http.get('/eventSchedule/byEventId', {params: event}).then(function(response){
+      console.log("Output from get /eventSchedule/byEventId ", response.data);
+      $scope.event = response.data;
     });
+  };
+
+  $scope.loadData();
+
+
+
+  $scope.signUp = function() {
+    console.log("these are the dates signed up for: ");
+    //$scope.insertUsersEventSchedule(userEvent);
+  };
+
+  $scope.goBack = function() {
+    console.log("I hit the go back button: ");
+  };
+
 }]);
 
 app.controller('ConfirmClassSignupController',['$scope', '$http', function ($scope, $http) {

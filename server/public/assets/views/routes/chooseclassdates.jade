@@ -5,18 +5,17 @@ div
 
 div
   h2
-    | Please choose the dates you
+    | Please choose the date(s) that you
     br
-    | would like to attend class
+    | would like to attend the class
 
 
 
-.classdates-input
+.class-dates
+  md-checkbox(ng-repeat="date in event" md-no-ink row aria-label="Class Picker Checkbox" class="md-primary"       ng-checked=False)
+    p.class-dates {{date.schedule_date|date:'fullDate':'-12:00'}} {{date.start_datetime|date:'shortTime':'-12:00'}} {{date.end_datetime|date:'shortTime':'-12:00'}}
 
-  ul(ng-repeat="date in classdates")
-
-    md-checkbox(md-no-ink aria-label="Class Picker Checkbox" class="md-primary" ng-checked=False)
-    p.buttonDates {{date}}
+      //p.class-dates {{date}}
 
 
 .sign-up-button
