@@ -41,3 +41,22 @@ app.factory("CalendarFactory", ["$http", function($http){
 
     return publicApi;
 }]);
+app.factory("RegisterForClassFactory", ["$http", function($http){
+    var event = {};
+
+        var inputEventIds = function(uniqueid, eventid){
+            event.id = uniqueid;
+            event.eventid = eventid;
+            return event;
+        };
+
+    var eventApi = {
+        setEventIds: function(uniqueid, eventid) {
+            return inputEventIds(uniqueid, eventid);
+        },
+        getEventIds: function(){
+            return event;
+        }
+    };
+    return eventApi;
+}]);
