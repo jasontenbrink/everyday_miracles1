@@ -17,10 +17,10 @@ md-content(layout-padding)
         label Schedule Date
         input(type='date' name='scheduledate' ng-model="eventScheduleAdd.scheduleDate")
       md-input-container(flex)
-        label Start Date Time
+        label Start Time
         input(type='time' name='startdatetime' ng-model="eventScheduleAdd.startDateTime")
       md-input-container(flex)
-        label End Date Time
+        label End Time
         input(type='time' name='enddatetime' ng-model="eventScheduleAdd.endDateTime")
       md-input-container(flex)
         label  Teacher User Id
@@ -29,21 +29,26 @@ md-content(layout-padding)
     .layout-row
       md-input-container(flex)
         label Repeat Type
-        input(type='text' name='repeattype' ng-model="event.repeatType")
+        //input(type='text' name='repeattype' ng-model="event.repeatType")
+        md-select(name='repeattype' ng-model="event.repeatType")
+          md-option(value='None') None
+          md-option(value='Daily') Daily
+          md-option(value='Weekly') Weekly
+          md-option(value='Monthly') Monthly
       md-input-container(flex)
         label Repeat From Date
         input(type='date' name='repeatfromdate' ng-model="event.repeatFromDate")
       md-input-container(flex)
         label Repeat To Date
         input(type='date' name='title' ng-model="event.repeatToDate")
-    .layout-row
-      md-checkbox(ng-model="event.repeatSundayInd" class="") Sunday
-      md-checkbox(ng-model="event.repeatMondayInd" class="") Monday
-      md-checkbox(ng-model="event.repeatTuesdayInd" class="") Tuesday
-      md-checkbox(ng-model="event.repeatWednesdayInd" class="") Wednesday
-      md-checkbox(ng-model="event.repeatThursdayInd" class="") Thursday
-      md-checkbox(ng-model="event.repeatFridayInd" class="") Friday
-      md-checkbox(ng-model="event.repeatSaturdayInd" class="") Saturday
+    //.layout-row
+    //  md-checkbox(ng-model="event.repeatSundayInd" class="") Sunday
+    //  md-checkbox(ng-model="event.repeatMondayInd" class="") Monday
+    //  md-checkbox(ng-model="event.repeatTuesdayInd" class="") Tuesday
+    //  md-checkbox(ng-model="event.repeatWednesdayInd" class="") Wednesday
+    //  md-checkbox(ng-model="event.repeatThursdayInd" class="") Thursday
+    //  md-checkbox(ng-model="event.repeatFridayInd" class="") Friday
+    //  md-checkbox(ng-model="event.repeatSaturdayInd" class="") Saturday
 
     md-button(ng-click="submitEventSchedule()" class="md-raised md-primary") Create Event Schedule
 
