@@ -118,12 +118,12 @@ app.controller('AddEventController',['$scope', '$http', function ($scope, $http)
     var startDateTime = new Date(year, month, day, startHours, startMinutes, 0);
     var endDateTime = new Date(year, month, day, endHours, endMinutes, 0)
 
-    console.log("start date ", startDateTime, " end date ", endDateTime );
+    console.log("start date ", startDateTime, " end date ", endDateTime);
 
     var repeatType = $scope.event.repeatType;
-    var repeat = true;
+    var repeatBoolean = true;
 
-    while (repeat){
+    do {
       //do an insert always
 
       // if repeat type = none
@@ -136,8 +136,11 @@ app.controller('AddEventController',['$scope', '$http', function ($scope, $http)
       // add 1 to the month
       // if new date >= repeatToDate
       // repeat = false
-
     }
+    while (repeatBoolean);
+  }
+
+
 
       //var addEventSchedule = {
       //  eventId: $scope.event.eventId,
@@ -152,7 +155,7 @@ app.controller('AddEventController',['$scope', '$http', function ($scope, $http)
       //  console.log("Output from post /eventSchedule ", response.data);
       //  $scope.loadEventScheduleData();
       //});
-  }
+
 
   $scope.deleteEventSchedule = function(deleteObject) {
     console.log("object ", deleteObject);
