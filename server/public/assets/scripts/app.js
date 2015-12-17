@@ -40,6 +40,10 @@ app.config(['$routeProvider', function($routeProvider){
                      templateUrl: '/templates/confirmclasssignup.jade',
                      controller: "ConfirmClassSignupController"
                  })
+                 .when('/profile', {
+                     templateUrl:'/templates/profile.jade',
+                     controller: "ProfileController"
+                  })
                  .when('/editevent', {
                      templateUrl: '/templates/editevent.jade',
                      controller: "EditEventController"
