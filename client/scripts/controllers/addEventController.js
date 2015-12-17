@@ -1,4 +1,4 @@
-app.controller('AddEventController',['$scope', '$http', function ($scope, $http) {
+app.controller('AddEventController',['$scope', '$http', '$timeout', function ($scope, $http, $timeout) {
 
   $scope.insertMode = true;
 
@@ -8,7 +8,7 @@ app.controller('AddEventController',['$scope', '$http', function ($scope, $http)
 
   $scope.eventScheduleAdd = {};
 
-  //$scope.event.eventId = 1;
+  //$scope.event.eventId = 13;
 
   $scope.submitEvent = function() {
     var event = {
@@ -69,13 +69,12 @@ app.controller('AddEventController',['$scope', '$http', function ($scope, $http)
 
       $scope.loadEventScheduleData();
     });
-
-
   }
 
   if (!$scope.insertMode) {
     $scope.loadEventData();
   }
+
 
   $scope.loadEventScheduleData = function() {
     var passingEvent = {eventId: $scope.event.eventId};
@@ -160,11 +159,12 @@ app.controller('AddEventController',['$scope', '$http', function ($scope, $http)
 
     } while (repeatBoolean);
 
-    console.log("adding event sched ", addEventScheduleArray);
+
     //do an insert always
     console.log("Input to post /eventSchedule ", addEventScheduleArray);
     $http.post('/eventSchedule', addEventScheduleArray).then(function (response) {
       console.log("Output from post /eventSchedule ", response.data);
+
       $scope.loadEventScheduleData();
     });
 

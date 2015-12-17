@@ -53,28 +53,36 @@ router.post('/', function(req,res){
     var queryOptionsArray = req.body;
 
     pg.connect(connectionString, function (err, client) {
-
+        // build values string as
+        //(13, '2015-12-12', '2015-12-12', '2015-12-12', 1),
+        //    (13, '2015-12-12', '2015-12-12', '2015-12-12', 1)
+        var valuesString = "";
         for (var i = 0; i < queryOptionsArray.length; i++) {
+            if (queryOptionsArray[i].teacherUserId == undefined){
+                queryOptionsArray[i].teacherUserId = "null";
+            }
+            valuesString += "(" + queryOptionsArray[i].eventId + ",'" + queryOptionsArray[i].scheduleDate + "'," +
+                "'" + queryOptionsArray[i].startDateTime + "'," +
+                "'" + queryOptionsArray[i].endDateTime + "'," +
+                "" + queryOptionsArray[i].teacherUserId + ")"
+            if (i != queryOptionsArray.length-1) {
+                valuesString += ",";
+            }
+        }
+        console.log("valuestring ", valuesString);
 
-            client.query("INSERT INTO event_schedule (event_id, \
+        client.query("INSERT INTO event_schedule (event_id, \
                 schedule_date, \
                 start_datetime, \
                 end_datetime, \
                 teacher_user_id) \
-            VALUES \
-            ($1, $2, $3, $4, $5);",
-            [queryOptionsArray[i].eventId,
-                queryOptionsArray[i].scheduleDate,
-                queryOptionsArray[i].startDateTime,
-                queryOptionsArray[i].endDateTime,
-                queryOptionsArray[i].teacherUserId],
+            VALUES " + valuesString + ";",
             function (err, result) {
                 if (err) {
                     console.log("Error inserting data: ", err);
                     res.send(false);
                 }
             });
-        }
         res.send(true);
     });
 
