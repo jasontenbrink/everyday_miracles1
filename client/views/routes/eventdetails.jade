@@ -12,7 +12,7 @@ else
 h1 {{event.title}}
 
 //once the database gets up, filter the display of this date
-.class-date {{event.start_datetime}}
+.class-date {{event.start_datetime|date:'shortTime':'+12:00'}}
 
 .class-details {{event.description}}
 
