@@ -69,7 +69,7 @@ router.post('/', function(req,res){
                 valuesString += ",";
             }
         }
-        console.log("valuestring ", valuesString);
+        //console.log("valuestring ", valuesString);
 
         client.query("INSERT INTO event_schedule (event_id, \
                 schedule_date, \

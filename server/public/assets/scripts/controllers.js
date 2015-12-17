@@ -1,6 +1,6 @@
 app.controller('AddEventController',['$scope', '$http', '$timeout', function ($scope, $http, $timeout) {
 
-  $scope.insertMode = false;
+  $scope.insertMode = true;
 
   $scope.event = {};
   $scope.eventSchedule = [];
@@ -8,7 +8,7 @@ app.controller('AddEventController',['$scope', '$http', '$timeout', function ($s
 
   $scope.eventScheduleAdd = {};
 
-  $scope.event.eventId = 13;
+  //$scope.event.eventId = 13;
 
   $scope.submitEvent = function() {
     var event = {
