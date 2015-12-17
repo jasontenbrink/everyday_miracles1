@@ -6,6 +6,7 @@ var connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/ev
 
 // Select
 router.get('/byDateRange', function(req,res){
+    console.log('on the event route, req.user = ', req.user);
     var queryOptions = {
         start_date: req.query.startDate,
         end_date: req.query.endDate
