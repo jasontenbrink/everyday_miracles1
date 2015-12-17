@@ -1,15 +1,14 @@
 //
    Created by PaulZimmel on 12/16/15.
 
-
-.basic-user-info
+.user-info
    md-input-container
      label First Name
-     input(type = "text" ng-model = "user.firstName" disabled)
+     input(type = "text" ng-model = "user.firstName")
 
    md-input-container
      label Last Name
-     input(type = "text" ng-model = "user.lastName" disabled)
+     input(type = "text" ng-model = "user.lastName")
 
    md-input-container
      label Username
@@ -43,18 +42,22 @@
      label Contact Type
      input(type = "text" ng-model = "user.contactType")
 
-     //this needs work md-radio-group
    md-input-container
-     label Payment Type
-     input(type = "radio" ng-model = "user.paymentType")
-    //this needs work
+     md-radio-group(ng-model = "user.paymentType")
+       label Payment Type
+       md-radio-button(value = "insurance") Insurance (I have state-funded insurance)
+       md-radio-button(value = "cash") Out of pocket (check or cash in-person)
+
    md-input-container
-     label Are you an Everyday Miracles Client?
-     //md-checkbox or something
+     md-radio-group(ng-model = "user.everydayMiraclesClientInd")
+       label Are you an Everyday Miracles Client?
+       md-radio-button(ng-value = "true" ) Yes
+       md-radio-button(ng-value = "false" ) No
+
 
    md-input-container
      label Doula
-     input(type = "text" ng-model = "user.doula")
+     input(type = "text" ng-model = "user.doulaName")
 
    md-input-container
      label Expected Birth Date
