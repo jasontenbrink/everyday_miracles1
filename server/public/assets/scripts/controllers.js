@@ -449,6 +449,9 @@ app.controller("ProfileController", ["$scope", "$http", function($scope, $http){
     $scope.getUser(testUser);
 
 }]);
+app.controller('StudentClassListController', ["$scope", "$http", function($scope,$http){
+    console.log("student class controller says hi");
+}]);
 app.controller('TestSqlController',['$scope', '$http', function ($scope, $http) {
 
     $scope.selectUsers = function() {
