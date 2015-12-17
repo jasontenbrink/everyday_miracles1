@@ -7,10 +7,12 @@ var passport = require('passport');
 
 
 router.post('/',
-        passport.authenticate('local', {
-            successRedirect: '/views/routes/uicalendar.html',
-            failureRedirect: '/views/failure.html'
-        })
+        passport.authenticate('local'), function(req, res){
+
+          res.send(req.user);
+            // successRedirect: '/templates/routes/test.jade',
+            // failureRedirect: '/assets/views/failure.html'
+        }
 );
 
 // router.get("/", function(req, res, next){

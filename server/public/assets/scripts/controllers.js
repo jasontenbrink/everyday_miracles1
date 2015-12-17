@@ -316,6 +316,18 @@ app.controller('ConfirmClassSignupController',['$scope', '$http', "RegisterForCl
   };
 }]);
 
+app.controller('DirectoryController',['$scope', '$http', function ($scope, $http) {
+  console.log('hi, from Directory Controller');
+  $scope.x = 'angular';
+  $scope.y = 'bye';
+  // $http.get('/jade')
+  //   .then(function (response) {
+  //     console.log(response.data);
+  //     $scope.y = response.data;
+  //   });
+
+}]);
+
 app.controller('EditEventController',['$scope', '$http', function ($scope, $http) {
   console.log('hi, from edit event Controller');
 }]);
@@ -413,10 +425,28 @@ app.controller('JadeController',['$scope', '$http', function ($scope, $http) {
 
 }]);
 
-app.controller('LoginController',['$scope', '$http', function ($scope, $http) {
+app.controller('LoginController',['$scope', '$http', '$location',
+  function ($scope, $http, $location) {
   console.log('hi, from Login Controller');
 
   $scope.user = {};
+  $scope.submitCredentials = function () {
+    console.log('data sent to server', $scope.user);
+    $http.post('/login', $scope.user)
+      .then(function (response) {
+        //console.log('is this html?', response.data);
+        console.log('response is', response);
+        console.log('response status', response.status);
+        if (response.status===200){
+          $location.path('/uicalendar');
+        }
+        else{
+          // $location.path('/failure');
+          alert('sign in failed');
+        }
+
+      });
+  };
 
 }]);
 
@@ -466,6 +496,9 @@ app.controller("ProfileController", ["$scope", "$http", function($scope, $http){
     };
     $scope.getUser(testUser);
 
+}]);
+app.controller('StudentClassListController', ["$scope", "$http", function($scope,$http){
+    console.log("student class controller says hi");
 }]);
 app.controller('TestSqlController',['$scope', '$http', function ($scope, $http) {
 
