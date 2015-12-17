@@ -4,6 +4,7 @@ app.controller('ChooseClassDatesController',['$scope', '$http', "RegisterForClas
   //$scope.user = {};
   //$scope.user.name = "Jane Doe";
   $scope.event = [];
+  $scope.studentEvents = [];
 
   $scope.registerForClassFactory = RegisterForClassFactory;
 
@@ -21,7 +22,6 @@ app.controller('ChooseClassDatesController',['$scope', '$http', "RegisterForClas
     $http.get('/eventSchedule/byEventId', {params: eventId}).then(function(response){
       console.log("Output from get /eventSchedule/byEventId ", response.data);
       $scope.event = response.data;
-      console.log("$scope.event ",$scope.event);
     });
   };
 
@@ -31,33 +31,22 @@ app.controller('ChooseClassDatesController',['$scope', '$http', "RegisterForClas
   $scope.signUp = function(event) {
     console.log("Were here ok ", event);
 
-    $scope.addStudentEvents = function (event, view) {
-      for (var i = 0; i < event.length; i++) {
-        if (event[i].addCheckbox === true) {
-          console.log("this is events with addCheckbox", event.event_schedule_id);
+    for (var i = 0; i < event.length; i++) {
+      if (event[i].addCheckbox == true) {
+        $scope.studentEvents.push($scope.event[i].event_schedule_id);
 
-          $scope.studentEvents = [];
-          $scope.push.studentEvents(event.event_schedule_id);
-        }
-
-        console.log("this is studentEvents", studentEvents);
-        $scope.registerForClassFactory.setStudentEventDates(studentEvents);
-
-        console.log("this is event: ", event);
+        //console.log("this is events with addCheckbox", $scope.event[i].event_schedule_id);
       }
-    };
-    $scope.addStudentEvents(event);
-    console.log("factory test: ", $scope.registerForClassFactory.setStudentEventDates(studentEvents));
+    }
+    console.log("this is studentEvents ", $scope.studentEvents);
+    $scope.registerForClassFactory.setStudentEventDates($scope.studentEvents);
+    console.log("factory test: ", $scope.registerForClassFactory.setStudentEventDates($scope.studentEvents));
 
     $location.path('/confirmclasssignup');
-    console.log("these are the dates signed up for: ", $scope.event);
-    //$scope.insertUsersEventSchedule(userEvent);
-
   };
 
   $scope.goBack = function () {
     $location.path('/eventdetails');
     console.log("I hit the go back button: ");
-  }
-
+  };
 }]);

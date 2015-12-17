@@ -5,10 +5,10 @@
   p Name: {{user.name}}
 
   p Registering for:
-  p {{event.title}}
+  p {{eventFromFactory}}
 
-  .class-dates(ng-repeat = "date in event.dates")
-    p {{date}}
+  .class-dates
+    p(ng-repeat="date in event" ng-model="dates" md-no-ink row="row" aria-label="Your Classes" class="md-primary") {{date.schedule_date|date:'fullDate':'+12:00'}} {{date.start_datetime|date:'shortTime':'+12:00'}} {{date.end_datetime|date:'shortTime':'+12:00'}}
 
   .additional-comments
     md-input-container

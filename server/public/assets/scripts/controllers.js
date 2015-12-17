@@ -214,6 +214,7 @@ app.controller('ChooseClassDatesController',['$scope', '$http', "RegisterForClas
   //$scope.user = {};
   //$scope.user.name = "Jane Doe";
   $scope.event = [];
+  $scope.studentEvents = [];
 
   $scope.registerForClassFactory = RegisterForClassFactory;
 
@@ -231,7 +232,6 @@ app.controller('ChooseClassDatesController',['$scope', '$http', "RegisterForClas
     $http.get('/eventSchedule/byEventId', {params: eventId}).then(function(response){
       console.log("Output from get /eventSchedule/byEventId ", response.data);
       $scope.event = response.data;
-      console.log("$scope.event ",$scope.event);
     });
   };
 
@@ -241,35 +241,24 @@ app.controller('ChooseClassDatesController',['$scope', '$http', "RegisterForClas
   $scope.signUp = function(event) {
     console.log("Were here ok ", event);
 
-    $scope.addStudentEvents = function (date, view) {
-      for (var i = 0; i < event.length; i++) {
-        if (event[i].addCheckbox === true) {
-          console.log("this is events with addCheckbox", event.event_schedule_id);
+    for (var i = 0; i < event.length; i++) {
+      if (event[i].addCheckbox == true) {
+        $scope.studentEvents.push($scope.event[i].event_schedule_id);
 
-          $scope.studentEvents = [];
-          $scope.push.studentEvents(event.event_schedule_id);
-        }
-
-        console.log("this is studentEvents", studentEvents);
-        $scope.registerForClassFactory.setStudentEventDates(studentEvents);
-
-        console.log("this is event: ", event);
+        //console.log("this is events with addCheckbox", $scope.event[i].event_schedule_id);
       }
-    };
-    $scope.addStudentEvents(event);
-    console.log("factory test: ", $scope.registerForClassFactory.setStudentEventDates(studentEvents));
+    }
+    console.log("this is studentEvents ", $scope.studentEvents);
+    $scope.registerForClassFactory.setStudentEventDates($scope.studentEvents);
+    console.log("factory test: ", $scope.registerForClassFactory.setStudentEventDates($scope.studentEvents));
 
     $location.path('/confirmclasssignup');
-    console.log("these are the dates signed up for: ", $scope.event);
-    //$scope.insertUsersEventSchedule(userEvent);
-
   };
 
   $scope.goBack = function () {
     $location.path('/eventdetails');
     console.log("I hit the go back button: ");
-  }
-
+  };
 }]);
 
 app.controller('ConfirmClassSignupController',['$scope', '$http', "RegisterForClassFactory", '$location', function ($scope, $http, RegisterForClassFactory, $location) {
@@ -277,11 +266,29 @@ app.controller('ConfirmClassSignupController',['$scope', '$http', "RegisterForCl
   $scope.user = {};
   $scope.event = {};
 
+  $scope.registerForClassFactory = RegisterForClassFactory;
+
   $scope.user.name = "Jane Doe";
 
+  $scope.eventFromFactory = $scope.registerForClassFactory.getStudentEventDates();
+  console.log("$scope.eventFromFactory: ",$scope.eventFromFactory);
 
-  $scope.event.title = "Mom-to-Mom Group";
-  $scope.event.dates = ["Tues Nov 5, 2015", "Thurs Dec 20, 2015", "Fri Dec 25, 2015"];
+
+  $scope.getEventDetails = function(event){
+    console.log("in getEventDetails");
+    //set params for get call to database
+    var eventIds = {
+      eventId: event.eventId,
+      eventScheduleId: event.eventScheduleId
+    };
+    //get call to database to get event info
+    //use eventId in event object as the parameter
+    $http.get('/event/byEventIdEventScheduleId', {params: eventIds}).then(function(response){
+      console.log("Output from get /event/byEventIdEventScheduleId ", response.data);
+      $scope.event = response.data[0];
+      console.log("$scope.event ",$scope.event);
+    });
+  };
 
   $scope.confirmClass = function(userEvent) {
     console.log("this is the class registered for: ", userEvent);
@@ -294,7 +301,7 @@ app.controller('ConfirmClassSignupController',['$scope', '$http', "RegisterForCl
     console.log("I hit the go back button: ");
   };
 
-  $scope.insertUsersEventSchedule = function(userEvent) {
+  $scope.insertUsersEventSchedule = function() {
     //var userEvent = {
     //  userId: 1,
     //  eventScheduleId: 2,
@@ -316,7 +323,7 @@ app.controller('EditEventController',['$scope', '$http', function ($scope, $http
 app.controller('EventDetailsController',['$scope', '$http', "RegisterForClassFactory", "$location",
   function ($scope, $http, RegisterForClassFactory, $location) {
 
-  console.log('hi, from event details controller Controller');
+  console.log('hi, from event details controller');
   $scope.user = {};
 
   $scope.user.loginstatus = true;
