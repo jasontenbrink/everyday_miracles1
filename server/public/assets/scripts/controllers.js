@@ -188,13 +188,13 @@ app.controller('AddEventController',['$scope', '$http', '$timeout', function ($s
 
 }]);
 
-//app.controller('AddWalkinController',['$scope', '$http', function ($scope, $http) {
-//    console.log('hi, from add walkin Controller');
-//}]);
+app.controller('AddWalkinController',['$scope', '$http', function ($scope, $http) {
+    console.log('hi, from add walkin Controller');
+}]);
 
-//app.controller('AttendanceController',['$scope', '$http', function ($scope, $http) {
-//    console.log('hi, from attendance Controller');
-//}]);
+app.controller('AttendanceController',['$scope', '$http', function ($scope, $http) {
+    console.log('hi, from attendance Controller');
+}]);
 
 app.controller('CalendarController',['$scope', function ($scope) {
   console.log('hi, from calendarController');
@@ -343,9 +343,9 @@ app.controller('EventDetailsController',['$scope', '$http', "RegisterForClassFac
 
 }]);
 
-//app.controller('FindWalkinController',['$scope', '$http', function ($scope, $http) {
-//    console.log('hi, from Find Walkin Controller');
-//}]);
+app.controller('FindWalkinController',['$scope', '$http', function ($scope, $http) {
+    console.log('hi, from Find Walkin Controller');
+}]);
 
 app.controller('JadeController',['$scope', '$http', function ($scope, $http) {
   console.log('hi, from jade Controller');
