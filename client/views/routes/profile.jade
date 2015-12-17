@@ -29,7 +29,7 @@
 
    md-input-container
      label Date of Birth
-     input(type = "date" ng-model = "user.dateOfBirth" disabled)
+     input(type = "text" ng-model = "user.dateOfBirth" disabled)
 
    md-input-container
      label Phone Number
@@ -58,7 +58,7 @@
 
    md-input-container
      label Expected Birth Date
-     input(type = "dateTime-local" ng-model = "user.expectedBirthDate")
+     input(type = "text" ng-model = "user.expectedBirthDate")
 
    .save-button
        md-button(class = "md-raised" ng-click = "saveProfile(user)") Save
