@@ -6,15 +6,15 @@ app.factory("RegisterForClassFactory", ["$http", function($http){
       return event;
     };
 
-  var studentEventDates = {
-    setStudentEventDates: function(someevent){
-      studentEvents = someevent;
-      return studentEvents;
-    },
-    getStudentEventDates: function(){
-      return studentEvents;
-    }
-  };
+  //var studentEventDates = {
+  //  setStudentEventDates: function(someevent){
+  //    studentEvents = someevent;
+  //    return studentEvents;
+  //  },
+  //  getStudentEventDates: function(){
+  //    return studentEvents;
+  //  }
+  //};
 
   var eventApi = {
     setEvent: function(someevent) {
@@ -22,6 +22,12 @@ app.factory("RegisterForClassFactory", ["$http", function($http){
     },
     getEvent: function(){
       return event;
+    },
+    setStudentEventDates: function(someevent){
+      return studentEvents(someevent);
+    },
+    getStudentEventDates: function(){
+      return studentEvents;
     }
   };
   return eventApi;

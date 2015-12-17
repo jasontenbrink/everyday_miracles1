@@ -9,12 +9,10 @@ div
     br
     | would like to attend the {{eventFromFactory.title}} class
 
+md-checkbox(ng-repeat="date in event" ng-model="date.addCheckbox" md-no-ink row="row" aria-label="Class Picker Checkbox" class="md-primary") {{date.schedule_date|date:'fullDate':'+12:00'}} {{date.start_datetime|date:'shortTime':'+12:00'}} {{date.end_datetime|date:'shortTime':'+12:00'}}
 
-
-.class-dates
-  md-checkbox(ng-repeat="date in event track by date.event_schedule_id" md-no-ink row="row" aria-label="Class Picker Checkbox" class="md-primary"       ng-checked=False)
-      p.class-dates(rowspan="date") {{date.schedule_date|date:'fullDate':'+12:00'}} {{date.start_datetime|date:'shortTime':'+12:00'}} {{date.end_datetime|date:'shortTime':'+12:00'}}
-
+//this below works
+//md-checkbox(ng-repeat="date in event" ng-model="date.addCheckbox") clickme
 
 .sign-up-button
   md-button(class="md-raised" ng-click="signUp(event)") Sign Up

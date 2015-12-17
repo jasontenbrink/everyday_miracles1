@@ -3,6 +3,7 @@ app.controller('ChooseClassDatesController',['$scope', '$http', "RegisterForClas
 
   //$scope.user = {};
   //$scope.user.name = "Jane Doe";
+  $scope.event = [];
 
   $scope.registerForClassFactory = RegisterForClassFactory;
 
@@ -27,11 +28,17 @@ app.controller('ChooseClassDatesController',['$scope', '$http', "RegisterForClas
   $scope.loadEventData($scope.eventFromFactory);
 
 
-  $scope.signUp = function() {
+  $scope.signUp = function(event) {
+    console.log("Were here ok ", event);
+    for (var i = 0; i < event.length; i++) {
+      if (event[i].addCheckbox){
+        var studentEvents = [];
+        push(studentEvents).$scope.registerForClassFactory.setStudentEventDates();
+      }
+    }
 
-
-    $location.path('/confirmclasssignup');
-    console.log("these are the dates signed up for: ", $scope.event);
+    //$location.path('/confirmclasssignup');
+    //console.log("these are the dates signed up for: ", $scope.event);
     //$scope.insertUsersEventSchedule(userEvent);
   };
 
