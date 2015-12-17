@@ -233,8 +233,20 @@ app.controller('ChooseClassDatesController',['$scope', '$http', "RegisterForClas
   $scope.signUp = function(event) {
     console.log("Were here ok ", event);
     for (var i = 0; i < event.length; i++) {
-      var obj = event[i];
-      console.log("This is checkbox ", obj.addCheckbox);
+      if (event[i].addCheckbox){
+        var studentEvents = [];
+
+        $scope.addStudentEvents = function() {
+          $scope.push.studentEvents(event.addcheckbox);
+        };
+        $scope.addStudentEvents();
+        $scope.registerForClassFactory.setStudentEventDates(studentEvents);
+
+        console.log("this is event: ",event);
+        console.log("this is studentEvents", studentEvents);
+        console.log("this is events[i].addCheckbox", events[i].addCheckbox);
+        console.log("factory test: ", $scope.registerForClassFactory.setStudentEventDates(studentEvents));
+      }
     }
 
     //$location.path('/confirmclasssignup');

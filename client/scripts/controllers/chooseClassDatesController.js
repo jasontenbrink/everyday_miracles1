@@ -33,7 +33,17 @@ app.controller('ChooseClassDatesController',['$scope', '$http', "RegisterForClas
     for (var i = 0; i < event.length; i++) {
       if (event[i].addCheckbox){
         var studentEvents = [];
-        push(studentEvents).$scope.registerForClassFactory.setStudentEventDates();
+
+        $scope.addStudentEvents = function() {
+          $scope.push.studentEvents(event.addcheckbox);
+        };
+        $scope.addStudentEvents();
+        $scope.registerForClassFactory.setStudentEventDates(studentEvents);
+
+        console.log("this is event: ",event);
+        console.log("this is studentEvents", studentEvents);
+        console.log("this is events[i].addCheckbox", events[i].addCheckbox);
+        console.log("factory test: ", $scope.registerForClassFactory.setStudentEventDates(studentEvents));
       }
     }
 

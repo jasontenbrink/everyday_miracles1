@@ -11,9 +11,6 @@ div
 
 md-checkbox(ng-repeat="date in event" ng-model="date.addCheckbox" md-no-ink row="row" aria-label="Class Picker Checkbox" class="md-primary") {{date.schedule_date|date:'fullDate':'+12:00'}} {{date.start_datetime|date:'shortTime':'+12:00'}} {{date.end_datetime|date:'shortTime':'+12:00'}}
 
-//this below works
-//md-checkbox(ng-repeat="date in event" ng-model="date.addCheckbox") clickme
-
 .sign-up-button
   md-button(class="md-raised" ng-click="signUp(event)") Sign Up
 
