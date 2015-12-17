@@ -188,13 +188,13 @@ app.controller('AddEventController',['$scope', '$http', '$timeout', function ($s
 
 }]);
 
-app.controller('AddWalkinController',['$scope', '$http', function ($scope, $http) {
-    console.log('hi, from add walkin Controller');
-}]);
+//app.controller('AddWalkinController',['$scope', '$http', function ($scope, $http) {
+//    console.log('hi, from add walkin Controller');
+//}]);
 
-app.controller('AttendanceController',['$scope', '$http', function ($scope, $http) {
-    console.log('hi, from attendance Controller');
-}]);
+//app.controller('AttendanceController',['$scope', '$http', function ($scope, $http) {
+//    console.log('hi, from attendance Controller');
+//}]);
 
 app.controller('CalendarController',['$scope', function ($scope) {
   console.log('hi, from calendarController');
@@ -343,9 +343,9 @@ app.controller('EventDetailsController',['$scope', '$http', "RegisterForClassFac
 
 }]);
 
-app.controller('FindWalkinController',['$scope', '$http', function ($scope, $http) {
-    console.log('hi, from Find Walkin Controller');
-}]);
+//app.controller('FindWalkinController',['$scope', '$http', function ($scope, $http) {
+//    console.log('hi, from Find Walkin Controller');
+//}]);
 
 app.controller('JadeController',['$scope', '$http', function ($scope, $http) {
   console.log('hi, from jade Controller');
@@ -389,6 +389,7 @@ app.controller("ProfileController", ["$scope", "$http", function($scope, $http){
             $scope.user.userName = $scope.tempUser.user_name;
             $scope.user.password = $scope.tempUser.password;
             $scope.user.roleName = $scope.tempUser.role_name;
+            $scope.user.roleId = $scope.tempUser.role_id;
             $scope.user.dateOfBirth = $scope.tempUser.date_of_birth;
             $scope.user.phoneNumber = $scope.tempUser.phone_number;
             $scope.user.emailAdress = $scope.tempUser.email_address;
