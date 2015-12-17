@@ -376,7 +376,8 @@ app.controller("ProfileController", ["$scope", "$http", function($scope, $http){
             $scope.user.userId = $scope.tempUser.user_id;
             $scope.user.userName = $scope.tempUser.user_name;
             $scope.user.password = $scope.tempUser.password;
-            $scope.user.role = $scope.tempUser.role_name;
+            $scope.user.roleName = $scope.tempUser.role_name;
+            $scope.user.roleId = $scope.tempUser.role_id;
             $scope.user.dateOfBirth = $scope.tempUser.date_of_birth;
             $scope.user.phoneNumber = $scope.tempUser.phone_number;
             $scope.user.emailAdress = $scope.tempUser.email_address;
