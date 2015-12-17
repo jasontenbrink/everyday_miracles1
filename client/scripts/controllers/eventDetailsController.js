@@ -1,7 +1,7 @@
 app.controller('EventDetailsController',['$scope', '$http', "RegisterForClassFactory", "$location",
   function ($scope, $http, RegisterForClassFactory, $location) {
 
-  console.log('hi, from event details controller Controller');
+  console.log('hi, from event details controller');
   $scope.user = {};
 
   $scope.user.loginstatus = true;
