@@ -262,6 +262,18 @@ app.controller('ConfirmClassSignupController',['$scope', '$http', function ($sco
   };
 }]);
 
+app.controller('DirectoryController',['$scope', '$http', function ($scope, $http) {
+  console.log('hi, from Directory Controller');
+  $scope.x = 'angular';
+  $scope.y = 'bye';
+  // $http.get('/jade')
+  //   .then(function (response) {
+  //     console.log(response.data);
+  //     $scope.y = response.data;
+  //   });
+
+}]);
+
 app.controller('EditEventController',['$scope', '$http', function ($scope, $http) {
   console.log('hi, from edit event Controller');
 }]);

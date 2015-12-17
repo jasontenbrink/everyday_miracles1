@@ -71,6 +71,10 @@ app.config(['$routeProvider', function($routeProvider){
                   .when('/studentclasslist', {
                       templateUrl: '/templates/studentclasslist.jade',
                       controller: 'StudentClassListController'
+                  })
+                  .when('/directory', {
+                      templateUrl: '/templates/directory.jade',
+                      controller: "DirectoryController"
                   });
 
 
