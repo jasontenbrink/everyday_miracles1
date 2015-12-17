@@ -22,8 +22,11 @@ passport.serializeUser(function(user, done){
 // preprocessing/middleware
 passport.deserializeUser(function(id, done){
   console.log('deserialize id is: ', id);
+
+  //a DB call isn't necessary here.  I'm leaving it in in case we want to stick some stuff
+  //from the DB onto the req.user.
   pg.connect(connectionString, function (err, client) {
-    client.query("select email from users where user_name = $1", [id],
+    client.query("select user_name from users where user_name = $1", [id],
       function (err, response) {
       //  client.end();
         console.log('deserializer, response', response.rows[0]);
@@ -60,7 +63,7 @@ passport.use('local', new localStrategy({
     pg.connect(connectionString, function (err,client) {
 
       //get hashed password to compare
-      client.query("select password, pin from users where user_name = $1", [req.body.username],
+      client.query("select password from users where user_name = $1", [req.body.username],
       function (err, response) {
         var dbPassword = response.rows[0].password;
         client.end();
