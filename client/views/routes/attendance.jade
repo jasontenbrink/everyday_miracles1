@@ -1,2 +1,7 @@
-div.
-    this is attendance
+md-content(layout-padding)
+    h2 {{event.title}} {{event.schedule_date}} {{event.start_datetime}} {{event.end_datetime}}
+
+    form(name='attendanceForm')
+        md-checkbox(ng-repeat = "users in usersEventSchedule" ng-model="users.addCheckbox") {{users.first_name}} {{users.last_name}} {{users.phone_number}} {{users.payment_type}} {{users.status}}
+
+        md-button(ng-click="submitAttendance()" class="md-primary md-raised") Submit Attendance
