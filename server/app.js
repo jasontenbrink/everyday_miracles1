@@ -4,9 +4,7 @@ var express = require("express");
 var app = express();
 var path = require('path');
 var bodyParser = require('body-parser');
-var passport = require('./strategies/localStrategy.js');
-var session = require('express-session');
-var twilio = require('twilio');
+var session = require('express-session');var twilio = require('twilio');
 
 var index = require('./routes/index.js');
 var jadeTest = require('./routes/jadeTest.js');
@@ -14,7 +12,9 @@ var users = require('./routes/users');
 var event = require('./routes/event');
 var eventSchedule = require('./routes/eventSchedule');
 var usersEventSchedule = require('./routes/usersEventSchedule');
+var passport = require('./strategies/localStrategy.js');
 var login = require('./routes/login.js');
+var userRegistration = require('./routes/userRegistration');
 
 app.set('views', path.join(__dirname,'./public/assets/views/'));
 app.set('view options', {layout: false});
@@ -45,6 +45,7 @@ app.use('/templates/', jadeTest);
 
 //login stuff
 app.use('/login', login);
+app.use('/userregistration', userRegistration);
 
 //data routes
 app.use('/users', users);
