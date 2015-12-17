@@ -28,6 +28,8 @@ app.controller('ChooseClassDatesController',['$scope', '$http', "RegisterForClas
 
 
   $scope.signUp = function() {
+
+
     $location.path('/confirmclasssignup');
     console.log("these are the dates signed up for: ", $scope.event);
     //$scope.insertUsersEventSchedule(userEvent);
