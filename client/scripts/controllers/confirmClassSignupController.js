@@ -1,4 +1,4 @@
-app.controller('ConfirmClassSignupController',['$scope', '$http', '$location', function ($scope, $http, $location) {
+app.controller('ConfirmClassSignupController',['$scope', '$http', "RegisterForClassFactory", '$location', function ($scope, $http, RegisterForClassFactory, $location) {
   console.log('hi, from confirm class signup Controller');
   $scope.user = {};
   $scope.event = {};

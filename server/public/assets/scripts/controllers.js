@@ -20,17 +20,19 @@ app.controller('ChooseClassDatesController',['$scope', '$http', "RegisterForClas
   //$scope.user = {};
   //$scope.user.name = "Jane Doe";
 
-  console.log("this is the class registered for: ", event.event_id, event.title);
-
   $scope.registerForClassFactory = RegisterForClassFactory;
 
   $scope.eventFromFactory = $scope.registerForClassFactory.getEvent();
+
+  console.log("scope.eventFromFactory: ",$scope.registerForClassFactory.getEvent());
+  console.log("this is the class registered for: ", $scope.eventFromFactory.eventId, $scope.eventFromFactory.title);
 
   $scope.loadEventData =  function(event) {
     var eventId = {
       eventId: event.eventId
     };
     console.log("Input to get /eventSchedule/byEventId ", eventId);
+
     $http.get('/eventSchedule/byEventId', {params: eventId}).then(function(response){
       console.log("Output from get /eventSchedule/byEventId ", response.data);
       $scope.event = response.data;
@@ -39,7 +41,6 @@ app.controller('ChooseClassDatesController',['$scope', '$http', "RegisterForClas
   };
 
   $scope.loadEventData($scope.eventFromFactory);
-
 
 
   $scope.signUp = function() {
@@ -55,7 +56,7 @@ app.controller('ChooseClassDatesController',['$scope', '$http', "RegisterForClas
 
 }]);
 
-app.controller('ConfirmClassSignupController',['$scope', '$http', '$location', function ($scope, $http, $location) {
+app.controller('ConfirmClassSignupController',['$scope', '$http', "RegisterForClassFactory", '$location', function ($scope, $http, RegisterForClassFactory, $location) {
   console.log('hi, from confirm class signup Controller');
   $scope.user = {};
   $scope.event = {};
