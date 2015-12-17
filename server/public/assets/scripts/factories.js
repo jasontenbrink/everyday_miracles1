@@ -55,16 +55,6 @@ app.factory("RegisterForClassFactory", ["$http", function($http){
     return studevent;
   };
 
-  //var studentEventDates = {
-  //  setStudentEventDates: function(someevent){
-  //    studentEvents = someevent;
-  //    return studentEvents;
-  //  },
-  //  getStudentEventDates: function(){
-  //    return studentEvents;
-  //  }
-  //};
-
   var eventApi = {
     setEvent: function(someevent) {
       return inputEvent(someevent);

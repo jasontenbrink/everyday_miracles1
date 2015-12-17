@@ -30,31 +30,34 @@ app.controller('ChooseClassDatesController',['$scope', '$http', "RegisterForClas
 
   $scope.signUp = function(event) {
     console.log("Were here ok ", event);
-    for (var i = 0; i < event.length; i++) {
-      if (event[i].addCheckbox){
-        var studentEvents = [];
 
-        $scope.addStudentEvents = function() {
-          $scope.push.studentEvents(event.addcheckbox);
-        };
-        $scope.addStudentEvents();
+    $scope.addStudentEvents = function (event, view) {
+      for (var i = 0; i < event.length; i++) {
+        if (event[i].addCheckbox === true) {
+          console.log("this is events with addCheckbox", event.event_schedule_id);
+
+          $scope.studentEvents = [];
+          $scope.push.studentEvents(event.event_schedule_id);
+        }
+
+        console.log("this is studentEvents", studentEvents);
         $scope.registerForClassFactory.setStudentEventDates(studentEvents);
 
-        console.log("this is event: ",event);
-        console.log("this is studentEvents", studentEvents);
-        console.log("this is events[i].addCheckbox", events[i].addCheckbox);
-        console.log("factory test: ", $scope.registerForClassFactory.setStudentEventDates(studentEvents));
+        console.log("this is event: ", event);
       }
-    }
+    };
+    $scope.addStudentEvents(event);
+    console.log("factory test: ", $scope.registerForClassFactory.setStudentEventDates(studentEvents));
 
-    //$location.path('/confirmclasssignup');
-    //console.log("these are the dates signed up for: ", $scope.event);
+    $location.path('/confirmclasssignup');
+    console.log("these are the dates signed up for: ", $scope.event);
     //$scope.insertUsersEventSchedule(userEvent);
+
   };
 
-  $scope.goBack = function() {
+  $scope.goBack = function () {
     $location.path('/eventdetails');
     console.log("I hit the go back button: ");
-  };
+  }
 
 }]);
