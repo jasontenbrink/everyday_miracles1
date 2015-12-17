@@ -358,11 +358,13 @@ app.controller('LoginController',['$scope', '$http', '$location',
       .then(function (response) {
         //console.log('is this html?', response.data);
         console.log('response is', response);
+        console.log('response status', response.status);
         if (response.status===200){
           $location.path('/uicalendar');
         }
         else{
-          $location.path('/failure');
+          // $location.path('/failure');
+          alert('sign in failed');
         }
 
       });
