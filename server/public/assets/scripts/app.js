@@ -55,19 +55,7 @@ app.config(['$routeProvider', function($routeProvider){
                  .when('/userregistration', {
                      templateUrl: '/templates/userregistration.jade',
                      controller: "UserRegistrationController"
-                 })
-                 .when('/attendance', {
-                     templateUrl: '/templates/attendance.jade',
-                     controller: "AttendanceController"
-                 })
-                .when('/findwalkin', {
-                     templateUrl: '/templates/findwalkin.jade',
-                     controller: "FindWalkinController"
-                 })
-                .when('/addwalkin', {
-                     templateUrl: '/templates/addwalkin.jade',
-                     controller: "AddWalkinController"
-                });
+                 });
 
 
 }]);
