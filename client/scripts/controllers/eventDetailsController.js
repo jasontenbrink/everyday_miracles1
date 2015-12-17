@@ -37,7 +37,7 @@ app.controller('EventDetailsController',['$scope', '$http', "RegisterForClassFac
   };
   $scope.seeAttendance = function(someevent){
     console.log("attendance button clicked");
-    //$location.path('/attendance);
+    $location.path('/attendance');
   };
   $scope.cancelClass = function(someevent) {
     console.log("cancel class button clicked");

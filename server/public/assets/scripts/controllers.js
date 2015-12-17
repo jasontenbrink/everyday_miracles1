@@ -192,8 +192,26 @@ app.controller('AddWalkinController',['$scope', '$http', function ($scope, $http
     console.log('hi, from add walkin Controller');
 }]);
 
-app.controller('AttendanceController',['$scope', '$http', function ($scope, $http) {
-    console.log('hi, from attendance Controller');
+app.controller('AttendanceController',['$scope', '$http', 'RegisterForClassFactory', function ($scope, $http, RegisterForClassFactory) {
+
+    $scope.registerForClassFactory = RegisterForClassFactory;
+
+    //get event info from the registerForClassFactory
+    //should be event info corresponding to event clicked on in calendar view
+    $scope.eventFromFactory = $scope.registerForClassFactory.getEvent();
+
+    console.log("scope.eventFromFactory: ",$scope.eventFromFactory);
+
+    $scope.eventId = $scope.eventFromFactory.eventId;
+    $scope.eventScheduleId = $scope.eventFromFactory.eventScheduleId;
+
+    // get data from the database
+    var eventSchedule = {eventScheduleId: $scope.eventScheduleId};
+    console.log("Input to get /usersEventSchedule/byEventScheduleId ", eventSchedule);
+    $http.get('/usersEventSchedule/byEventScheduleId', {params: eventSchedule}).then(function(response){
+        console.log("Output from get /usersEventSchedule/byEventScheduleId ", response.data);
+    });
+
 }]);
 
 app.controller('CalendarController',['$scope', function ($scope) {
@@ -305,7 +323,7 @@ app.controller('EventDetailsController',['$scope', '$http', "RegisterForClassFac
   };
   $scope.seeAttendance = function(someevent){
     console.log("attendance button clicked");
-    //$location.path('/attendance);
+    $location.path('/attendance');
   };
   $scope.cancelClass = function(someevent) {
     console.log("cancel class button clicked");
