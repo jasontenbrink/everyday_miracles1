@@ -20,6 +20,9 @@ app.set('views', path.join(__dirname,'./public/assets/views/'));
 app.set('view options', {layout: false});
 app.set('view engine', 'jade');
 
+app.use(bodyParser({
+    limit: '1mb'
+}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
