@@ -29,32 +29,31 @@ app.controller('AttendanceController',['$scope', '$http', 'RegisterForClassFacto
     var eventSchedule = {eventScheduleId: 1};
     console.log("Input to get /usersEventSchedule/byEventScheduleId ", eventSchedule);
     $http.get('/usersEventSchedule/byEventScheduleId', {params: eventSchedule}).then(function(response){
-        console.log("Output from get /usersEventSchedule/byEventScheduleId ", response.data);
+        //console.log("Output from get /usersEventSchedule/byEventScheduleId ", response.data);
         $scope.usersEventSchedule = response.data;
+        console.log("userseventschedule ", $scope.usersEventSchedule);
     });
 
     var status = "";
     $scope.submitAttendance = function() {
         for (var i = 0; i < $scope.usersEventSchedule.length; i++) {
-            console.log($scope.usersEventSchedule[i].addCheckbox);
-            console.log($scope.usersEventSchedule[i]);
-            if ($scope.usersEventSchedule[i].addCheckbox) {
-                status = "Attended";
-            } else {
-                status = "Not attended";
+
+            console.log("dirty ", $scope.usersEventSchedule[i].status.$dirty);
+            if ($scope.usersEventSchedule[i].status.$dirty) {
+
+
+                //var userEvent = {
+                //    userId: $scope.usersEventSchedule[i].user_id,
+                //    eventScheduleId: $scope.usersEventSchedule[i].event_schedule_id,
+                //    status: status,
+                //    comments: ''
+                //};
+                //
+                //console.log("Input to update /usersEventSchedule ", userEvent);
+                //$http.put('/usersEventSchedule', userEvent).then(function (response) {
+                //    console.log("Output from update /usersEventSchedule ", response.data);
+                //});
             }
-            var userEvent = {
-                userId: $scope.usersEventSchedule[i].user_id,
-                eventScheduleId: $scope.usersEventSchedule[i].event_schedule_id,
-                status: status,
-                comments: ''
-            };
-
-            console.log("Input to update /usersEventSchedule ", userEvent);
-            $http.put('/usersEventSchedule', userEvent).then(function (response) {
-                console.log("Output from update /usersEventSchedule ", response.data);
-            });
-
         }
     }
 

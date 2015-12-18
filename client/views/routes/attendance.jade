@@ -1,8 +1,30 @@
 md-content(layout-padding)
     h2 {{event.title}} {{event.schedule_date}} {{event.start_datetime}} {{event.end_datetime}}
 
-    form(name='attendanceForm')
-        md-checkbox(ng-repeat = "users in usersEventSchedule" ng-model="users.addCheckbox") {{users.first_name}} {{users.last_name}} {{users.phone_number}} {{users.payment_type}} {{users.status}}
+    ng-form(name='attendanceForm')
+
+        table(style="")
+            tr
+                th Status
+                th First Name
+                th Last Name
+                th Phone Number
+                th Payment Type
+            tr(ng-repeat="users in usersEventSchedule")
+                td
+                    select(class="" name="status" ng-model="users.status")
+                        option(value="Registered") Registered
+                        option(value="Attended") Attended
+                        option(value="Not attended") Not attended
+
+                td
+                    input(type="text" name="firstname" ng-model="users.first_name" readonly)
+                td
+                    input(type="text" name="lastname" ng-model="users.last_name" readonly)
+                td
+                    input(type="text" name="phonenumber" ng-model="users.phone_number" readonly)
+                td
+                    input(type="text" name="paymenttype" ng-model="users.payment_type" readonly)
 
         md-button(ng-click="submitAttendance()" class="md-primary md-raised") Submit Attendance
 
