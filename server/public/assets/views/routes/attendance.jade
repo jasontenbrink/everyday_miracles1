@@ -1,2 +1,34 @@
-div.
-    this is attendance
+md-content(layout-padding)
+    h2 {{event.title}} {{event.schedule_date}} {{event.start_datetime}} {{event.end_datetime}}
+
+    ng-form(name='attendanceForm')
+
+        table(style="")
+            tr
+                th Status
+                th First Name
+                th Last Name
+                th Phone Number
+                th Payment Type
+                th Set Attended
+            tr(ng-repeat="users in usersEventSchedule")
+                td
+                    select(class="" name="status" ng-model="users.status" ng-change="users.changed=true")
+                        option(value="Registered") Registered
+                        option(value="Attended") Attended
+                        option(value="Not attended") Not attended
+
+                td
+                    input(type="text" name="firstname" ng-model="users.first_name" readonly)
+                td
+                    input(type="text" name="lastname" ng-model="users.last_name" readonly)
+                td
+                    input(type="text" name="phonenumber" ng-model="users.phone_number" readonly)
+                td
+                    input(type="text" name="paymenttype" ng-model="users.payment_type" readonly)
+                td
+                    button(ng-click="users.status='Attended'; users.changed=true") Set Attended
+
+        md-button(ng-click="submitAttendance()" class="md-primary md-raised") Submit Attendance
+
+        md-button(ng-click="findWalkin()" class="md-primary md-raised") Add Walk-in
