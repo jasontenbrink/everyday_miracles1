@@ -209,9 +209,9 @@ router.post('/', function(req,res){
             function(err, result) {
                 if(err) {
                     console.log("Error inserting data: ", err);
-                    res.send(false);
+                    res.send(result);
                 }
-                res.send(true);
+                res.send(result);
             });
     });
 

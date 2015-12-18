@@ -54,6 +54,56 @@ router.get('/byUserId', function(req,res){
     });
 });
 
+// Select the classes the user has for an event
+router.get('/byEventIdUserId', function(req,res){
+    var queryOptions = {
+        user_id: req.query.userId,
+        event_id: req.query.eventId
+    };
+
+    var results = [];
+
+    //SQL Query > SELECT data from table
+    pg.connect(connectionString, function (err, client, done) {
+        var query = client.query("SELECT \
+        event.event_id, \
+            event.title, \
+            event.event_category_id, \
+            users_event_schedule.user_id, \
+            users_event_schedule.event_schedule_id, \
+            users_event_schedule.status, \
+            users_event_schedule.comments, \
+            event_schedule.schedule_date, \
+            event_schedule.start_datetime, \
+            event_schedule.end_datetime, \
+            event_category.name \
+        FROM \
+        event \
+        JOIN event_schedule on event.event_id = event_schedule.event_id \
+        JOIN event_category on event.event_category_id = event_category.event_category_id \
+        JOIN users_event_schedule on event_schedule.event_schedule_id = users_event_schedule.event_schedule_id \
+        WHERE \
+        users_event_schedule.user_id = $1 \
+        and event.event_id = $2;", [queryOptions.user_id, queryOptions.event_id]);
+        //console.log(query);
+        // Stream results back one row at a time, push into results array
+        query.on('row', function (row) {
+            results.push(row);
+        });
+
+        // After all data is returned, close connection and return results
+        query.on('end', function () {
+            client.end();
+            return res.json(results);
+        });
+
+        // Handle Errors
+        if (err) {
+            console.log(err);
+        }
+    });
+});
+
 // Select students for a class
 router.get('/byEventScheduleId', function(req,res){
     var queryOptions = {
