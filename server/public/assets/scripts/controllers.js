@@ -330,61 +330,79 @@ app.controller('ChooseClassDatesController',['$scope', '$http', "RegisterForClas
   console.log('hi, from choose class dates Controller');
 
   $scope.user = {};
-
+  $scope.today = new Date();
+  console.log("today!!!  ",$scope.today);
   //test user info
   $scope.user.userId = 1;
 
   $scope.event = [];
+  $scope.registeredEvents = [];
   $scope.studentEvents = [];
   $scope.allUserEvents = [];
 
+  //get factory
   $scope.registerForClassFactory = RegisterForClassFactory;
 
+  //get eventId from factory
   $scope.eventFromFactory = $scope.registerForClassFactory.getEvent();
 
-  //console.log("scope.eventFromFactory: ",$scope.registerForClassFactory.getEvent());
-  //console.log("this is the class registered for: ", $scope.eventFromFactory.eventId, $scope.eventFromFactory.title);
-  $scope.getRegisteredClasses = function(event) {
-    var eventSchedule = {eventScheduleId: event.eventScheduleId};
-    console.log("in registered classes(). the event :",eventSchedule);
-    $http.get('/usersEventSchedule/byEventScheduleId', {params: eventSchedule}).then(function(response){
+  //get classes user has already registered for
+  $scope.getRegisteredClasses = function(event, someuser) {
+
+    var eventSchedule = {
+      userId: someuser.userId,
+      eventId: event.eventId
+    };
+
+    //console.log("in registered classes(). the event :",eventSchedule);
+    $http.get('/usersEventSchedule/byEventIdUserId', {params: eventSchedule}).then(function(response){
       console.log("Output from get /usersEventSchedule/byEventScheduleId ", response.data);
-      //$scope.allUserEvents = response.data;
-      //for (var i = 0; i < $scope.allUserEvents.length; i++) {
-      //  if ($scope.allClasses[i].status == "Registered") {
-      //
-      //  }
-      //}
+      $scope.registeredEvents = response.data;
+      $scope.checkRegisteredClasses();
     });
   };
+
+  //get all class instances for this particular class
   $scope.loadEventData =  function(event) {
     var eventId = {
       eventId: event.eventId
     };
     console.log("Input to get /eventSchedule/byEventId ", eventId);
 
-    $http.get('/eventSchedule/byEventId', {params: eventId}).then(function(response){
-      console.log("Output from get /eventSchedule/byEventId ", response.data);
-      $scope.event = response.data;
-    });
+    $http.get('/eventSchedule/byEventId', {params: eventId})
+        .then(function(response){
+            console.log("Output from get /eventSchedule/byEventId ", response.data);
+            $scope.event = response.data;
+            $scope.getRegisteredClasses(event, $scope.user)
+        });
   };
-  $scope.getRegisteredClasses($scope.eventFromFactory);
+
+  //merge the registered classes with the event data
+  $scope.checkRegisteredClasses = function() {
+    console.log("checkRegisteredClasses fired");
+    for (var i = 0; i < $scope.registeredEvents.length; i++) {
+      for (var j = 0; j < $scope.event.length; j++) {
+        if ($scope.registeredEvents[i].event_schedule_id == $scope.event[j].event_schedule_id) {
+            $scope.event[j].addCheckbox = true;
+            //console.log("true");
+        }
+      }
+    }
+    console.log("$scope.event after for loops :",$scope.event);
+  };
+
   $scope.loadEventData($scope.eventFromFactory);
 
 
   $scope.signUp = function(event) {
-    //console.log("Were here ok ", event);
 
     for (var i = 0; i < event.length; i++) {
       if (event[i].addCheckbox == true) {
         $scope.studentEvents.push($scope.event[i]);
 
-        //console.log("this is events with addCheckbox", $scope.event[i]);
       }
     }
-    //console.log("this is studentEvents ", $scope.studentEvents);
     $scope.registerForClassFactory.setStudentEvents($scope.studentEvents);
-    //console.log("factory test: ", $scope.registerForClassFactory.getStudentEvents());
 
     $location.path('/confirmclasssignup');
   };
