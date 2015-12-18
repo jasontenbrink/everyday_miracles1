@@ -106,12 +106,13 @@ router.get('/byUserName', function(req,res){
 });
 // Select
 router.get('/byNameOrPhone', function(req,res){
+  console.log("on users/byNameOrPhone, req.query is ", req.query);
     var queryOptions = {
-        first_name: req.query.firstName,
-        last_name: req.query.lastName,
-        phone_number: req.query.phoneNumber
+        first_name: req.query.firstName + '%',
+        last_name: req.query.lastName + '%',
+        phone_number: req.query.phoneNumber + '%'
     };
-
+    console.log('query options, ', queryOptions);
     var results = [];
 
     /*jshint multistr: true */
@@ -120,7 +121,6 @@ router.get('/byNameOrPhone', function(req,res){
         var query = client.query("SELECT \
                         user_id, \
                         user_name, \
-                        password, \
                         first_name, \
                         last_name, \
                         users.role_id, \
