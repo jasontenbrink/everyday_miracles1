@@ -25,9 +25,9 @@ app.controller('StudentClassListController', ["$scope", "$http", function($scope
             {field: "status", name: "Status"}
         ]
     };
+
     //test user info
     $scope.user.userId = 1;
-
 
     //get user info
     $scope.getUserInfo = function(someuser) {
@@ -55,16 +55,4 @@ app.controller('StudentClassListController', ["$scope", "$http", function($scope
     $scope.getUserInfo($scope.user);
     $scope.getClasses($scope.user);
 
-    //test grid info
-    //$scope.gridOptions1.data = [
-    //    {"title": "Mom to Mom", "startDateTime": "2015-12-29T10:00:00.000Z", status: "registered"},
-    //    {"title": "Mom to Mom", "startDateTime": "2015-12-30T10:00:00.000Z", status: "registered"}
-    //];
-    //
-    //$scope.gridOptions2.data = [
-    //    {"title": "Mom to Mom", "startDateTime": "2015-12-01T19:00:00.000Z", status: "attended"},
-    //    {"title": "Mom to Mom", "startDateTime": "2015-12-02T15:00:00.000Z", status: "attended"},
-    //    {"title": "Mom to Mom", "startDateTime": "2015-12-03T12:00:00.000Z", status: "attended"}
-    //
-    //];
 }]);

@@ -329,18 +329,34 @@ app.controller('CalendarController',['$scope', function ($scope) {
 app.controller('ChooseClassDatesController',['$scope', '$http', "RegisterForClassFactory", '$location', function ($scope, $http, RegisterForClassFactory, $location) {
   console.log('hi, from choose class dates Controller');
 
-  //$scope.user = {};
-  //$scope.user.name = "Jane Doe";
+  $scope.user = {};
+
+  //test user info
+  $scope.user.userId = 1;
+
   $scope.event = [];
   $scope.studentEvents = [];
+  $scope.allUserEvents = [];
 
   $scope.registerForClassFactory = RegisterForClassFactory;
 
   $scope.eventFromFactory = $scope.registerForClassFactory.getEvent();
 
-  console.log("scope.eventFromFactory: ",$scope.registerForClassFactory.getEvent());
-  console.log("this is the class registered for: ", $scope.eventFromFactory.eventId, $scope.eventFromFactory.title);
-
+  //console.log("scope.eventFromFactory: ",$scope.registerForClassFactory.getEvent());
+  //console.log("this is the class registered for: ", $scope.eventFromFactory.eventId, $scope.eventFromFactory.title);
+  $scope.getRegisteredClasses = function(event) {
+    var eventSchedule = {eventScheduleId: event.eventScheduleId};
+    console.log("in registered classes(). the event :",eventSchedule);
+    $http.get('/usersEventSchedule/byEventScheduleId', {params: eventSchedule}).then(function(response){
+      console.log("Output from get /usersEventSchedule/byEventScheduleId ", response.data);
+      //$scope.allUserEvents = response.data;
+      //for (var i = 0; i < $scope.allUserEvents.length; i++) {
+      //  if ($scope.allClasses[i].status == "Registered") {
+      //
+      //  }
+      //}
+    });
+  };
   $scope.loadEventData =  function(event) {
     var eventId = {
       eventId: event.eventId
@@ -352,7 +368,7 @@ app.controller('ChooseClassDatesController',['$scope', '$http', "RegisterForClas
       $scope.event = response.data;
     });
   };
-
+  $scope.getRegisteredClasses($scope.eventFromFactory);
   $scope.loadEventData($scope.eventFromFactory);
 
 
@@ -375,7 +391,7 @@ app.controller('ChooseClassDatesController',['$scope', '$http', "RegisterForClas
 
   $scope.goBack = function () {
     $location.path('/eventdetails');
-    console.log("I hit the go back button: ");
+    //console.log("I hit the go back button: ");
   };
 }]);
 
@@ -756,9 +772,9 @@ app.controller('StudentClassListController', ["$scope", "$http", function($scope
             {field: "status", name: "Status"}
         ]
     };
+
     //test user info
     $scope.user.userId = 1;
-
 
     //get user info
     $scope.getUserInfo = function(someuser) {
@@ -786,18 +802,6 @@ app.controller('StudentClassListController', ["$scope", "$http", function($scope
     $scope.getUserInfo($scope.user);
     $scope.getClasses($scope.user);
 
-    //test grid info
-    //$scope.gridOptions1.data = [
-    //    {"title": "Mom to Mom", "startDateTime": "2015-12-29T10:00:00.000Z", status: "registered"},
-    //    {"title": "Mom to Mom", "startDateTime": "2015-12-30T10:00:00.000Z", status: "registered"}
-    //];
-    //
-    //$scope.gridOptions2.data = [
-    //    {"title": "Mom to Mom", "startDateTime": "2015-12-01T19:00:00.000Z", status: "attended"},
-    //    {"title": "Mom to Mom", "startDateTime": "2015-12-02T15:00:00.000Z", status: "attended"},
-    //    {"title": "Mom to Mom", "startDateTime": "2015-12-03T12:00:00.000Z", status: "attended"}
-    //
-    //];
 }]);
 app.controller('TestSqlController',['$scope', '$http', function ($scope, $http) {
 
