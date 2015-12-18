@@ -1034,6 +1034,13 @@ app.controller('TestSqlController',['$scope', '$http', function ($scope, $http) 
             console.log("Output from get /usersEventSchedule/byUserId ", response.data);
         });
 
+        var user2 = {userId: 1, eventId: 1};
+
+        console.log("Input to get /usersEventSchedule/byEventIdUserId ", user2);
+        $http.get('/usersEventSchedule/byEventIdUserId', {params: user2}).then(function(response){
+            console.log("Output from get /usersEventSchedule/byEventIdUserId ", response.data);
+        });
+
         var eventSchedule = {eventScheduleId: 1};
 
         console.log("Input to get /usersEventSchedule/byEventScheduleId ", eventSchedule);
