@@ -1,11 +1,15 @@
-app.controller("ProfileController", ["$scope", "$http", function($scope, $http){
+app.controller("ProfileController", ["$scope", "$http", "ActiveProfileFactory",
+  function($scope, $http, ActiveProfileFactory){
+    var activeProfileFactory = ActiveProfileFactory;
     $scope.user = {};
     $scope.tempUser = {};
 
+    var testUser = activeProfileFactory.getActiveProfileData();
+
     //test user data to populate form
-    var testUser = {
-        userId: 1
-    };
+    // var testUser = {
+    //     userId: 1
+    // };
 
     //get profile info for profile page
     $scope.getUser = function(someuser){

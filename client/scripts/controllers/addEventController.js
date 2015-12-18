@@ -69,7 +69,7 @@ app.controller('AddEventController',['$scope', '$http', '$timeout', function ($s
 
       $scope.loadEventScheduleData();
     });
-  }
+  };
 
   if (!$scope.insertMode) {
     $scope.loadEventData();
@@ -100,7 +100,7 @@ app.controller('AddEventController',['$scope', '$http', '$timeout', function ($s
       };
 
     });
-  }
+  };
 
   $scope.submitEventSchedule = function() {
 
@@ -117,7 +117,7 @@ app.controller('AddEventController',['$scope', '$http', '$timeout', function ($s
     var endMinutes = new Date($scope.eventScheduleAdd.endDateTime).getMinutes();
 
     var startDateTime = new Date(year, month, day, startHours, startMinutes, 0);
-    var endDateTime = new Date(year, month, day, endHours, endMinutes, 0)
+    var endDateTime = new Date(year, month, day, endHours, endMinutes, 0);
 
     console.log("start date ", startDateTime, " end date ", endDateTime);
 
@@ -175,7 +175,7 @@ app.controller('AddEventController',['$scope', '$http', '$timeout', function ($s
   $scope.deleteEventSchedule = function(deleteObject) {
     console.log("object ", deleteObject);
 
-    var answer = confirm("Are you sure you want to delete event schedule id " + deleteObject.event_schedule_id + "?")
+    var answer = confirm("Are you sure you want to delete event schedule id " + deleteObject.event_schedule_id + "?");
     if (answer){
       $http.delete('/eventSchedule/delete'+ deleteObject.event_schedule_id).then(function(response){
         $scope.loadEventScheduleData();
