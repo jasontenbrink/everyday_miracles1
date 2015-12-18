@@ -1,2 +1,18 @@
-div.
-  this is chooseclassdates
+
+div
+  h1
+    | {{eventFromFactory.title}} Class Dates
+
+div
+  h2
+    | Please choose the date(s) that you
+    br
+    | would like to attend the {{eventFromFactory.title}} class
+
+md-checkbox(ng-repeat="date in event" ng-model="date.addCheckbox" md-no-ink row="row" aria-label="Class Picker Checkbox" class="md-primary") {{date.schedule_date|date:'fullDate':'+12:00'}} {{date.start_datetime|date:'shortTime':'+12:00'}} {{date.end_datetime|date:'shortTime':'+12:00'}}
+
+.sign-up-button
+  md-button(class="md-raised" ng-click="signUp(event)") Sign Up
+
+.go-back-button
+  md-button(class="md-raised" ng-click="goBack(event)") Go Back

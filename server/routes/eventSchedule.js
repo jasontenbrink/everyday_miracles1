@@ -29,7 +29,7 @@ router.get('/byEventId', function(req,res){
         FROM event_schedule \
         WHERE event_id = $1;", [queryOptions.event_id]);
         //console.log(query);
-        // Stream results back one row at a time, push into results array
+        // Stream results back one row at a time, push into results arrayd
         query.on('row', function (row) {
             results.push(row);
         });
@@ -50,35 +50,40 @@ router.get('/byEventId', function(req,res){
 // Insert
 router.post('/', function(req,res){
 
-    var queryOptions = {
-        event_id: req.body.eventId,
-        schedule_date: req.body.scheduleDate,
-        start_datetime: req.body.startDateTime,
-        end_datetime: req.body.endDateTime,
-        teacher_user_id : req.body.teacherUserId
-    };
+    var queryOptionsArray = req.body;
 
     pg.connect(connectionString, function (err, client) {
+        // build values string as
+        //(13, '2015-12-12', '2015-12-12', '2015-12-12', 1),
+        //    (13, '2015-12-12', '2015-12-12', '2015-12-12', 1)
+        var valuesString = "";
+        for (var i = 0; i < queryOptionsArray.length; i++) {
+            if (queryOptionsArray[i].teacherUserId == undefined){
+                queryOptionsArray[i].teacherUserId = "null";
+            }
+            valuesString += "(" + queryOptionsArray[i].eventId + ",'" + queryOptionsArray[i].scheduleDate + "'," +
+                "'" + queryOptionsArray[i].startDateTime + "'," +
+                "'" + queryOptionsArray[i].endDateTime + "'," +
+                "" + queryOptionsArray[i].teacherUserId + ")"
+            if (i != queryOptionsArray.length-1) {
+                valuesString += ",";
+            }
+        }
+        //console.log("valuestring ", valuesString);
 
         client.query("INSERT INTO event_schedule (event_id, \
-            schedule_date, \
-            start_datetime, \
-            end_datetime, \
-            teacher_user_id) \
-        VALUES \
-        ($1, $2, $3, $4, $5);",
-            [queryOptions.event_id,
-                queryOptions.schedule_date,
-                queryOptions.start_datetime,
-                queryOptions.end_datetime,
-                queryOptions.teacher_user_id],
-            function(err, result) {
-                if(err) {
+                schedule_date, \
+                start_datetime, \
+                end_datetime, \
+                teacher_user_id) \
+            VALUES " + valuesString + ";",
+            function (err, result) {
+                if (err) {
                     console.log("Error inserting data: ", err);
                     res.send(false);
                 }
-                res.send(true);
             });
+        res.send(true);
     });
 
 });

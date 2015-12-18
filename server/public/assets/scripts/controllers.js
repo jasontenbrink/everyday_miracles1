@@ -1,5 +1,199 @@
-app.controller('AddEventController',['$scope', '$http', function ($scope, $http) {
-  console.log('hi, from add event Controller');
+app.controller('AddEventController',['$scope', '$http', '$timeout', function ($scope, $http, $timeout) {
+
+  $scope.insertMode = true;
+
+  $scope.event = {};
+  $scope.eventSchedule = [];
+  $scope.gridOptions = {};
+
+  $scope.eventScheduleAdd = {};
+
+  //$scope.event.eventId = 13;
+
+  $scope.submitEvent = function() {
+    var event = {
+      eventId: $scope.event.eventId,
+      title: $scope.event.title,
+      description: $scope.event.description,
+      eventCategoryId: $scope.event.eventCategoryId,
+      repeatType: $scope.event.repeatType,
+      repeatFromDate: $scope.event.repeatFromDate,
+      repeatToDate: $scope.event.repeatToDate,
+      repeatSundayInd: $scope.event.repeatSundayInd,
+      repeatMondayInd: $scope.event.repeatMondayInd,
+      repeatTuesdayInd: $scope.event.repeatTuesdayInd,
+      repeatWednesdayInd: $scope.event.repeatWednesdayInd,
+      repeatThursdayInd: $scope.event.repeatThursdayInd,
+      repeatFridayInd: $scope.event.repeatFridayInd,
+      repeatSaturdayInd: $scope.event.repeatSaturdayInd
+    };
+
+    if ($scope.insertMode) {
+      // insert data
+      console.log("Input to post /event ", event);
+      $http.post('/event', event).then(function (response) {
+        console.log("Output from post /event ", response.data);
+        $scope.event.eventId = response.data.rows[0].event_id;
+        $scope.insertMode = false;
+      });
+    } else {
+      // update data
+      console.log("Input to update /event ", event);
+      $http.put('/event', event).then(function (response) {
+        console.log("Output from update /event ", response.data);
+      });
+    }
+  };
+
+  $scope.loadEventData = function() {
+    var passingEvent = {eventId: $scope.event.eventId};
+
+    console.log("Input to get /event/byEventId ", passingEvent);
+    $http.get('/event/byEventId', {params: passingEvent}).then(function(response){
+      console.log("Output from get /event/byEventId ", response.data);
+      // Set scope values
+      $scope.event.eventId = response.data[0].event_id;
+      $scope.event.title = response.data[0].title;
+      $scope.event.description = response.data[0].description;
+      $scope.event.eventCategoryId = response.data[0].event_category_id;
+      $scope.event.repeatType = response.data[0].repeat_type;
+      $scope.event.repeatFromDate = new Date(response.data[0].repeat_from_date);
+      $scope.event.repeatToDate = new Date(response.data[0].repeat_to_date);
+      $scope.event.repeatSundayInd = response.data[0].repeat_sunday_ind;
+      $scope.event.repeatMondayInd = response.data[0].repeat_monday_ind;
+      $scope.event.repeatTuesdayInd = response.data[0].repeat_tuesday_ind;
+      $scope.event.repeatWednesdayInd = response.data[0].repeat_wednesday_ind;
+      $scope.event.repeatThursdayInd = response.data[0].repeat_thursday_ind;
+      $scope.event.repeatFridayInd = response.data[0].repeat_friday_ind;
+      $scope.event.repeatSaturdayInd = response.data[0].repeat_saturday_ind;
+
+      $scope.loadEventScheduleData();
+    });
+  };
+
+  if (!$scope.insertMode) {
+    $scope.loadEventData();
+  }
+
+
+  $scope.loadEventScheduleData = function() {
+    var passingEvent = {eventId: $scope.event.eventId};
+    // load up the event schedule grid
+    console.log("Input to get /eventSchedule/byEventId ", passingEvent);
+    $http.get('/eventSchedule/byEventId', {params: passingEvent}).then(function(response){
+      console.log("Output from get /eventSchedule/byEventId ", response.data);
+      $scope.eventSchedule = response.data;
+
+      $scope.gridOptions = {
+        columnDefs : [
+          { name: 'event_schedule_id', displayName: 'Event Schedule ID'},
+          { name: 'event_id', displayName: 'Event ID'},
+          { name: 'schedule_date', cellFilter:"date: 'fullDate'", displayName: 'Schedule Date' },
+          { name: 'teacher_user_id', displayName: 'Teacher User Id' },
+          { name: 'start_datetime', cellFilter:"date: 'shortTime':'-1200'", displayName: 'Start Time'},
+          { name: 'end_datetime', cellFilter:"date: 'shortTime':'-1200'", displayName: 'End Time'},
+          {name: 'Action',
+            cellEditableCondition: false,
+            cellTemplate: '<button ng-click="grid.appScope.deleteEventSchedule(row.entity)" ' +
+            'class="md-raised md-primary">Delete</button>' }],
+        data: $scope.eventSchedule
+      };
+
+    });
+  };
+
+  $scope.submitEventSchedule = function() {
+
+    var addEventScheduleArray = [];
+
+    var month = new Date($scope.eventScheduleAdd.scheduleDate).getMonth();
+    var day = new Date($scope.eventScheduleAdd.scheduleDate).getDate();
+    var year = new Date($scope.eventScheduleAdd.scheduleDate).getFullYear();
+
+    var startHours = new Date($scope.eventScheduleAdd.startDateTime).getHours();
+    var startMinutes = new Date($scope.eventScheduleAdd.startDateTime).getMinutes();
+
+    var endHours = new Date($scope.eventScheduleAdd.endDateTime).getHours();
+    var endMinutes = new Date($scope.eventScheduleAdd.endDateTime).getMinutes();
+
+    var startDateTime = new Date(year, month, day, startHours, startMinutes, 0);
+    var endDateTime = new Date(year, month, day, endHours, endMinutes, 0);
+
+    console.log("start date ", startDateTime, " end date ", endDateTime);
+
+    var repeatType = $scope.event.repeatType;
+    var repeatBoolean = true;
+    var insertDate = $scope.eventScheduleAdd.scheduleDate;
+
+    do {
+
+      addEventScheduleArray.push({
+        eventId: $scope.event.eventId,
+        scheduleDate: insertDate,
+        startDateTime: startDateTime,
+        endDateTime: endDateTime,
+        teacherUserId: $scope.eventScheduleAdd.teacherUserId
+      });
+
+      if (repeatType == "None") {
+        repeatBoolean = false;
+      } else if (repeatType == "Daily") {
+        insertDate = new Date(moment(insertDate).add(1, 'days'));
+        startDateTime = new Date(moment(startDateTime).add(1, 'days'));
+        endDateTime = new Date(moment(endDateTime).add(1, 'days'));
+      } else if (repeatType == "Weekly") {
+        insertDate = new Date(moment(insertDate).add(1, 'weeks'));
+        startDateTime = new Date(moment(startDateTime).add(1, 'weeks'));
+        endDateTime = new Date(moment(endDateTime).add(1, 'weeks'));
+      } else if (repeatType == "Monthly") {
+        insertDate = new Date(moment(insertDate).add(1, 'months'));
+        startDateTime = new Date(moment(startDateTime).add(1, 'months'));
+        endDateTime = new Date(moment(endDateTime).add(1, 'months'));
+      } else {
+        repeatBoolean = false;
+      }
+
+      if (insertDate > $scope.event.repeatToDate) {
+        repeatBoolean = false;
+      }
+
+    } while (repeatBoolean);
+
+
+    //do an insert always
+    console.log("Input to post /eventSchedule ", addEventScheduleArray);
+    $http.post('/eventSchedule', addEventScheduleArray).then(function (response) {
+      console.log("Output from post /eventSchedule ", response.data);
+
+      $scope.loadEventScheduleData();
+    });
+
+  };
+
+
+
+  $scope.deleteEventSchedule = function(deleteObject) {
+    console.log("object ", deleteObject);
+
+    var answer = confirm("Are you sure you want to delete event schedule id " + deleteObject.event_schedule_id + "?");
+    if (answer){
+      $http.delete('/eventSchedule/delete'+ deleteObject.event_schedule_id).then(function(response){
+        $scope.loadEventScheduleData();
+      });
+    }
+    else {
+      // do nothing
+    }
+  }
+
+}]);
+
+app.controller('AddWalkinController',['$scope', '$http', function ($scope, $http) {
+    console.log('hi, from add walkin Controller');
+}]);
+
+app.controller('AttendanceController',['$scope', '$http', function ($scope, $http) {
+    console.log('hi, from attendance Controller');
 }]);
 
 app.controller('CalendarController',['$scope', function ($scope) {
@@ -14,20 +208,87 @@ app.controller('CalendarController',['$scope', function ($scope) {
 }]);
 
 
-app.controller('ChooseClassDatesController',['$scope', '$http', function ($scope, $http) {
+app.controller('ChooseClassDatesController',['$scope', '$http', "RegisterForClassFactory", '$location', function ($scope, $http, RegisterForClassFactory, $location) {
   console.log('hi, from choose class dates Controller');
+
+  //$scope.user = {};
+  //$scope.user.name = "Jane Doe";
+  $scope.event = [];
+  $scope.studentEvents = [];
+
+  $scope.registerForClassFactory = RegisterForClassFactory;
+
+  $scope.eventFromFactory = $scope.registerForClassFactory.getEvent();
+
+  console.log("scope.eventFromFactory: ",$scope.registerForClassFactory.getEvent());
+  console.log("this is the class registered for: ", $scope.eventFromFactory.eventId, $scope.eventFromFactory.title);
+
+  $scope.loadEventData =  function(event) {
+    var eventId = {
+      eventId: event.eventId
+    };
+    console.log("Input to get /eventSchedule/byEventId ", eventId);
+
+    $http.get('/eventSchedule/byEventId', {params: eventId}).then(function(response){
+      console.log("Output from get /eventSchedule/byEventId ", response.data);
+      $scope.event = response.data;
+    });
+  };
+
+  $scope.loadEventData($scope.eventFromFactory);
+
+
+  $scope.signUp = function(event) {
+    console.log("Were here ok ", event);
+
+    for (var i = 0; i < event.length; i++) {
+      if (event[i].addCheckbox == true) {
+        $scope.studentEvents.push($scope.event[i].event_schedule_id);
+
+        //console.log("this is events with addCheckbox", $scope.event[i].event_schedule_id);
+      }
+    }
+    console.log("this is studentEvents ", $scope.studentEvents);
+    $scope.registerForClassFactory.setStudentEventDates($scope.studentEvents);
+    console.log("factory test: ", $scope.registerForClassFactory.setStudentEventDates($scope.studentEvents));
+
+    $location.path('/confirmclasssignup');
+  };
+
+  $scope.goBack = function () {
+    $location.path('/eventdetails');
+    console.log("I hit the go back button: ");
+  };
 }]);
 
-app.controller('ConfirmClassSignupController',['$scope', '$http', function ($scope, $http) {
+app.controller('ConfirmClassSignupController',['$scope', '$http', "RegisterForClassFactory", '$location', function ($scope, $http, RegisterForClassFactory, $location) {
   console.log('hi, from confirm class signup Controller');
   $scope.user = {};
   $scope.event = {};
 
+  $scope.registerForClassFactory = RegisterForClassFactory;
+
   $scope.user.name = "Jane Doe";
 
+  $scope.eventFromFactory = $scope.registerForClassFactory.getStudentEventDates();
+  console.log("$scope.eventFromFactory: ",$scope.eventFromFactory);
 
-  $scope.event.title = "Mom-to-Mom Group";
-  $scope.event.dates = ["Tues Nov 5, 2015", "Thurs Dec 20, 2015", "Fri Dec 25, 2015"];
+
+  $scope.getEventDetails = function(event){
+    console.log("in getEventDetails");
+    //set params for get call to database
+    var eventIds = {
+      eventId: event.eventId,
+      eventScheduleId: event.eventScheduleId
+    };
+    //get call to database to get event info
+    //use eventId in event object as the parameter
+    $http.get('/event/byEventIdEventScheduleId', {params: eventIds}).then(function(response){
+      console.log("Output from get /event/byEventIdEventScheduleId ", response.data);
+      $scope.event = response.data[0];
+      console.log("$scope.event ",$scope.event);
+    });
+  };
 
   $scope.confirmClass = function(userEvent) {
     console.log("this is the class registered for: ", userEvent);
@@ -36,10 +297,11 @@ app.controller('ConfirmClassSignupController',['$scope', '$http', function ($sco
   };
 
   $scope.goBack = function() {
+    $location.path('/chooseclassdates');
     console.log("I hit the go back button: ");
   };
 
-  $scope.insertUsersEventSchedule = function(userEvent) {
+  $scope.insertUsersEventSchedule = function() {
     //var userEvent = {
     //  userId: 1,
     //  eventScheduleId: 2,
@@ -54,26 +316,141 @@ app.controller('ConfirmClassSignupController',['$scope', '$http', function ($sco
   };
 }]);
 
+app.controller('DirectoryController',['$scope', '$http', 'ActiveProfileFactory', 'uiGridConstants',
+  function ($scope, $http, ActiveProfileFactory, uiGridConstants) {
+
+  var activeProfileFactory = ActiveProfileFactory;
+  console.log('hi, from Directory Controller');
+  $scope.searchObject = new SearchObject();
+  $scope.gridOptions = {};
+
+  $scope.sendSelectedMemberInfo = function(id) {
+    console.log('this is the user id', id);
+    activeProfileFactory.setActiveProfileData(id);
+  };
+
+  $scope.gridOptions = {
+    columnDefs: [
+           { field: 'first_name',
+             cellTemplate: '<a ng-click="grid.appScope.sendSelectedMemberInfo(row.entity.user_id)" ' +
+             'href="#/profile">{{COL_FIELD}}</a>',
+             sort: {
+               direction: uiGridConstants.ASC,
+               priority: 1
+             }
+           },
+           { field: 'last_name',
+              sort: {direction: uiGridConstants.ASC, priority: 2}
+           },
+           { field: 'phone_number'},
+           {field: 'user_id', visible: false}
+         ],
+    enableFullRowSelection: true,
+    onRegisterApi: function(gridApi){
+      $scope.gridApi = gridApi;
+    }
+  };
+
+  $scope.getResults = function () {
+    console.log("search object, ", $scope.searchObject);
+    $http.get('/users/byNameOrPhone',
+        {params: $scope.searchObject}
+      )
+      .then(
+        function (response) {
+          console.log('response from server', response.data);
+          $scope.gridOptions.data = response.data;
+        }
+      );
+  };
+  var getData = function (queryParams) {
+    console.log('heading out from factory', queryParams);
+    var promise = $http.get('/data',
+      {params: queryParams}
+    )
+    .then(
+      function (response) {
+        console.log('response from server', response.data);
+        data = response.data;
+      }
+    );
+    return promise;
+  };
+}]);
+
+function SearchObject() {
+          this.firstName='';
+          this.lastName='';
+          this.phoneNumber='';
+        }
+
 app.controller('EditEventController',['$scope', '$http', function ($scope, $http) {
   console.log('hi, from edit event Controller');
 }]);
 
-app.controller('EventDetailsController',['$scope', '$http', function ($scope, $http) {
-  console.log('hi, from event details controller Controller');
+app.controller('EventDetailsController',['$scope', '$http', "RegisterForClassFactory", "$location",
+  function ($scope, $http, RegisterForClassFactory, $location) {
+
+  console.log('hi, from event details controller');
   $scope.user = {};
 
   $scope.user.loginstatus = true;
 
-  $scope.user.role = "student";
+  $scope.user.role = "admin";
 
+  $scope.registerForClassFactory = RegisterForClassFactory;
+
+  //get event info from the registerForClassFactory
+  //should be event info corresponding to event clicked on in calendar view
+  $scope.eventFromFactory = $scope.registerForClassFactory.getEvent();
+
+  console.log("scope.eventFromFactory: ",$scope.eventFromFactory);
+
+  $scope.getEventDetails = function(event){
+    console.log("in getEventDetails");
+    //set params for get call to database
+    var eventIds = {
+      eventId: event.eventId,
+      eventScheduleId: event.eventScheduleId
+    };
+    //get call to database to get event info
+    //use eventId in event object as the parameter
+    $http.get('/event/byEventIdEventScheduleId', {params: eventIds}).then(function(response){
+      console.log("Output from get /event/byEventIdEventScheduleId ", response.data);
+      $scope.event = response.data[0];
+      console.log("$scope.event ",$scope.event);
+    });
+  };
+
+  $scope.registerForClass = function(someevent){
+    $location.path('/chooseclassdates');
+  };
+  $scope.seeAttendance = function(someevent){
+    console.log("attendance button clicked");
+    //$location.path('/attendance);
+  };
+  $scope.cancelClass = function(someevent) {
+    console.log("cancel class button clicked");
+    //$window.alert message
+
+  };
+  $scope.editClass = function(someevent) {
+    console.log("edit class button clicked");
+    //$location.path('/addclass);
+  };
+  $scope.goBack = function(){
+    $location.path('/uicalendar');
+  };
+
+  $scope.getEventDetails($scope.eventFromFactory);
   //sample data in eventDate
   //can change it to be something else
-  $scope.event = {
-    start:"2015-12-05T14:00:00Z",
-    end:"2015-12-05T15:00:00Z",
-    title: "Mom-to-Mom Group",
-    description: "Need a moment to stop, connect, and breathe? Free and on-going for expecting, new, and experienced mothers. This group, put on by The Nursing Nook, offers gentle yoga and meditation, mother-to-mother support, local breastfeeding resources, playdate for breastfeeding babes, monthly guest speakers. Childcare for older siblings may be available. Please pre-register."
-  };
+  //$scope.event = {
+  //  start:"2015-12-05T14:00:00Z",
+  //  end:"2015-12-05T15:00:00Z",
+  //  title: "Mom-to-Mom Group",
+  //  description: "Need a moment to stop, connect, and breathe? Free and on-going for expecting, new, and experienced mothers. This group, put on by The Nursing Nook, offers gentle yoga and meditation, mother-to-mother support, local breastfeeding resources, playdate for breastfeeding babes, monthly guest speakers. Childcare for older siblings may be available. Please pre-register."
+  //};
 
   //need the click stuff
 
@@ -88,6 +465,10 @@ app.controller('EventDetailsController',['$scope', '$http', function ($scope, $h
 
 }]);
 
+app.controller('FindWalkinController',['$scope', '$http', function ($scope, $http) {
+    console.log('hi, from Find Walkin Controller');
+}]);
+
 app.controller('JadeController',['$scope', '$http', function ($scope, $http) {
   console.log('hi, from jade Controller');
   $scope.x = 'angular';
@@ -100,10 +481,86 @@ app.controller('JadeController',['$scope', '$http', function ($scope, $http) {
 
 }]);
 
-app.controller('LoginController',['$scope', '$http', function ($scope, $http) {
+app.controller('LoginController',['$scope', '$http', '$location',
+  function ($scope, $http, $location) {
   console.log('hi, from Login Controller');
+
+  $scope.user = {};
+  $scope.submitCredentials = function () {
+    console.log('data sent to server', $scope.user);
+    $http.post('/login', $scope.user)
+      .then(function (response) {
+        //console.log('is this html?', response.data);
+        console.log('response is', response);
+        console.log('response status', response.status);
+        if (response.status===200){
+          $location.path('/uicalendar');
+        }
+        else{
+          // $location.path('/failure');
+          alert('sign in failed');
+        }
+
+      });
+  };
+
 }]);
 
+app.controller("ProfileController", ["$scope", "$http", "ActiveProfileFactory",
+  function($scope, $http, ActiveProfileFactory){
+    var activeProfileFactory = ActiveProfileFactory;
+    $scope.user = {};
+    $scope.tempUser = {};
+
+    var testUser = activeProfileFactory.getActiveProfileData();
+
+    //test user data to populate form
+    // var testUser = {
+    //     userId: 1
+    // };
+
+    //get profile info for profile page
+    $scope.getUser = function(someuser){
+        console.log("the input of getUser: ",someuser);
+        $http.get('/users/byUserId', {params: someuser}).then(function (response) {
+            console.log("Output from get /users/byUserId ", response.data);
+            $scope.tempUser = response.data[0];
+
+            //define $scope.user
+            $scope.user.firstName = $scope.tempUser.first_name;
+            $scope.user.lastName = $scope.tempUser.last_name;
+            $scope.user.userId = $scope.tempUser.user_id;
+            $scope.user.userName = $scope.tempUser.user_name;
+            $scope.user.password = $scope.tempUser.password;
+            $scope.user.roleName = $scope.tempUser.role_name;
+            $scope.user.roleId = $scope.tempUser.role_id;
+            $scope.user.dateOfBirth = $scope.tempUser.date_of_birth;
+            $scope.user.phoneNumber = $scope.tempUser.phone_number;
+            $scope.user.emailAdress = $scope.tempUser.email_address;
+            $scope.user.contactType = $scope.tempUser.contact_type;
+            $scope.user.paymentType = $scope.tempUser.payment_type;
+            $scope.user.everydayMiraclesClientInd = $scope.tempUser.everyday_miracles_client_ind;
+            $scope.user.doulaName = $scope.tempUser.doula_name;
+            $scope.user.expectedBirthDate = $scope.tempUser.expected_birth_date;
+
+            console.log("the #scope.user: ", $scope.user);
+        });
+    };
+
+    $scope.saveProfile = function(someuser) {
+
+        console.log("Input to put /users ", someuser);
+        $http.put('/users', someuser).then(function (response) {
+            console.log("Output from put /users ", response.data);
+        });
+    };
+    $scope.getUser(testUser);
+
+}]);
+
+app.controller('StudentClassListController', ["$scope", "$http", function($scope,$http){
+    console.log("student class controller says hi");
+}]);
 app.controller('TestSqlController',['$scope', '$http', function ($scope, $http) {
 
     $scope.selectUsers = function() {
@@ -400,23 +857,59 @@ app.controller('TestSqlController',['$scope', '$http', function ($scope, $http) 
 
 }]);
 
-app.controller('UiCalendarController', ["$scope", "$http", "CalendarFactory", function($scope, $http, CalendarFactory) {
+app.controller('UiCalendarController', ["$scope", "$http", "RegisterForClassFactory", "$location",
+    function($scope, $http, RegisterForClassFactory, $location) {
     console.log("hi from ui calendar controller");
     /* config object */
     $scope.tempEvents;
     $scope.eventSources = {};
     $scope.eventSources.events = [];
     $scope.uiConfig = {};
-    $scope.calendarFactory = CalendarFactory;
+    $scope.registerForClassFactory = RegisterForClassFactory;
+    //dateRange related variables
+    $scope.today;
+    $scope.previousMonth = 0;
+    $scope.nextMonth = 0;
+    $scope.startYear = 0;
+    $scope.endYear = 0;
 
     //load the calendar
     $scope.loadCalendar = function() {
 
-        //get the events to populate calendar
-        $scope.calendarFactory.retrieveEvents().then(function() {
-            $scope.tempEvents = $scope.calendarFactory.eventsData();
-            console.log("tempEvents after the call: ", $scope.tempEvents);
+        //sets dateRange to the present month
+        $scope.setDateRange = function() {
+            $scope.today = new Date();
+            $scope.previousMonth = $scope.today.getMonth();
+            $scope.startYear = $scope.today.getFullYear();
+            $scope.endYear = $scope.today.getFullYear();
 
+            if ($scope.previousMonth == 11){
+                $scope.nextMonth = 1;
+                $scope.endYear += 1;
+            } else if ($scope.previousMonth == 0){
+                $scope.previousMonth = 12;
+                $scope.startYear -= 1;
+            } else {
+                $scope.nextMonth = $scope.previousMonth+2;
+            }
+
+
+
+            //sets var dateRange
+            $scope.dateRange = {
+                startDate: $scope.startYear+'-'+$scope.previousMonth+'-'+'01',
+                endDate: $scope.endYear+'-'+$scope.nextMonth+'-'+'31'
+            };
+
+        };
+
+        $scope.setDateRange();
+
+        //get the events to populate calendar
+        $http.get('/event/byDateRange', {params: $scope.dateRange}).then(function (response) {
+            console.log("Output from get /event/byDateRange ", response.data);
+            $scope.tempEvents = response.data;
+            console.log("the tempEvents", $scope.tempEvents);
             //loop through results from factory call to set event info into calendar
             for (var i = 0; i < $scope.tempEvents.length; i++) {
                 $scope.eventSources.events[i] = {};
@@ -428,9 +921,14 @@ app.controller('UiCalendarController', ["$scope", "$http", "CalendarFactory", fu
 
                 //$scope.eventSources.events[i].description = $scope.tempEvents[i].description;
 
-                //unique id for event
+                //unique id for a event
                 //corresponds to property event_schedule_id in the database
-                $scope.eventSources.events[i].id = $scope.tempEvents[i].event_schedule_id;
+                //use this to get information like attendance about a particular class
+                $scope.eventSources.events[i].eventScheduleId = $scope.tempEvents[i].event_schedule_id;
+
+                //sets event id
+                //use this to get multiple dates for the same event from the database
+                $scope.eventSources.events[i].eventId = $scope.tempEvents[i].event_id;
 
             }
 
@@ -450,14 +948,18 @@ app.controller('UiCalendarController', ["$scope", "$http", "CalendarFactory", fu
                     eventClick: $scope.eventClick
                 }
             };
-
         });
 
+
         //functions
+        //saves the unique id of the clicked on class
         $scope.eventClick = function(event, jsEvent, view){
-            console.log("this is variable event: ", event);
-            console.log("this is jsEvent: ",jsEvent);
-            console.log("this is view: ", view);
+
+            console.log("this is event: ",event);
+            $scope.registerForClassFactory.setEvent(event);
+            console.log("factory test: ", $scope.registerForClassFactory.getEvent());
+
+            $location.path("/eventdetails");
 
         };
         $scope.alertEventOnClick = function(date, jsEvent, view) {
@@ -473,3 +975,24 @@ $scope.loadCalendar();
 
 }]);
 
+
+app.controller('UserRegistrationController',['$scope', '$http', '$location',
+  function ($scope, $http, $location) {
+  console.log('hi, from UserRegistrationController');
+  $scope.user={};
+
+  $scope.submitRegistration = function () {
+    console.log('data sent to server', $scope.user);
+    $http.post('/userregistration', $scope.user)
+      .then(function (response) {
+        //console.log('is this html?', response.data);
+        console.log('response is', response);
+        if (response.status===200){
+          $location.path('/login');
+        }
+
+      });
+  };
+
+
+}]);

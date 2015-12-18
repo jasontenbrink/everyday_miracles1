@@ -40,6 +40,10 @@ app.config(['$routeProvider', function($routeProvider){
                      templateUrl: '/templates/confirmclasssignup.jade',
                      controller: "ConfirmClassSignupController"
                  })
+                 .when('/profile', {
+                     templateUrl:'/templates/profile.jade',
+                     controller: "ProfileController"
+                  })
                  .when('/editevent', {
                      templateUrl: '/templates/editevent.jade',
                      controller: "EditEventController"
@@ -47,7 +51,31 @@ app.config(['$routeProvider', function($routeProvider){
                  .when('/login', {
                      templateUrl: '/templates/login.jade',
                      controller: "LoginController"
-                 });
+                 })
+                 .when('/userregistration', {
+                     templateUrl: '/templates/userregistration.jade',
+                     controller: "UserRegistrationController"
+                 })
+                  .when('/attendance', {
+                      templateUrl: '/templates/attendance.jade',
+                      controller: "AttendanceController"
+                  })
+                  .when('/findwalkin', {
+                      templateUrl: '/templates/findwalkin.jade',
+                      controller: "FindWalkinController"
+                  })
+                  .when('/addwalkin', {
+                      templateUrl: '/templates/addwalkin.jade',
+                      controller: "AddWalkinController"
+                  })
+                  .when('/studentclasslist', {
+                      templateUrl: '/templates/studentclasslist.jade',
+                      controller: 'StudentClassListController'
+                  })
+                  .when('/directory', {
+                      templateUrl: '/templates/directory.jade',
+                      controller: "DirectoryController"
+                  });
 
 
 }]);

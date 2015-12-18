@@ -1,12 +1,27 @@
 body{
-  background-color: blue;
+  background-color: #526c84;
+  /*padding: 10px;*/
+  /*margin: 10px;*/
+  /*text-align: center;*/
+  /*padding: 10px;*/
+  /*margin: 10px;*/
+}
+
+
+button{
+  padding: 10px;
+  margin: 10px;
+}
+
+p.class-dates {
+  display: inline;
 }
 
 .calendar {
   background-color: white;
 }
+
 .my-grid{
   width: 400px;
   height: 400px;
 }
-

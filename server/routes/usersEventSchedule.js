@@ -7,6 +7,7 @@ var connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/ev
 
 // Select the event schedule by user id
 router.get('/byUserId', function(req,res){
+  console.log('usersEventSchedule route, req.user = ', req.user);
     var queryOptions = {
         user_id: req.query.userId
     };
