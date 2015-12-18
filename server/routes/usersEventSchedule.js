@@ -168,7 +168,7 @@ router.post('/', function(req,res){
     };
 
     pg.connect(connectionString, function (err, client) {
-
+        client.on('drain', client.end.bind(client));
         client.query("INSERT INTO users_event_schedule (user_id, \
             event_schedule_id, \
             status, \
@@ -201,7 +201,7 @@ router.put('/', function(req,res){
     };
 
     pg.connect(connectionString, function (err, client) {
-
+        client.on('drain', client.end.bind(client));
         client.query("UPDATE users_event_schedule \
                     SET status = $1, \
                         comments = $2 \
@@ -228,6 +228,7 @@ router.get('/delete', function(req,res){
         event_schedule_id: req.query.eventScheduleId
     };
     pg.connect(connectionString, function (err, client) {
+        client.on('drain', client.end.bind(client));
         client.query("DELETE FROM users_event_schedule WHERE user_id = $1 and event_schedule_id = $2",
             [queryOptions.user_id, queryOptions.event_schedule_id],
             function (err, result) {

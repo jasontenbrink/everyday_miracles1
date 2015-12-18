@@ -826,6 +826,15 @@ app.controller('TestSqlController',['$scope', '$http', function ($scope, $http) 
         $http.get('/users/byUserId', {params: user1}).then(function (response) {
             console.log("Output from get /users/byUserId ", response.data);
         });
+
+        console.log("Input to get /users/roles - nothing");
+        $http.get('/users/roles').then(function (response) {
+            console.log("Output from get /users/roles ", response.data);
+        });
+        console.log("Input to get /users/teachers - nothing");
+        $http.get('/users/teachers').then(function (response) {
+            console.log("Output from get /users/teachers ", response.data);
+        });
     };
     $scope.insertUsers = function() {
         var insertuser = {
@@ -906,6 +915,11 @@ app.controller('TestSqlController',['$scope', '$http', function ($scope, $http) 
         console.log("Input to get /event/byEventId ", event3);
         $http.get('/event/byEventId', {params: event3}).then(function(response){
             console.log("Output from get /event/byEventId ", response.data);
+        });
+
+        console.log("Input to get /event/categories - nothing");
+        $http.get('/event/categories').then(function (response) {
+            console.log("Output from get /event/categories ", response.data);
         });
 
     };
