@@ -9,7 +9,7 @@ div
     br
     | would like to attend the {{eventFromFactory.title}} class
 
-md-checkbox(ng-repeat="event in event | limitTo:10" ng-model="date.addCheckbox" ng-if="today >= event.start_datetime" md-no-ink aria-label="Class Picker Checkbox") {{date.schedule_date|date:'fullDate':'+12:00'}} {{date.start_datetime|date:'shortTime':'+12:00'}} {{date.end_datetime|date:'shortTime':'+12:00'}}
+md-checkbox(ng-repeat="date in event | limitTo:10" ng-model="date.addCheckbox" md-no-ink aria-label="Class Picker Checkbox") {{date.schedule_date|date:'fullDate':'+12:00'}} {{date.start_datetime|date:'shortTime':'+12:00'}} {{date.end_datetime|date:'shortTime':'+12:00'}}
 
 .sign-up-button
   md-button(class="md-raised" ng-click="signUp(event)") Sign Up
