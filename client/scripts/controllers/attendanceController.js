@@ -1,4 +1,5 @@
-app.controller('AttendanceController',['$scope', '$http', 'RegisterForClassFactory', function ($scope, $http, RegisterForClassFactory) {
+app.controller('AttendanceController',['$scope', '$http', 'RegisterForClassFactory', '$location',
+    function ($scope, $http, RegisterForClassFactory, $location) {
 
     $scope.usersEventSchedule = [];
     $scope.event = {};
@@ -55,6 +56,10 @@ app.controller('AttendanceController',['$scope', '$http', 'RegisterForClassFacto
             });
 
         }
+    }
+
+    $scope.findWalkin = function() {
+        $location.path('/findwalkin');
     }
 
 }]);

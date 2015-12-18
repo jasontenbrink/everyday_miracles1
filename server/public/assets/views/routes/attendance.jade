@@ -5,3 +5,5 @@ md-content(layout-padding)
         md-checkbox(ng-repeat = "users in usersEventSchedule" ng-model="users.addCheckbox") {{users.first_name}} {{users.last_name}} {{users.phone_number}} {{users.payment_type}} {{users.status}}
 
         md-button(ng-click="submitAttendance()" class="md-primary md-raised") Submit Attendance
+
+        md-button(ng-click="findWalkin()" class="md-primary md-raised") Add Walk-in

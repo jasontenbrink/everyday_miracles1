@@ -188,11 +188,68 @@ app.controller('AddEventController',['$scope', '$http', '$timeout', function ($s
 
 }]);
 
-app.controller('AddWalkinController',['$scope', '$http', function ($scope, $http) {
-    console.log('hi, from add walkin Controller');
-}]);
+app.controller('AddWalkinController',['$scope', '$http', 'RegisterForClassFactory', '$location',
+    function ($scope, $http, RegisterForClassFactory, $location) {
 
-app.controller('AttendanceController',['$scope', '$http', 'RegisterForClassFactory', function ($scope, $http, RegisterForClassFactory) {
+        $scope.usersEventSchedule = [];
+        $scope.event = {};
+        $scope.user = {};
+
+        $scope.registerForClassFactory = RegisterForClassFactory;
+
+        //get event info from the registerForClassFactory
+        //should be event info corresponding to event clicked on in calendar view
+        $scope.eventFromFactory = $scope.registerForClassFactory.getEvent();
+
+        console.log("scope.eventFromFactory: ",$scope.eventFromFactory);
+
+        $scope.eventId = $scope.eventFromFactory.eventId;
+        $scope.eventScheduleId = $scope.eventFromFactory.eventScheduleId;
+
+
+        $scope.addWalkin = function() {
+            var insertuser = {
+                userName: '',
+                password: '',
+                firstName: $scope.user.firstName,
+                lastName: $scope.user.lastName,
+                roleId: 1,
+                dateOfBirth: $scope.user.dateOfBirth,
+                phoneNumber: $scope.user.phoneNumber,
+                emailAddress: '',
+                contactType: '',
+                paymentType: $scope.user.paymentType,
+                everydayMiraclesClientInd: false,
+                doulaName: '',
+                expectedBirthDate: ''
+            };
+
+            console.log("Input to post /users ", insertuser);
+            $http.post('/users', insertuser).then(function (response) {
+                console.log("Output from post /users ", response.data);
+
+                // insert into users event schedule
+                var userEvent = {
+                    userId: 1,
+                    eventScheduleId: 2,
+                    status: 'Attended',
+                    comments: ''
+                };
+
+                console.log("Input to post /usersEventSchedule ", userEvent);
+                $http.post('/usersEventSchedule', userEvent).then(function (response) {
+                    console.log("Output from post /usersEventSchedule ", response.data);
+                    alert("Created student.  Redirecting to Attendance.");
+                    $location.path('/attendance');
+                });
+            });
+
+        }
+
+    }]);
+
+app.controller('AttendanceController',['$scope', '$http', 'RegisterForClassFactory', '$location',
+    function ($scope, $http, RegisterForClassFactory, $location) {
 
     $scope.usersEventSchedule = [];
     $scope.event = {};
@@ -249,6 +306,10 @@ app.controller('AttendanceController',['$scope', '$http', 'RegisterForClassFacto
             });
 
         }
+    }
+
+    $scope.findWalkin = function() {
+        $location.path('/findwalkin');
     }
 
 }]);
@@ -466,8 +527,62 @@ app.controller('EventDetailsController',['$scope', '$http', "RegisterForClassFac
 
 }]);
 
-app.controller('FindWalkinController',['$scope', '$http', function ($scope, $http) {
-    console.log('hi, from Find Walkin Controller');
+app.controller('FindWalkinController',['$scope', '$http', 'RegisterForClassFactory', '$location',
+    function ($scope, $http, RegisterForClassFactory, $location) {
+
+        $scope.usersEventSchedule = [];
+        $scope.event = {};
+        $scope.user = {};
+        $scope.foundUser = [];
+
+        $scope.registerForClassFactory = RegisterForClassFactory;
+
+        //get event info from the registerForClassFactory
+        //should be event info corresponding to event clicked on in calendar view
+        $scope.eventFromFactory = $scope.registerForClassFactory.getEvent();
+
+        console.log("scope.eventFromFactory: ",$scope.eventFromFactory);
+
+        $scope.eventId = $scope.eventFromFactory.eventId;
+        $scope.eventScheduleId = $scope.eventFromFactory.eventScheduleId;
+
+        $scope.findWalkin = function() {
+
+            console.log("Input to get /users/byNameOrPhone ", $scope.user);
+            $http.get('/users/byNameOrPhone', {params: $scope.user}).then(function (response) {
+                console.log("Output from get /users/byNameOrPhone ", response.data);
+                $scope.foundUser = response.data[0];
+            });
+        }
+
+        $scope.submitUser = function() {
+            console.log("submitting user ", $scope.foundUser);
+
+            //insert into database
+            var userEvent = {
+                userId: $scope.foundUser.user_id,
+                eventScheduleId: $scope.eventScheduleId,
+                status: 'Attended',
+                comments: ''
+            };
+
+            console.log("Input to post /usersEventSchedule ", userEvent);
+            $http.post('/usersEventSchedule', userEvent).then(function (response) {
+                console.log("Output from post /usersEventSchedule ", response.data);
+                // go back to attendance page
+                if(response.data==true){
+                    alert("Student submitted as attended.");
+                    $location.path('/attendance');
+                }
+            });
+
+        }
+
+        $scope.newUser = function() {
+            $location.path('/addwalkin');
+        }
+
+
 }]);
 
 app.controller('JadeController',['$scope', '$http', function ($scope, $http) {

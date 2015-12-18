@@ -1,2 +1,22 @@
-div.
-    this is addwalkin
+md-content(layout-padding)
+    h2 Add New Walk-in
+
+    form(name='addWalkinForm')
+        md-input-container(class='md-block')
+            label First Name
+            input(type="text" ng-model="user.firstName" required)
+        md-input-container(class='md-block')
+            label Last Name
+            input(type="text" ng-model="user.lastName" required)
+        md-input-container(class='md-block')
+            label Phone Number
+            input(type="text" ng-model="user.phoneNumber" required)
+        md-input-container(class='md-block')
+            label Date of Birth
+            input(type="date" ng-model="user.dateOfBirth" required)
+        md-input-container(class='md-block')
+            label Payment Type
+            input(ng-model="user.payment_type" type="text" required)
+
+        md-button(ng-click="addWalkin()" class="md-primary md-raised" ng-disabled="addWalkinForm.$invalid") Submit
+
