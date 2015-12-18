@@ -227,9 +227,14 @@ app.controller('ChooseClassDatesController',['$scope', '$http', "RegisterForClas
   //console.log("scope.eventFromFactory: ",$scope.registerForClassFactory.getEvent());
   //console.log("this is the class registered for: ", $scope.eventFromFactory.eventId, $scope.eventFromFactory.title);
   $scope.getRegisteredClasses = function(event) {
-    var eventSchedule = {eventScheduleId: event.eventScheduleId};
+
+    var eventSchedule = {
+      userId: 1,
+      eventScheduleId: event.eventScheduleId
+    };
+
     console.log("in registered classes(). the event :",eventSchedule);
-    $http.get('/usersEventSchedule/byEventScheduleId', {params: eventSchedule}).then(function(response){
+    $http.get('/usersEventSchedule/byEventIdUserId', {params: eventSchedule}).then(function(response){
       console.log("Output from get /usersEventSchedule/byEventScheduleId ", response.data);
       //$scope.allUserEvents = response.data;
       //for (var i = 0; i < $scope.allUserEvents.length; i++) {
