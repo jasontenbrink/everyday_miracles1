@@ -47,6 +47,6 @@ app.controller('ChooseClassDatesController',['$scope', '$http', "RegisterForClas
 
   $scope.goBack = function () {
     $location.path('/eventdetails');
-    console.log("I hit the go back button: ");
+    //console.log("I hit the go back button: ");
   };
 }]);
