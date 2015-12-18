@@ -262,17 +262,73 @@ app.controller('ConfirmClassSignupController',['$scope', '$http', function ($sco
   };
 }]);
 
-app.controller('DirectoryController',['$scope', '$http', function ($scope, $http) {
-  console.log('hi, from Directory Controller');
-  $scope.x = 'angular';
-  $scope.y = 'bye';
-  // $http.get('/jade')
-  //   .then(function (response) {
-  //     console.log(response.data);
-  //     $scope.y = response.data;
-  //   });
+app.controller('DirectoryController',['$scope', '$http', 'ActiveProfileFactory', 'uiGridConstants',
+  function ($scope, $http, ActiveProfileFactory, uiGridConstants) {
 
+  var activeProfileFactory = ActiveProfileFactory;
+  console.log('hi, from Directory Controller');
+  $scope.searchObject = new SearchObject();
+  $scope.gridOptions = {};
+
+  $scope.sendSelectedMemberInfo = function(id) {
+    console.log('this is the user id', id);
+    activeProfileFactory.setActiveProfileData(id);
+  };
+
+  $scope.gridOptions = {
+    columnDefs: [
+           { field: 'first_name',
+             cellTemplate: '<a ng-click="grid.appScope.sendSelectedMemberInfo(row.entity.user_id)" ' +
+             'href="#/profile">{{COL_FIELD}}</a>',
+             sort: {
+               direction: uiGridConstants.ASC,
+               priority: 1
+             }
+           },
+           { field: 'last_name',
+              sort: {direction: uiGridConstants.ASC, priority: 2}
+           },
+           { field: 'phone_number'},
+           {field: 'user_id', visible: false}
+         ],
+    enableFullRowSelection: true,
+    onRegisterApi: function(gridApi){
+      $scope.gridApi = gridApi;
+    }
+  };
+
+  $scope.getResults = function () {
+    console.log("search object, ", $scope.searchObject);
+    $http.get('/users/byNameOrPhone',
+        {params: $scope.searchObject}
+      )
+      .then(
+        function (response) {
+          console.log('response from server', response.data);
+          $scope.gridOptions.data = response.data;
+        }
+      );
+  };
+  var getData = function (queryParams) {
+    console.log('heading out from factory', queryParams);
+    var promise = $http.get('/data',
+      {params: queryParams}
+    )
+    .then(
+      function (response) {
+        console.log('response from server', response.data);
+        data = response.data;
+      }
+    );
+    return promise;
+  };
 }]);
+
+function SearchObject() {
+          this.firstName='';
+          this.lastName='';
+          this.phoneNumber='';
+        }
 
 app.controller('EditEventController',['$scope', '$http', function ($scope, $http) {
   console.log('hi, from edit event Controller');
@@ -396,14 +452,18 @@ app.controller('LoginController',['$scope', '$http', '$location',
 
 }]);
 
-app.controller("ProfileController", ["$scope", "$http", function($scope, $http){
+app.controller("ProfileController", ["$scope", "$http", "ActiveProfileFactory",
+  function($scope, $http, ActiveProfileFactory){
+    var activeProfileFactory = ActiveProfileFactory;
     $scope.user = {};
     $scope.tempUser = {};
 
+    var testUser = activeProfileFactory.getActiveProfileData();
+
     //test user data to populate form
-    var testUser = {
-        userId: 1
-    };
+    // var testUser = {
+    //     userId: 1
+    // };
 
     //get profile info for profile page
     $scope.getUser = function(someuser){
@@ -443,6 +503,7 @@ app.controller("ProfileController", ["$scope", "$http", function($scope, $http){
     $scope.getUser(testUser);
 
 }]);
+
 app.controller('StudentClassListController', ["$scope", "$http", function($scope,$http){
     console.log("student class controller says hi");
 }]);
