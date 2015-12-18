@@ -1,15 +1,15 @@
 app.factory("RegisterForClassFactory", ["$http", function($http){
   var event = {};
-  var studevent = {};
+  var studentEvents = [];
 
   var inputEvent = function(someevent){
     event = someevent;
     return event;
   };
 
-  var studentEvents = function(someevent){
-    studevent = someevent;
-    return studevent;
+  var inputStudentEvents = function(someevents){
+    studentEvents = someevents;
+    return studentEvents;
   };
 
   var eventApi = {
@@ -19,11 +19,11 @@ app.factory("RegisterForClassFactory", ["$http", function($http){
     getEvent: function(){
       return event;
     },
-    setStudentEventDates: function(someevent){
-      return studentEvents(someevent);
+    setStudentEvents: function(someevents){
+      return inputStudentEvents(someevents);
     },
-    getStudentEventDates: function(){
-      return studevent;
+    getStudentEvents: function(){
+      return studentEvents;
     }
   };
 

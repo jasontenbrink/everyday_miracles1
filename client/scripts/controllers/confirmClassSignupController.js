@@ -10,29 +10,28 @@ app.controller('ConfirmClassSignupController',['$scope', '$http', "RegisterForCl
 
   $scope.user.name = "Jane Doe";
 
-  $scope.eventFromFactory = $scope.registerForClassFactory.getStudentEventDates();
-  console.log("$scope.eventFromFactory: ",$scope.eventFromFactory);
+  $scope.studentEvents = $scope.registerForClassFactory.getStudentEvents();
+  console.log("$scope.eventFromFactory: ",$scope.studentEvents);
+  $scope.event = $scope.registerForClassFactory.getEvent();
 
+  $scope.confirmClass = function(userEvents, comments) {
+    console.log("this is the class registered for: ", userEvents);
+    console.log("these are the comments: ", comments);
+    for(var i = 0; i < userEvents.length; i++){
+      userEvents[i].comments = comments;
 
-  $scope.getEventDetails = function(event){
-    console.log("in getEventDetails");
-    //set params for get call to database
-    var eventIds = {
-      eventId: event.eventId,
-      eventScheduleId: event.eventScheduleId
-    };
-    //get call to database to get event info
-    //use eventId in event object as the parameter
-    $http.get('/event/byEventIdEventScheduleId', {params: eventIds}).then(function(response){
-      console.log("Output from get /event/byEventIdEventScheduleId ", response.data);
-      $scope.event = response.data[0];
-      console.log("$scope.event ",$scope.event);
-    });
-  };
+      var userEvent = {
+        userId: 1,
+        eventScheduleId: userEvents[i].event_schedule_id,
+        status: "Registered",
+        comments: userEvents[i].comments
+      };
 
-  $scope.confirmClass = function(userEvent) {
-    console.log("this is the class registered for: ", userEvent);
-    $scope.insertUsersEventSchedule(userEvent);
+      console.log("Input to post /usersEventSchedule ", userEvent);
+      $http.post('/usersEventSchedule', userEvent).then(function (response) {
+        console.log("Output from post /usersEventSchedule ", response.data);
+      });
+    }
 
   };
 
@@ -49,9 +48,6 @@ app.controller('ConfirmClassSignupController',['$scope', '$http', "RegisterForCl
     //  comments: 'this is a comment'
     //};
 
-    console.log("Input to post /usersEventSchedule ", userEvent);
-    $http.post('/usersEventSchedule', userEvent).then(function (response) {
-      console.log("Output from post /usersEventSchedule ", response.data);
-    });
+
   };
 }]);
