@@ -209,39 +209,41 @@ app.controller('AddWalkinController',['$scope', '$http', 'RegisterForClassFactor
 
         $scope.addWalkin = function() {
             var insertuser = {
-                userName: '',
-                password: '',
+                //userName: 'null',
+                //password: 'null',
                 firstName: $scope.user.firstName,
                 lastName: $scope.user.lastName,
                 roleId: 1,
                 dateOfBirth: $scope.user.dateOfBirth,
                 phoneNumber: $scope.user.phoneNumber,
-                emailAddress: '',
-                contactType: '',
+                //emailAddress: 'null',
+                //contactType: 'null',
                 paymentType: $scope.user.paymentType,
-                everydayMiraclesClientInd: false,
-                doulaName: '',
-                expectedBirthDate: ''
+                everydayMiraclesClientInd: false
+                //doulaName: 'null',
+                //expectedBirthDate: 'null'
             };
 
             console.log("Input to post /users ", insertuser);
             $http.post('/users', insertuser).then(function (response) {
                 console.log("Output from post /users ", response.data);
 
-                // insert into users event schedule
-                var userEvent = {
-                    userId: response.data.rows[0].user_id,
-                    eventScheduleId: $scope.eventScheduleId,
-                    status: 'Attended',
-                    comments: ''
-                };
+                if (response.data.rows[0].user_id) {
+                    // insert into users event schedule
+                    var userEvent = {
+                        userId: response.data.rows[0].user_id,
+                        eventScheduleId: $scope.eventScheduleId,
+                        status: 'Attended',
+                        comments: ''
+                    };
 
-                console.log("Input to post /usersEventSchedule ", userEvent);
-                $http.post('/usersEventSchedule', userEvent).then(function (response) {
-                    console.log("Output from post /usersEventSchedule ", response.data);
-                    alert("Created student.  Redirecting to Attendance.");
-                    $location.path('/attendance');
-                });
+                    console.log("Input to post /usersEventSchedule ", userEvent);
+                    $http.post('/usersEventSchedule', userEvent).then(function (response) {
+                        console.log("Output from post /usersEventSchedule ", response.data);
+                        alert("Created student.  Redirecting to Attendance.");
+                        $location.path('/attendance');
+                    });
+                }
             });
 
         }
@@ -265,8 +267,8 @@ app.controller('AttendanceController',['$scope', '$http', 'RegisterForClassFacto
     $scope.eventId = $scope.eventFromFactory.eventId;
     $scope.eventScheduleId = $scope.eventFromFactory.eventScheduleId;
 
-    var event2 = {eventId: 1,
-        eventScheduleId: 1};
+    var event2 = {eventId: $scope.eventId,
+        eventScheduleId: $scope.eventScheduleId};
 
     console.log("Input to get /event/byEventIdEventScheduleId ", event2);
     $http.get('/event/byEventIdEventScheduleId', {params: event2}).then(function(response){
@@ -275,8 +277,8 @@ app.controller('AttendanceController',['$scope', '$http', 'RegisterForClassFacto
     });
 
     // get data from the database
-    //var eventSchedule = {eventScheduleId: $scope.eventScheduleId};
-    var eventSchedule = {eventScheduleId: 1};
+    var eventSchedule = {eventScheduleId: $scope.eventScheduleId};
+
     console.log("Input to get /usersEventSchedule/byEventScheduleId ", eventSchedule);
     $http.get('/usersEventSchedule/byEventScheduleId', {params: eventSchedule}).then(function(response){
         //console.log("Output from get /usersEventSchedule/byEventScheduleId ", response.data);
@@ -284,25 +286,24 @@ app.controller('AttendanceController',['$scope', '$http', 'RegisterForClassFacto
         console.log("userseventschedule ", $scope.usersEventSchedule);
     });
 
-    var status = "";
     $scope.submitAttendance = function() {
         for (var i = 0; i < $scope.usersEventSchedule.length; i++) {
 
-            console.log("dirty ", $scope.usersEventSchedule[i].status.$dirty);
-            if ($scope.usersEventSchedule[i].status.$dirty) {
+            console.log("changed ", $scope.usersEventSchedule[i].changed);
+            if ($scope.usersEventSchedule[i].changed) {
 
+                var userEvent = {
+                    userId: $scope.usersEventSchedule[i].user_id,
+                    eventScheduleId: $scope.usersEventSchedule[i].event_schedule_id,
+                    status: $scope.usersEventSchedule[i].status,
+                    comments: ''
+                };
 
-                //var userEvent = {
-                //    userId: $scope.usersEventSchedule[i].user_id,
-                //    eventScheduleId: $scope.usersEventSchedule[i].event_schedule_id,
-                //    status: status,
-                //    comments: ''
-                //};
-                //
-                //console.log("Input to update /usersEventSchedule ", userEvent);
-                //$http.put('/usersEventSchedule', userEvent).then(function (response) {
-                //    console.log("Output from update /usersEventSchedule ", response.data);
-                //});
+                console.log("Input to update /usersEventSchedule ", userEvent);
+                $http.put('/usersEventSchedule', userEvent).then(function (response) {
+                    console.log("Output from update /usersEventSchedule ", response.data);
+                });
+                $scope.usersEventSchedule[i].changed = false;
             }
         }
     }

@@ -19,39 +19,41 @@ app.controller('AddWalkinController',['$scope', '$http', 'RegisterForClassFactor
 
         $scope.addWalkin = function() {
             var insertuser = {
-                userName: '',
-                password: '',
+                //userName: 'null',
+                //password: 'null',
                 firstName: $scope.user.firstName,
                 lastName: $scope.user.lastName,
                 roleId: 1,
                 dateOfBirth: $scope.user.dateOfBirth,
                 phoneNumber: $scope.user.phoneNumber,
-                emailAddress: '',
-                contactType: '',
+                //emailAddress: 'null',
+                //contactType: 'null',
                 paymentType: $scope.user.paymentType,
-                everydayMiraclesClientInd: false,
-                doulaName: '',
-                expectedBirthDate: ''
+                everydayMiraclesClientInd: false
+                //doulaName: 'null',
+                //expectedBirthDate: 'null'
             };
 
             console.log("Input to post /users ", insertuser);
             $http.post('/users', insertuser).then(function (response) {
                 console.log("Output from post /users ", response.data);
 
-                // insert into users event schedule
-                var userEvent = {
-                    userId: response.data.rows[0].user_id,
-                    eventScheduleId: $scope.eventScheduleId,
-                    status: 'Attended',
-                    comments: ''
-                };
+                if (response.data.rows[0].user_id) {
+                    // insert into users event schedule
+                    var userEvent = {
+                        userId: response.data.rows[0].user_id,
+                        eventScheduleId: $scope.eventScheduleId,
+                        status: 'Attended',
+                        comments: ''
+                    };
 
-                console.log("Input to post /usersEventSchedule ", userEvent);
-                $http.post('/usersEventSchedule', userEvent).then(function (response) {
-                    console.log("Output from post /usersEventSchedule ", response.data);
-                    alert("Created student.  Redirecting to Attendance.");
-                    $location.path('/attendance');
-                });
+                    console.log("Input to post /usersEventSchedule ", userEvent);
+                    $http.post('/usersEventSchedule', userEvent).then(function (response) {
+                        console.log("Output from post /usersEventSchedule ", response.data);
+                        alert("Created student.  Redirecting to Attendance.");
+                        $location.path('/attendance');
+                    });
+                }
             });
 
         }

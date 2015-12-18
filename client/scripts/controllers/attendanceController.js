@@ -15,8 +15,8 @@ app.controller('AttendanceController',['$scope', '$http', 'RegisterForClassFacto
     $scope.eventId = $scope.eventFromFactory.eventId;
     $scope.eventScheduleId = $scope.eventFromFactory.eventScheduleId;
 
-    var event2 = {eventId: 1,
-        eventScheduleId: 1};
+    var event2 = {eventId: $scope.eventId,
+        eventScheduleId: $scope.eventScheduleId};
 
     console.log("Input to get /event/byEventIdEventScheduleId ", event2);
     $http.get('/event/byEventIdEventScheduleId', {params: event2}).then(function(response){
@@ -25,8 +25,8 @@ app.controller('AttendanceController',['$scope', '$http', 'RegisterForClassFacto
     });
 
     // get data from the database
-    //var eventSchedule = {eventScheduleId: $scope.eventScheduleId};
-    var eventSchedule = {eventScheduleId: 1};
+    var eventSchedule = {eventScheduleId: $scope.eventScheduleId};
+
     console.log("Input to get /usersEventSchedule/byEventScheduleId ", eventSchedule);
     $http.get('/usersEventSchedule/byEventScheduleId', {params: eventSchedule}).then(function(response){
         //console.log("Output from get /usersEventSchedule/byEventScheduleId ", response.data);
@@ -34,25 +34,24 @@ app.controller('AttendanceController',['$scope', '$http', 'RegisterForClassFacto
         console.log("userseventschedule ", $scope.usersEventSchedule);
     });
 
-    var status = "";
     $scope.submitAttendance = function() {
         for (var i = 0; i < $scope.usersEventSchedule.length; i++) {
 
-            console.log("dirty ", $scope.usersEventSchedule[i].status.$dirty);
-            if ($scope.usersEventSchedule[i].status.$dirty) {
+            console.log("changed ", $scope.usersEventSchedule[i].changed);
+            if ($scope.usersEventSchedule[i].changed) {
 
+                var userEvent = {
+                    userId: $scope.usersEventSchedule[i].user_id,
+                    eventScheduleId: $scope.usersEventSchedule[i].event_schedule_id,
+                    status: $scope.usersEventSchedule[i].status,
+                    comments: ''
+                };
 
-                //var userEvent = {
-                //    userId: $scope.usersEventSchedule[i].user_id,
-                //    eventScheduleId: $scope.usersEventSchedule[i].event_schedule_id,
-                //    status: status,
-                //    comments: ''
-                //};
-                //
-                //console.log("Input to update /usersEventSchedule ", userEvent);
-                //$http.put('/usersEventSchedule', userEvent).then(function (response) {
-                //    console.log("Output from update /usersEventSchedule ", response.data);
-                //});
+                console.log("Input to update /usersEventSchedule ", userEvent);
+                $http.put('/usersEventSchedule', userEvent).then(function (response) {
+                    console.log("Output from update /usersEventSchedule ", response.data);
+                });
+                $scope.usersEventSchedule[i].changed = false;
             }
         }
     }

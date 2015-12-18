@@ -10,9 +10,10 @@ md-content(layout-padding)
                 th Last Name
                 th Phone Number
                 th Payment Type
+                th Set Attended
             tr(ng-repeat="users in usersEventSchedule")
                 td
-                    select(class="" name="status" ng-model="users.status")
+                    select(class="" name="status" ng-model="users.status" ng-change="users.changed=true")
                         option(value="Registered") Registered
                         option(value="Attended") Attended
                         option(value="Not attended") Not attended
@@ -25,6 +26,8 @@ md-content(layout-padding)
                     input(type="text" name="phonenumber" ng-model="users.phone_number" readonly)
                 td
                     input(type="text" name="paymenttype" ng-model="users.payment_type" readonly)
+                td
+                    button(ng-click="users.status='Attended'; users.changed=true") Set Attended
 
         md-button(ng-click="submitAttendance()" class="md-primary md-raised") Submit Attendance
 
