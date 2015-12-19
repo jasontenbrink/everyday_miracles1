@@ -14,14 +14,14 @@ passport.serializeUser(function(user, done){
 
   // user parameter comes from the successful "done" in the bcrypt.compare method
   // in the strategy
-  console.log('Serializer, what is the value of user', user);
+  //console.log('Serializer, what is the value of user', user);
   done(null, user.username);//this value (the second one) is passed into the deserializer 'id' parameter
 });
 
 // this puts things onto req.user.  Will put things on the req during
 // preprocessing/middleware
 passport.deserializeUser(function(id, done){
-  console.log('deserialize id is: ', id);
+  //console.log('deserialize id is: ', id);
 
   //a DB call isn't necessary here.  I'm leaving it in in case we want to stick some stuff
   //from the DB onto the req.user.
@@ -29,7 +29,7 @@ passport.deserializeUser(function(id, done){
     client.query("select user_name, role_id from users where user_name = $1", [id],
       function (err, response) {
       //  client.end();
-        console.log('deserializer, response', response.rows[0]);
+        //console.log('deserializer, response', response.rows[0]);
         username = response.rows[0];
 
         //at this point we put whatever we want into the req.user property (second argument
@@ -56,7 +56,7 @@ passport.use('local', new localStrategy({
 
     }, function(req, username, password, done) {
       //make DB call to get userspassword. on the post body.
-    console.log('right before the DB call, req.body', req.body);
+    //console.log('right before the DB call, req.body', req.body);
 
     //don't add in 'done' as the third parameter, it will eat the 'done' that
     //the callback strategy needs.
@@ -67,13 +67,13 @@ passport.use('local', new localStrategy({
       function (err, response) {
         var dbPassword = response.rows[0].password;
         client.end();
-        console.log('the password from the DB', dbPassword);
+      //  console.log('the password from the DB', dbPassword);
 
           //compare passwords, bcrypt.compare hashes the first argument using
           //the salt factor that was already set up (set up in register.js for now)
             bcrypt.compare(req.body.password, dbPassword, function(err, isMatch){
                 if(err) return err;
-                console.log('isMatch value from compare', isMatch);
+              //  console.log('isMatch value from compare', isMatch);
 
                 //this var gets sent to SerializeUser and is passed in as the
                 //user parameter. I think SerializeUser is what actually makes

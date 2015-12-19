@@ -15,7 +15,10 @@ var usersEventSchedule = require('./routes/usersEventSchedule');
 var passport = require('./strategies/localStrategy.js');
 var login = require('./routes/login.js');
 var userRegistration = require('./routes/userRegistration');
+var authenticate = require('./routes/authenticate.js');
+var secureTemplates = require('./routes/secureTemplates');
 
+//for Jade rendering
 app.set('views', path.join(__dirname,'./public/assets/views/'));
 app.set('view options', {layout: false});
 app.set('view engine', 'jade');
@@ -55,7 +58,11 @@ app.use('/users', users);
 app.use('/event', event);
 app.use('/eventSchedule', eventSchedule);
 app.use('/usersEventSchedule', usersEventSchedule);
+
+app.use('/secure/templates', authenticate, secureTemplates);
+//app.use('/*', authenticate);
 app.use('/', index);
+
 
 
 //I think the below 3 lines set a view as a relative path everytime
