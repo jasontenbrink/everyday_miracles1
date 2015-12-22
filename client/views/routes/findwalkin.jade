@@ -1,2 +1,33 @@
-div.
-    this is find walkin
+md-content(layout-padding)
+    h2 {{event.title}} {{event.schedule_date}} {{event.start_datetime}} {{event.end_datetime}}
+
+    form(name='attendanceForm')
+        md-input-container(class='md-block')
+            label Phone Number
+            input(type="text" ng-model="user.phoneNumber")
+        //input(type="text" ng-model="user.firstName")
+        //input(type="text" ng-model="user.lastName")
+
+        md-button(ng-click="findWalkin()" class="md-primary md-raised") Find
+
+        h4 {{foundUser.first_name}}
+        //div({{foundUser.last_name}})
+        //div({{foundUser.date_of_birth}})
+        //div({{foundUser.phone_number}})
+        md-input-container(class='md-block')
+            label Contact Type
+            input(ng-model="foundUser.contact_type" type="text")
+        md-input-container(class='md-block')
+            label Payment Type
+            input(ng-model="foundUser.payment_type" type="text")
+        md-input-container(class='md-block')
+            label Everyday Miracles Client
+            checkbox(ng-model="foundUser.everyday_miracles_client_ind")
+        md-input-container(class='md-block')
+            label Doula Name
+            input(ng-model="foundUser.doula_name" type="text")
+        //input(ng-model="foundUser.expected_birth_date | 'fullDate'" type="date")
+
+        md-button(ng-click="submitUser()" class="md-primary md-raised") Submit
+
+        md-button(ng-click="newUser()" class="md-primary md-raised") New User
