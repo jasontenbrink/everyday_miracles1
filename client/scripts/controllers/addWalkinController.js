@@ -16,6 +16,14 @@ app.controller('AddWalkinController',['$scope', '$http', 'RegisterForClassFactor
         $scope.eventId = $scope.eventFromFactory.eventId;
         $scope.eventScheduleId = $scope.eventFromFactory.eventScheduleId;
 
+        var event2 = {eventId: $scope.eventId,
+            eventScheduleId: $scope.eventScheduleId};
+
+        console.log("Input to get /event/byEventIdEventScheduleId ", event2);
+        $http.get('/event/byEventIdEventScheduleId', {params: event2}).then(function(response){
+            console.log("Output from get /event/byEventIdEventScheduleId ", response.data);
+            $scope.event = response.data[0];
+        });
 
         $scope.addWalkin = function() {
             var insertuser = {
