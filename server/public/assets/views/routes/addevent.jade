@@ -1,5 +1,8 @@
 md-content(layout-padding)
 
+  h2(ng-show="{{insertMode}}") Add Event
+  h2(ng-hide="{{insertMode}}") Edit Event
+
   form(name='addEventForm')
     md-input-container(class='md-block')
       label Title
@@ -9,9 +12,10 @@ md-content(layout-padding)
       input(type='text' name='description' ng-model="event.description" required)
     md-input-container(flex)
       label  Category
-      input(type='text' name='eventCategoryId' ng-model="event.eventCategoryId" required)
+      md-select(name="categorySelect" ng-model="event.eventCategoryId")
+        md-option(ng-repeat="category in categories" value="{{category.event_category_id}}") {{category.name}}
 
-    md-button(ng-click="submitEvent()" class="md-raised md-primary" ng-disabled="addEventForm.$invalid") Submit Event
+    md-button(ng-click="submitEvent()" class="md-raised md-primary" ng-disabled="addEventForm.$invalid") Save Event
   form(name='addEventScheduleForm')
     .layout-row
       md-input-container(flex)
@@ -24,33 +28,23 @@ md-content(layout-padding)
         label End Time
         input(type='time' name='enddatetime' ng-model="eventScheduleAdd.endDateTime" required)
       md-input-container(flex)
-        label  Teacher User Id
-        input(type='text' name='teacheruserid' ng-model="eventScheduleAdd.teacherUserId")
+        label Teacher
+        md-select(name="teacherSelect" ng-model="eventScheduleAdd.teacherUserId")
+          md-option(ng-repeat="teacher in teachers" value="{{teacher.user_id}}") {{teacher.first_name}} {{teacher.last_name}}
 
     .layout-row
       md-input-container(flex)
         label Repeat Type
-        //input(type='text' name='repeattype' ng-model="event.repeatType")
         md-select(name='repeattype' ng-model="event.repeatType")
           md-option(value='None') None
           md-option(value='Daily') Daily
           md-option(value='Weekly') Weekly
           md-option(value='Monthly') Monthly
-      //md-input-container(flex)
-      //  label Repeat From Date
-      //  input(type='date' name='repeatfromdate' ng-model="event.repeatFromDate")
       md-input-container(flex)
         label Repeat To Date
-        input(type='date' name='title' ng-model="event.repeatToDate" ng-required='event.repeatType')
-    //.layout-row
-    //  md-checkbox(ng-model="event.repeatSundayInd" class="") Sunday
-    //  md-checkbox(ng-model="event.repeatMondayInd" class="") Monday
-    //  md-checkbox(ng-model="event.repeatTuesdayInd" class="") Tuesday
-    //  md-checkbox(ng-model="event.repeatWednesdayInd" class="") Wednesday
-    //  md-checkbox(ng-model="event.repeatThursdayInd" class="") Thursday
-    //  md-checkbox(ng-model="event.repeatFridayInd" class="") Friday
-    //  md-checkbox(ng-model="event.repeatSaturdayInd" class="") Saturday
-    md-button(ng-click="submitEventSchedule()" class="md-raised md-primary"
-    ng-disabled="addEventScheduleForm.$invalid || addEventForm.$invalid") Create Event Schedule
+        input(type='date' name='title' ng-model="event.repeatToDate" ng-required="event.repeatType")
 
-    <div ui-grid="gridOptions" class="conditionGrid"></div>
+    md-button(ng-click="submitEventSchedule()" class="md-raised md-primary"
+    ng-disabled="addEventScheduleForm.$invalid || addEventForm.$invalid") Schedule Event
+
+    <div ui-grid="gridOptions" class="eventScheduleGrid"></div>

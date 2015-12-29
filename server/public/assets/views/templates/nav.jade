@@ -1,14 +1,15 @@
-md-toolbar(layout="row" layout-align="end end")
-    md-menu(flex="10" md-position-mode="target-right target")
-      md-button(aria-label="menu", class="md-primary", ng-click="$mdOpenMenu($event)") nav
-        //- md-icon(md-svg-src="img/icons/menu.svg")
-      md-menu-content(width="4")
-        md-menu-item
-          md-button(href="#/profile") profile
-        md-menu-item
-          md-button(href="#/login") login
-        md-menu-item
-          md-button(href="#/directory") directory
+md-content
+  md-toolbar
+    div(class="md-toolbar-tools")
+      md-menu
+        md-button(aria-label="menu" ng-click="$mdOpenMenu($event)") nav
+        md-menu-content(width="4")
+          md-menu-item
+            md-button(href="#/profile") profile
+          md-menu-item
+            md-button(href="#/login") login
+          md-menu-item
+            md-button(href="#/directory") directory
 
 //- 
 //- <md-button aria-label="menu" class="md-fab md-primary">

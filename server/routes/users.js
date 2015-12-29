@@ -96,6 +96,7 @@ router.get('/teachers', function(req,res){
     //SQL Query > SELECT data from table
     pg.connect(connectionString, function (err, client, done) {
         var query = client.query("SELECT \
+                        user_id, \
                         first_name, \
                         last_name \
                     FROM \

@@ -25,8 +25,10 @@ router.get('/byEventId', function(req,res){
             schedule_date, \
             start_datetime, \
             end_datetime, \
-            teacher_user_id \
+            teacher_user_id, \
+            concat(first_name,' ',last_name) as teacher_name \
         FROM event_schedule \
+        LEFT JOIN users on event_schedule.teacher_user_id = users.user_id \
         WHERE event_id = $1;", [queryOptions.event_id]);
         //console.log(query);
         // Stream results back one row at a time, push into results arrayd

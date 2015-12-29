@@ -1,10 +1,12 @@
-app.controller('AddEventController',['$scope', '$http', '$timeout', function ($scope, $http, $timeout) {
+app.controller('AddEventController',['$scope', '$http', function ($scope, $http) {
 
   $scope.insertMode = true;
 
   $scope.event = {};
   $scope.eventSchedule = [];
   $scope.gridOptions = {};
+  $scope.teachers = [];
+  $scope.categories = [];
 
   $scope.eventScheduleAdd = {};
 
@@ -75,7 +77,6 @@ app.controller('AddEventController',['$scope', '$http', '$timeout', function ($s
     $scope.loadEventData();
   }
 
-
   $scope.loadEventScheduleData = function() {
     var passingEvent = {eventId: $scope.event.eventId};
     // load up the event schedule grid
@@ -86,21 +87,29 @@ app.controller('AddEventController',['$scope', '$http', '$timeout', function ($s
 
       $scope.gridOptions = {
         columnDefs : [
-          { name: 'event_schedule_id', displayName: 'Event Schedule ID'},
-          { name: 'event_id', displayName: 'Event ID'},
-          { name: 'schedule_date', cellFilter:"date: 'fullDate'", displayName: 'Schedule Date' },
-          { name: 'teacher_user_id', displayName: 'Teacher User Id' },
-          { name: 'start_datetime', cellFilter:"date: 'shortTime':'-1200'", displayName: 'Start Time'},
-          { name: 'end_datetime', cellFilter:"date: 'shortTime':'-1200'", displayName: 'End Time'},
-          {name: 'Action',
+          { name: 'event_schedule_id', displayName: 'Event Schedule ID', width:"10%"},
+          { name: 'event_id', displayName: 'Event ID', width:"10%"},
+          { name: 'schedule_date', cellFilter:"date: 'fullDate'", displayName: 'Schedule Date', width:"20%"},
+          { name: 'teacher_name', displayName: 'Teacher Name', width:"20%"},
+          { name: 'start_datetime', cellFilter:"date: 'shortTime':'-1200'", displayName: 'Start Time', width:"10%"},
+          { name: 'end_datetime', cellFilter:"date: 'shortTime':'-1200'", displayName: 'End Time', width:"10%"},
+          {name: 'Action', width:"10%",
             cellEditableCondition: false,
-            cellTemplate: '<button ng-click="grid.appScope.deleteEventSchedule(row.entity)" ' +
-            'class="md-raised md-primary">Delete</button>' }],
+            cellTemplate: '<button ng-click="grid.appScope.deleteEventSchedule(row.entity)" class="ui-grid-button">Delete</button>' }],
         data: $scope.eventSchedule
       };
-
     });
   };
+
+  // load up teacher drop down
+  $http.get('/users/teachers').then(function (response) {
+    $scope.teachers = response.data;
+  });
+
+  // load up category drop down
+  $http.get('/event/categories').then(function (response) {
+    $scope.categories = response.data;
+  });
 
   $scope.submitEventSchedule = function() {
 
@@ -159,18 +168,13 @@ app.controller('AddEventController',['$scope', '$http', '$timeout', function ($s
 
     } while (repeatBoolean);
 
-
     //do an insert always
     console.log("Input to post /eventSchedule ", addEventScheduleArray);
     $http.post('/eventSchedule', addEventScheduleArray).then(function (response) {
       console.log("Output from post /eventSchedule ", response.data);
-
       $scope.loadEventScheduleData();
     });
-
   };
-
-
 
   $scope.deleteEventSchedule = function(deleteObject) {
     console.log("object ", deleteObject);
