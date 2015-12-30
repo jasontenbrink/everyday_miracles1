@@ -1,5 +1,5 @@
-app.controller('UiCalendarController', ["$scope", "$http", "RegisterForClassFactory", "$location",
-    function($scope, $http, RegisterForClassFactory, $location) {
+app.controller('UiCalendarController', ["$scope", "$http", "RegisterForClassFactory", "$location", "$localstorage",
+    function($scope, $http, RegisterForClassFactory, $location, $localstorage) {
     console.log("hi from ui calendar controller");
     /* config object */
     $scope.tempEvents;
@@ -106,6 +106,11 @@ app.controller('UiCalendarController', ["$scope", "$http", "RegisterForClassFact
         $scope.alertEventOnClick = function(date, jsEvent, view) {
             console.log("this is the date: ",date);
             console.log("this is the jsEvent: ", jsEvent);
+
+            $localstorage.set('eventId', null);
+            $localstorage.set('eventDate', date.format());
+            $localstorage.set('eventInsertBoolean', true);
+            $location.path('/addevent');
         };
 
 

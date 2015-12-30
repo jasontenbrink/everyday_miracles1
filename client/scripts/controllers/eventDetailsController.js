@@ -1,5 +1,5 @@
-app.controller('EventDetailsController',['$scope', '$http', "RegisterForClassFactory", "$location",
-  function ($scope, $http, RegisterForClassFactory, $location) {
+app.controller('EventDetailsController',['$scope', '$http', "RegisterForClassFactory", "$location", "$localstorage",
+  function ($scope, $http, RegisterForClassFactory, $location, $localstorage) {
 
   console.log('hi, from event details controller');
   $scope.user = {};
@@ -15,6 +15,11 @@ app.controller('EventDetailsController',['$scope', '$http', "RegisterForClassFac
   $scope.eventFromFactory = $scope.registerForClassFactory.getEvent();
 
   console.log("scope.eventFromFactory: ",$scope.eventFromFactory);
+
+  // set values in local storage
+  $localstorage.set('eventId', $scope.eventFromFactory.eventId);
+  $localstorage.set('eventScheduleId', $scope.eventFromFactory.eventScheduleId);
+  $localstorage.set('eventInsertBoolean', false);
 
   $scope.getEventDetails = function(event){
     console.log("in getEventDetails");
@@ -36,7 +41,7 @@ app.controller('EventDetailsController',['$scope', '$http', "RegisterForClassFac
     $location.path('/chooseclassdates');
   };
   $scope.seeAttendance = function(someevent){
-    console.log("attendance button clicked");
+    // attendance uses values from localstorage set above
     $location.path('/attendance');
   };
   $scope.cancelClass = function(someevent) {
@@ -45,8 +50,8 @@ app.controller('EventDetailsController',['$scope', '$http', "RegisterForClassFac
 
   };
   $scope.editClass = function(someevent) {
-    console.log("edit class button clicked");
-    //$location.path('/addclass);
+    // add event uses values from localstorage set above
+    $location.path('/addevent');
   };
   $scope.goBack = function(){
     $location.path('/uicalendar');

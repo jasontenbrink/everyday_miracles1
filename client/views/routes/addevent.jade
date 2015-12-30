@@ -1,7 +1,7 @@
 md-content(layout-padding)
 
-  h2(ng-show="{{insertMode}}") Add Event
-  h2(ng-hide="{{insertMode}}") Edit Event
+  h2(ng-show="{{eventInsertBoolean}}") Add Event
+  h2(ng-hide="{{eventInsertBoolean}}") Edit Event
 
   form(name='addEventForm')
     md-input-container(class='md-block')
@@ -15,7 +15,6 @@ md-content(layout-padding)
       md-select(name="categorySelect" ng-model="event.eventCategoryId")
         md-option(ng-repeat="category in categories" value="{{category.event_category_id}}") {{category.name}}
 
-    md-button(ng-click="submitEvent()" class="md-raised md-primary" ng-disabled="addEventForm.$invalid") Save Event
   form(name='addEventScheduleForm')
     .layout-row
       md-input-container(flex)
@@ -44,6 +43,7 @@ md-content(layout-padding)
         label Repeat To Date
         input(type='date' name='title' ng-model="event.repeatToDate" ng-required="event.repeatType")
 
+    md-button(ng-click="submitEvent()" class="md-raised md-primary" ng-disabled="addEventForm.$invalid") Save Event
     md-button(ng-click="submitEventSchedule()" class="md-raised md-primary"
     ng-disabled="addEventScheduleForm.$invalid || addEventForm.$invalid") Schedule Event
 

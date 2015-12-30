@@ -1,6 +1,4 @@
-app.controller('AddEventController',['$scope', '$http', function ($scope, $http) {
-
-  $scope.insertMode = true;
+app.controller('AddEventController',['$scope', '$http', '$localstorage', function ($scope, $http, $localstorage) {
 
   $scope.event = {};
   $scope.eventSchedule = [];
@@ -10,7 +8,10 @@ app.controller('AddEventController',['$scope', '$http', function ($scope, $http)
 
   $scope.eventScheduleAdd = {};
 
-  //$scope.event.eventId = 13;
+  $scope.eventInsertBoolean = $localstorage.get('eventInsertBoolean');
+  $scope.event.eventId = $localstorage.get('eventId');
+
+  console.log("add event local storage ", $scope.eventInsertBoolean, $scope.event.eventId);
 
   $scope.submitEvent = function() {
     var event = {
@@ -30,13 +31,17 @@ app.controller('AddEventController',['$scope', '$http', function ($scope, $http)
       repeatSaturdayInd: $scope.event.repeatSaturdayInd
     };
 
-    if ($scope.insertMode) {
+    if ($scope.eventInsertBoolean=='true') {
       // insert data
       console.log("Input to post /event ", event);
       $http.post('/event', event).then(function (response) {
         console.log("Output from post /event ", response.data);
         $scope.event.eventId = response.data.rows[0].event_id;
-        $scope.insertMode = false;
+        $scope.eventInsertBoolean = false;
+
+        $localstorage.set('eventId', $scope.event.eventId);
+        $localstorage.set('eventInsertBoolean', $scope.eventInsertBoolean);
+
       });
     } else {
       // update data
@@ -73,8 +78,12 @@ app.controller('AddEventController',['$scope', '$http', function ($scope, $http)
     });
   };
 
-  if (!$scope.insertMode) {
+  if ($scope.eventInsertBoolean=='false') {
+    console.log("loading event");
     $scope.loadEventData();
+  } else {
+    // set the schedule date
+    $scope.eventScheduleAdd.scheduleDate = new Date($localstorage.get('eventDate'));
   }
 
   $scope.loadEventScheduleData = function() {
