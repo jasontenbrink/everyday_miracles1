@@ -29,6 +29,7 @@ app.controller('UiCalendarController', ["$scope", "$http", "RegisterForClassFact
                 $scope.endYear += 1;
             } else if ($scope.previousMonth == 0){
                 $scope.previousMonth = 12;
+                $scope.nextMonth = 1;
                 $scope.startYear -= 1;
             } else {
                 $scope.nextMonth = $scope.previousMonth+2;
