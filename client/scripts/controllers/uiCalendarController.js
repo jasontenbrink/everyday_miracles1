@@ -17,7 +17,7 @@ app.controller('UiCalendarController', ["$scope", "$http", "RegisterForClassFact
     //load the calendar
     $scope.loadCalendar = function() {
 
-        //sets dateRange to the present month
+        //sets dateRange from the previous month to the following month
         $scope.setDateRange = function() {
             $scope.today = new Date();
             $scope.previousMonth = $scope.today.getMonth();
@@ -29,6 +29,7 @@ app.controller('UiCalendarController', ["$scope", "$http", "RegisterForClassFact
                 $scope.endYear += 1;
             } else if ($scope.previousMonth == 0){
                 $scope.previousMonth = 12;
+                $scope.nextMonth = 1;
                 $scope.startYear -= 1;
             } else {
                 $scope.nextMonth = $scope.previousMonth+2;
@@ -36,7 +37,7 @@ app.controller('UiCalendarController', ["$scope", "$http", "RegisterForClassFact
 
 
 
-            //sets var dateRange
+            //sets variable dateRange
             $scope.dateRange = {
                 startDate: $scope.startYear+'-'+$scope.previousMonth+'-'+'01',
                 endDate: $scope.endYear+'-'+$scope.nextMonth+'-'+'31'
