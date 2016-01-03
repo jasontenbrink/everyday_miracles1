@@ -25,8 +25,10 @@ router.get('/byEventId', function(req,res){
             schedule_date, \
             start_datetime, \
             end_datetime, \
-            teacher_user_id \
+            teacher_user_id, \
+            concat(first_name,' ',last_name) as teacher_name \
         FROM event_schedule \
+        LEFT JOIN users on event_schedule.teacher_user_id = users.user_id \
         WHERE event_id = $1;", [queryOptions.event_id]);
         //console.log(query);
         // Stream results back one row at a time, push into results arrayd
@@ -53,6 +55,7 @@ router.post('/', function(req,res){
     var queryOptionsArray = req.body;
 
     pg.connect(connectionString, function (err, client) {
+        client.on('drain', client.end.bind(client));
         // build values string as
         //(13, '2015-12-12', '2015-12-12', '2015-12-12', 1),
         //    (13, '2015-12-12', '2015-12-12', '2015-12-12', 1)
@@ -101,7 +104,7 @@ router.put('/', function(req,res){
     };
 
     pg.connect(connectionString, function (err, client) {
-
+        client.on('drain', client.end.bind(client));
         client.query("UPDATE event_schedule \
                     SET event_id = $1, \
                         schedule_date = $2, \
@@ -128,6 +131,7 @@ router.put('/', function(req,res){
 // Delete
 router.delete('/delete:id', function(req,res){
     pg.connect(connectionString, function (err, client) {
+        client.on('drain', client.end.bind(client));
         client.query("DELETE FROM event_schedule WHERE event_schedule_id = $1", [req.params.id],
             function (err, result) {
                 if (err) {

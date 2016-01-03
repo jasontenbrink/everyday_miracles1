@@ -1,2 +1,27 @@
-div.
-    this is addwalkin
+md-content(layout-padding)
+    h2 Add New Walk-in
+    h3 {{event.title}}
+    h4 {{event.schedule_date|date:'fullDate'}} {{event.start_datetime|date:'shortTime'}} {{event.end_datetime|date:'shortTime'}}
+
+
+    form(name='addWalkinForm')
+        md-input-container(class='md-block')
+            label First Name
+            input(type="text" ng-model="user.firstName" required)
+        md-input-container(class='md-block')
+            label Last Name
+            input(type="text" ng-model="user.lastName" required)
+        md-input-container(class='md-block')
+            label Phone Number
+            input(type="text" ng-model="user.phoneNumber" required)
+        md-input-container(class='md-block')
+            label Date of Birth
+            input(type="date" ng-model="user.dateOfBirth" required)
+        md-input-container(class='md-block')
+            md-radio-group(ng-model = "user.paymentType" required)
+                label Payment Type
+                md-radio-button(value = "insurance") Insurance (I have state-funded insurance)
+                md-radio-button(value = "cash") Out of pocket (check or cash in-person)
+
+        md-button(ng-click="addWalkin()" class="md-primary md-raised" ng-disabled="addWalkinForm.$invalid") Submit
+

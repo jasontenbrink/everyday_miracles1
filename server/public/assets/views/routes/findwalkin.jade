@@ -1,2 +1,42 @@
-div.
-    this is find walkin
+md-content(layout-padding)
+    h2 Find Walk-in
+    h3 {{event.title}}
+    h4 {{event.schedule_date|date:'fullDate'}} {{event.start_datetime|date:'shortTime'}} {{event.end_datetime|date:'shortTime'}}
+
+    form(name='findWalkinForm')
+        md-input-container(class='md-block')
+            label Enter Phone Number
+            input(type="text" ng-model="user.phoneNumber")
+        //input(type="text" ng-model="user.firstName")
+        //input(type="text" ng-model="user.lastName")
+
+        md-button(ng-click="findWalkin()" class="md-primary md-raised") Search
+
+        h4 Name: {{foundUser.first_name}} {{foundUser.last_name}}
+        div Date of Birth: {{foundUser.date_of_birth|date:'longDate'}}
+        div Phone Number: {{foundUser.phone_number}}
+        md-input-container(class='md-block')
+            label Contact Type
+            select(class="" name="contacttype" ng-model="foundUser.contact_type" required)
+                option(value="email") Email
+                option(value="text") Text
+        md-input-container(class='md-block')
+            md-radio-group(ng-model = "foundUser.payment_type" required)
+                label Payment Type
+                md-radio-button(value = "insurance") Insurance (I have state-funded insurance)
+                md-radio-button(value = "cash") Out of pocket (check or cash in-person)
+        md-input-container(class='md-block')
+            md-radio-group(ng-model = "foundUser.everyday_miracles_client_ind" required)
+                label Are you an Everyday Miracles Client?
+                md-radio-button(ng-value = "true" ) Yes
+                md-radio-button(ng-value = "false" ) No
+        md-input-container(class='md-block')
+            label Doula Name
+            input(ng-model="foundUser.doula_name" type="text")
+        md-input-container(class='md-block')
+            label Expected Birth Date
+            input(ng-model="foundUser.expected_birth_date" type="date")
+
+        md-button(ng-click="submitUser()" class="md-primary md-raised" ng-disabled="findWalkinForm.$invalid") Submit
+
+        md-button(ng-click="newUser()" class="md-primary md-raised") New User

@@ -1,14 +1,17 @@
-app.controller('AddEventController',['$scope', '$http', '$timeout', function ($scope, $http, $timeout) {
-
-  $scope.insertMode = true;
+app.controller('AddEventController',['$scope', '$http', '$localstorage', function ($scope, $http, $localstorage) {
 
   $scope.event = {};
   $scope.eventSchedule = [];
   $scope.gridOptions = {};
+  $scope.teachers = [];
+  $scope.categories = [];
 
   $scope.eventScheduleAdd = {};
 
-  //$scope.event.eventId = 13;
+  $scope.eventInsertBoolean = $localstorage.get('eventInsertBoolean');
+  $scope.event.eventId = $localstorage.get('eventId');
+
+  console.log("add event local storage ", $scope.eventInsertBoolean, $scope.event.eventId);
 
   $scope.submitEvent = function() {
     var event = {
@@ -28,13 +31,17 @@ app.controller('AddEventController',['$scope', '$http', '$timeout', function ($s
       repeatSaturdayInd: $scope.event.repeatSaturdayInd
     };
 
-    if ($scope.insertMode) {
+    if ($scope.eventInsertBoolean=='true') {
       // insert data
       console.log("Input to post /event ", event);
       $http.post('/event', event).then(function (response) {
         console.log("Output from post /event ", response.data);
         $scope.event.eventId = response.data.rows[0].event_id;
-        $scope.insertMode = false;
+        $scope.eventInsertBoolean = false;
+
+        $localstorage.set('eventId', $scope.event.eventId);
+        $localstorage.set('eventInsertBoolean', $scope.eventInsertBoolean);
+
       });
     } else {
       // update data
@@ -71,10 +78,13 @@ app.controller('AddEventController',['$scope', '$http', '$timeout', function ($s
     });
   };
 
-  if (!$scope.insertMode) {
+  if ($scope.eventInsertBoolean=='false') {
+    console.log("loading event");
     $scope.loadEventData();
+  } else {
+    // set the schedule date
+    $scope.eventScheduleAdd.scheduleDate = new Date($localstorage.get('eventDate'));
   }
-
 
   $scope.loadEventScheduleData = function() {
     var passingEvent = {eventId: $scope.event.eventId};
@@ -86,21 +96,29 @@ app.controller('AddEventController',['$scope', '$http', '$timeout', function ($s
 
       $scope.gridOptions = {
         columnDefs : [
-          { name: 'event_schedule_id', displayName: 'Event Schedule ID'},
-          { name: 'event_id', displayName: 'Event ID'},
-          { name: 'schedule_date', cellFilter:"date: 'fullDate'", displayName: 'Schedule Date' },
-          { name: 'teacher_user_id', displayName: 'Teacher User Id' },
-          { name: 'start_datetime', cellFilter:"date: 'shortTime':'-1200'", displayName: 'Start Time'},
-          { name: 'end_datetime', cellFilter:"date: 'shortTime':'-1200'", displayName: 'End Time'},
-          {name: 'Action',
+          { name: 'event_schedule_id', displayName: 'Event Schedule ID', width:"10%"},
+          { name: 'event_id', displayName: 'Event ID', width:"10%"},
+          { name: 'schedule_date', cellFilter:"date: 'fullDate'", displayName: 'Schedule Date', width:"20%"},
+          { name: 'teacher_name', displayName: 'Teacher Name', width:"20%"},
+          { name: 'start_datetime', cellFilter:"date: 'shortTime':'-1200'", displayName: 'Start Time', width:"10%"},
+          { name: 'end_datetime', cellFilter:"date: 'shortTime':'-1200'", displayName: 'End Time', width:"10%"},
+          {name: 'Action', width:"10%",
             cellEditableCondition: false,
-            cellTemplate: '<button ng-click="grid.appScope.deleteEventSchedule(row.entity)" ' +
-            'class="md-raised md-primary">Delete</button>' }],
+            cellTemplate: '<button ng-click="grid.appScope.deleteEventSchedule(row.entity)" class="ui-grid-button">Delete</button>' }],
         data: $scope.eventSchedule
       };
-
     });
   };
+
+  // load up teacher drop down
+  $http.get('/users/teachers').then(function (response) {
+    $scope.teachers = response.data;
+  });
+
+  // load up category drop down
+  $http.get('/event/categories').then(function (response) {
+    $scope.categories = response.data;
+  });
 
   $scope.submitEventSchedule = function() {
 
@@ -159,18 +177,13 @@ app.controller('AddEventController',['$scope', '$http', '$timeout', function ($s
 
     } while (repeatBoolean);
 
-
     //do an insert always
     console.log("Input to post /eventSchedule ", addEventScheduleArray);
     $http.post('/eventSchedule', addEventScheduleArray).then(function (response) {
       console.log("Output from post /eventSchedule ", response.data);
-
       $scope.loadEventScheduleData();
     });
-
   };
-
-
 
   $scope.deleteEventSchedule = function(deleteObject) {
     console.log("object ", deleteObject);
@@ -188,12 +201,122 @@ app.controller('AddEventController',['$scope', '$http', '$timeout', function ($s
 
 }]);
 
-app.controller('AddWalkinController',['$scope', '$http', function ($scope, $http) {
-    console.log('hi, from add walkin Controller');
-}]);
+app.controller('AddWalkinController',['$scope', '$http', '$localstorage', '$location',
+    function ($scope, $http, $localstorage, $location) {
 
-app.controller('AttendanceController',['$scope', '$http', function ($scope, $http) {
-    console.log('hi, from attendance Controller');
+        $scope.usersEventSchedule = [];
+        $scope.event = {};
+        $scope.user = {};
+
+        $scope.eventId = $localstorage.get('eventId');
+        $scope.eventScheduleId = $localstorage.get('eventScheduleId');
+
+        var event2 = {eventId: $scope.eventId,
+            eventScheduleId: $scope.eventScheduleId};
+
+        console.log("Input to get /event/byEventIdEventScheduleId ", event2);
+        $http.get('/event/byEventIdEventScheduleId', {params: event2}).then(function(response){
+            console.log("Output from get /event/byEventIdEventScheduleId ", response.data);
+            $scope.event = response.data[0];
+        });
+
+        $scope.addWalkin = function() {
+            var insertuser = {
+                //userName: 'null',
+                //password: 'null',
+                firstName: $scope.user.firstName,
+                lastName: $scope.user.lastName,
+                roleId: 1,
+                dateOfBirth: $scope.user.dateOfBirth,
+                phoneNumber: $scope.user.phoneNumber,
+                //emailAddress: 'null',
+                //contactType: 'null',
+                paymentType: $scope.user.paymentType,
+                everydayMiraclesClientInd: false
+                //doulaName: 'null',
+                //expectedBirthDate: 'null'
+            };
+
+            console.log("Input to post /users ", insertuser);
+            $http.post('/users', insertuser).then(function (response) {
+                console.log("Output from post /users ", response.data);
+
+                if (response.data.rows[0].user_id) {
+                    // insert into users event schedule
+                    var userEvent = {
+                        userId: response.data.rows[0].user_id,
+                        eventScheduleId: $scope.eventScheduleId,
+                        status: 'Attended',
+                        comments: ''
+                    };
+
+                    console.log("Input to post /usersEventSchedule ", userEvent);
+                    $http.post('/usersEventSchedule', userEvent).then(function (response) {
+                        console.log("Output from post /usersEventSchedule ", response.data);
+                        alert("Created student.  Redirecting to Attendance.");
+                        $location.path('/attendance');
+                    });
+                }
+            });
+
+        }
+
+    }]);
+
+app.controller('AttendanceController',['$scope', '$http', '$localstorage', '$location',
+    function ($scope, $http, $localstorage, $location) {
+
+    $scope.usersEventSchedule = [];
+    $scope.event = {};
+
+    $scope.eventId = $localstorage.get('eventId');
+    $scope.eventScheduleId = $localstorage.get('eventScheduleId');
+
+    var event2 = {eventId: $scope.eventId,
+        eventScheduleId: $scope.eventScheduleId};
+
+    console.log("Input to get /event/byEventIdEventScheduleId ", event2);
+    $http.get('/event/byEventIdEventScheduleId', {params: event2}).then(function(response){
+        console.log("Output from get /event/byEventIdEventScheduleId ", response.data);
+        $scope.event = response.data[0];
+    });
+
+    // get data from the database
+    var eventSchedule = {eventScheduleId: $scope.eventScheduleId};
+
+    console.log("Input to get /usersEventSchedule/byEventScheduleId ", eventSchedule);
+    $http.get('/usersEventSchedule/byEventScheduleId', {params: eventSchedule}).then(function(response){
+        //console.log("Output from get /usersEventSchedule/byEventScheduleId ", response.data);
+        $scope.usersEventSchedule = response.data;
+        console.log("userseventschedule ", $scope.usersEventSchedule);
+    });
+
+    $scope.submitAttendance = function() {
+        for (var i = 0; i < $scope.usersEventSchedule.length; i++) {
+
+            console.log("changed ", $scope.usersEventSchedule[i].changed);
+            if ($scope.usersEventSchedule[i].changed) {
+
+                var userEvent = {
+                    userId: $scope.usersEventSchedule[i].user_id,
+                    eventScheduleId: $scope.usersEventSchedule[i].event_schedule_id,
+                    status: $scope.usersEventSchedule[i].status,
+                    comments: ''
+                };
+
+                console.log("Input to update /usersEventSchedule ", userEvent);
+                $http.put('/usersEventSchedule', userEvent).then(function (response) {
+                    console.log("Output from update /usersEventSchedule ", response.data);
+                });
+                $scope.usersEventSchedule[i].changed = false;
+            }
+        }
+    }
+
+    $scope.findWalkin = function() {
+        $location.path('/findwalkin');
+    }
+
 }]);
 
 app.controller('CalendarController',['$scope', function ($scope) {
@@ -211,53 +334,87 @@ app.controller('CalendarController',['$scope', function ($scope) {
 app.controller('ChooseClassDatesController',['$scope', '$http', "RegisterForClassFactory", '$location', function ($scope, $http, RegisterForClassFactory, $location) {
   console.log('hi, from choose class dates Controller');
 
-  //$scope.user = {};
-  //$scope.user.name = "Jane Doe";
-  $scope.event = [];
-  $scope.studentEvents = [];
+  $scope.user = {};
+  $scope.today = new Date();
+  console.log("today!!!  ",$scope.today);
+  //test user info
+  $scope.user.userId = 1;
 
+  $scope.event = [];
+  $scope.registeredEvents = [];
+  $scope.studentEvents = [];
+  $scope.allUserEvents = [];
+
+  //get factory
   $scope.registerForClassFactory = RegisterForClassFactory;
 
+  //get eventId from factory
   $scope.eventFromFactory = $scope.registerForClassFactory.getEvent();
 
-  console.log("scope.eventFromFactory: ",$scope.registerForClassFactory.getEvent());
-  console.log("this is the class registered for: ", $scope.eventFromFactory.eventId, $scope.eventFromFactory.title);
+  //get classes user has already registered for
+  $scope.getRegisteredClasses = function(event, someuser) {
 
+    var eventSchedule = {
+      userId: someuser.userId,
+      eventId: event.eventId
+    };
+
+    //console.log("in registered classes(). the event :",eventSchedule);
+    $http.get('/usersEventSchedule/byEventIdUserId', {params: eventSchedule}).then(function(response){
+      console.log("Output from get /usersEventSchedule/byEventScheduleId ", response.data);
+      $scope.registeredEvents = response.data;
+      $scope.checkRegisteredClasses();
+    });
+  };
+
+  //get all class instances for this particular class
   $scope.loadEventData =  function(event) {
     var eventId = {
       eventId: event.eventId
     };
     console.log("Input to get /eventSchedule/byEventId ", eventId);
 
-    $http.get('/eventSchedule/byEventId', {params: eventId}).then(function(response){
-      console.log("Output from get /eventSchedule/byEventId ", response.data);
-      $scope.event = response.data;
-    });
+    $http.get('/eventSchedule/byEventId', {params: eventId})
+        .then(function(response){
+            console.log("Output from get /eventSchedule/byEventId ", response.data);
+            $scope.event = response.data;
+            $scope.getRegisteredClasses(event, $scope.user)
+        });
+  };
+
+  //merge the registered classes with the event data
+  $scope.checkRegisteredClasses = function() {
+    console.log("checkRegisteredClasses fired");
+    for (var i = 0; i < $scope.registeredEvents.length; i++) {
+      for (var j = 0; j < $scope.event.length; j++) {
+        if ($scope.registeredEvents[i].event_schedule_id == $scope.event[j].event_schedule_id) {
+            $scope.event[j].addCheckbox = true;
+            //console.log("true");
+        }
+      }
+    }
+    console.log("$scope.event after for loops :",$scope.event);
   };
 
   $scope.loadEventData($scope.eventFromFactory);
 
 
   $scope.signUp = function(event) {
-    //console.log("Were here ok ", event);
 
     for (var i = 0; i < event.length; i++) {
       if (event[i].addCheckbox == true) {
         $scope.studentEvents.push($scope.event[i]);
 
-        //console.log("this is events with addCheckbox", $scope.event[i]);
       }
     }
-    //console.log("this is studentEvents ", $scope.studentEvents);
     $scope.registerForClassFactory.setStudentEvents($scope.studentEvents);
-    //console.log("factory test: ", $scope.registerForClassFactory.getStudentEvents());
 
     $location.path('/confirmclasssignup');
   };
 
   $scope.goBack = function () {
     $location.path('/eventdetails');
-    console.log("I hit the go back button: ");
+    //console.log("I hit the go back button: ");
   };
 }]);
 
@@ -387,8 +544,8 @@ app.controller('EditEventController',['$scope', '$http', function ($scope, $http
   console.log('hi, from edit event Controller');
 }]);
 
-app.controller('EventDetailsController',['$scope', '$http', "RegisterForClassFactory", "$location",
-  function ($scope, $http, RegisterForClassFactory, $location) {
+app.controller('EventDetailsController',['$scope', '$http', "RegisterForClassFactory", "$location", "$localstorage",
+  function ($scope, $http, RegisterForClassFactory, $location, $localstorage) {
 
   console.log('hi, from event details controller');
   $scope.user = {};
@@ -404,6 +561,11 @@ app.controller('EventDetailsController',['$scope', '$http', "RegisterForClassFac
   $scope.eventFromFactory = $scope.registerForClassFactory.getEvent();
 
   console.log("scope.eventFromFactory: ",$scope.eventFromFactory);
+
+  // set values in local storage
+  $localstorage.set('eventId', $scope.eventFromFactory.eventId);
+  $localstorage.set('eventScheduleId', $scope.eventFromFactory.eventScheduleId);
+  $localstorage.set('eventInsertBoolean', false);
 
   $scope.getEventDetails = function(event){
     console.log("in getEventDetails");
@@ -425,8 +587,8 @@ app.controller('EventDetailsController',['$scope', '$http', "RegisterForClassFac
     $location.path('/chooseclassdates');
   };
   $scope.seeAttendance = function(someevent){
-    console.log("attendance button clicked");
-    //$location.path('/attendance);
+    // attendance uses values from localstorage set above
+    $location.path('/attendance');
   };
   $scope.cancelClass = function(someevent) {
     console.log("cancel class button clicked");
@@ -434,8 +596,8 @@ app.controller('EventDetailsController',['$scope', '$http', "RegisterForClassFac
 
   };
   $scope.editClass = function(someevent) {
-    console.log("edit class button clicked");
-    //$location.path('/addclass);
+    // add event uses values from localstorage set above
+    $location.path('/addevent');
   };
   $scope.goBack = function(){
     $location.path('/uicalendar');
@@ -464,8 +626,94 @@ app.controller('EventDetailsController',['$scope', '$http', "RegisterForClassFac
 
 }]);
 
-app.controller('FindWalkinController',['$scope', '$http', function ($scope, $http) {
-    console.log('hi, from Find Walkin Controller');
+app.controller('FindWalkinController',['$scope', '$http', '$localstorage', '$location',
+    function ($scope, $http, $localstorage, $location) {
+
+        $scope.usersEventSchedule = [];
+        $scope.event = {};
+        $scope.user = {};
+        $scope.foundUser = [];
+
+        $scope.eventId = $localstorage.get('eventId');
+        $scope.eventScheduleId = $localstorage.get('eventScheduleId');
+
+        var event2 = {eventId: $scope.eventId,
+            eventScheduleId: $scope.eventScheduleId};
+
+        console.log("Input to get /event/byEventIdEventScheduleId ", event2);
+        $http.get('/event/byEventIdEventScheduleId', {params: event2}).then(function(response){
+            console.log("Output from get /event/byEventIdEventScheduleId ", response.data);
+            $scope.event = response.data[0];
+        });
+
+        $scope.findWalkin = function() {
+
+            console.log("Input to get /users/byNameOrPhone ", $scope.user);
+            $http.get('/users/byNameOrPhone', {params: $scope.user}).then(function (response) {
+                console.log("Output from get /users/byNameOrPhone ", response.data);
+                $scope.foundUser = response.data[0];
+                $scope.foundUser.expected_birth_date = new Date($scope.foundUser.expected_birth_date);
+            });
+        }
+
+        $scope.submitUser = function() {
+            console.log("submitting user ", $scope.foundUser);
+
+            var updateUser = {
+                userId: $scope.foundUser.user_id,
+                userName: $scope.foundUser.user_name,
+                firstName: $scope.foundUser.first_name,
+                lastName: $scope.foundUser.last_name,
+                roleId: $scope.foundUser.role_id,
+                dateOfBirth: new Date($scope.foundUser.date_of_birth),
+                phoneNumber: $scope.foundUser.phone_number,
+                emailAddress: $scope.foundUser.email_address,
+                contactType: $scope.foundUser.contact_type,
+                paymentType: $scope.foundUser.payment_type,
+                everydayMiraclesClientInd: $scope.foundUser.everyday_miracles_client_ind,
+                doulaName: $scope.foundUser.doula_name,
+                expectedBirthDate: new Date($scope.foundUser.expected_birth_date)
+            };
+
+            // update the user information
+            console.log("Input to put /users ", updateUser);
+            $http.put('/users', updateUser).then(function (response) {
+                console.log("Output from put /users ", response.data);
+            });
+
+            //insert into database
+            var userEvent = {
+                userId: $scope.foundUser.user_id,
+                eventScheduleId: $scope.eventScheduleId,
+                status: 'Attended',
+                comments: ''
+            };
+            console.log("Input to post /usersEventSchedule ", userEvent);
+
+            // see if the user is already in the class
+            $http.get('/usersEventSchedule/byUserIdEventScheduleId', {params: userEvent}).then(function(response){
+                console.log("Output from get /usersEventSchedule/byUserIdEventScheduleId ", response.data);
+                if(userEvent.userId == response.data[0].user_id) {
+                    alert("Student already in the class.");
+                } else {
+                    // insert into user event schedule table
+                    $http.post('/usersEventSchedule', userEvent).then(function (response) {
+                        console.log("Output from post /usersEventSchedule ", response.data);
+                        // go back to attendance page
+                        if(response.data==true){
+                            alert("Student submitted as attended.");
+                            $location.path('/attendance');
+                        }
+                    });
+                }
+            });
+        }
+
+        $scope.newUser = function() {
+            $location.path('/addwalkin');
+        }
+
+
 }]);
 
 app.controller('JadeController',['$scope', '$http', function ($scope, $http) {
@@ -559,6 +807,61 @@ app.controller("ProfileController", ["$scope", "$http", "ActiveProfileFactory",
 
 app.controller('StudentClassListController', ["$scope", "$http", function($scope,$http){
     console.log("student class controller says hi");
+    $scope.user = {};
+
+    $scope.allClasses = [];
+
+    $scope.gridOptions1 = {};
+    $scope.gridOptions1.data = [];
+    $scope.gridOptions2 = {};
+    $scope.gridOptions2.data = [];
+
+    $scope.gridOptions1 = {
+        columnDefs: [
+            {field: "title", name: "Class"},
+            {field: "start_datetime", name: "Date"},
+            {field: "status", name: "Status"},
+            {name: "action", displayName: "Action", cellTemplate: '<md-button class = "md-raised md-warn"' +
+            'ng-click="grid.appScope.deleteClass(row.entity)">delete</md-button>'}
+        ]
+    };
+    $scope.gridOptions2 = {
+        columnDefs: [
+            {field: "title", name: "Class"},
+            {field: "start_datetime", name: "Date"},
+            {field: "status", name: "Status"}
+        ]
+    };
+
+    //test user info
+    $scope.user.userId = 1;
+
+    //get user info
+    $scope.getUserInfo = function(someuser) {
+        $http.get('/users/byUserId', {params: someuser}).then(function (response) {
+            console.log("Output from get /users/byUserId ", response.data);
+            $scope.user.firstName = response.data[0].first_name;
+            $scope.user.lastName = response.data[0].last_name;
+        });
+    };
+
+    $scope.getClasses = function(someuser) {
+        $http.get('/usersEventSchedule/byUserId', {params: someuser}).then(function(response){
+            console.log("Output from get /usersEventSchedule/byUserId ", response.data);
+            $scope.allClasses = response.data;
+            for (var i = 0; i < $scope.allClasses.length; i++) {
+                if ($scope.allClasses[i].status == "Registered") {
+                    $scope.gridOptions1.data.push($scope.allClasses[i]);
+                } else if ($scope.allClasses[i].status == "Attended") {
+                    $scope.gridOptions2.data.push($scope.allClasses[i]);
+                }
+            }
+        });
+    };
+
+    $scope.getUserInfo($scope.user);
+    $scope.getClasses($scope.user);
+
 }]);
 app.controller('TestSqlController',['$scope', '$http', function ($scope, $http) {
 
@@ -586,6 +889,15 @@ app.controller('TestSqlController',['$scope', '$http', function ($scope, $http) 
         console.log("Input to get /users/byUserId ", user1);
         $http.get('/users/byUserId', {params: user1}).then(function (response) {
             console.log("Output from get /users/byUserId ", response.data);
+        });
+
+        console.log("Input to get /users/roles - nothing");
+        $http.get('/users/roles').then(function (response) {
+            console.log("Output from get /users/roles ", response.data);
+        });
+        console.log("Input to get /users/teachers - nothing");
+        $http.get('/users/teachers').then(function (response) {
+            console.log("Output from get /users/teachers ", response.data);
         });
     };
     $scope.insertUsers = function() {
@@ -667,6 +979,11 @@ app.controller('TestSqlController',['$scope', '$http', function ($scope, $http) 
         console.log("Input to get /event/byEventId ", event3);
         $http.get('/event/byEventId', {params: event3}).then(function(response){
             console.log("Output from get /event/byEventId ", response.data);
+        });
+
+        console.log("Input to get /event/categories - nothing");
+        $http.get('/event/categories').then(function (response) {
+            console.log("Output from get /event/categories ", response.data);
         });
 
     };
@@ -791,11 +1108,25 @@ app.controller('TestSqlController',['$scope', '$http', function ($scope, $http) 
             console.log("Output from get /usersEventSchedule/byUserId ", response.data);
         });
 
+        var user2 = {userId: 1, eventId: 1};
+
+        console.log("Input to get /usersEventSchedule/byEventIdUserId ", user2);
+        $http.get('/usersEventSchedule/byEventIdUserId', {params: user2}).then(function(response){
+            console.log("Output from get /usersEventSchedule/byEventIdUserId ", response.data);
+        });
+
         var eventSchedule = {eventScheduleId: 1};
 
         console.log("Input to get /usersEventSchedule/byEventScheduleId ", eventSchedule);
         $http.get('/usersEventSchedule/byEventScheduleId', {params: eventSchedule}).then(function(response){
             console.log("Output from get /usersEventSchedule/byEventScheduleId ", response.data);
+        });
+
+        var usereventSchedule = {userId:1, eventScheduleId: 1};
+
+        console.log("Input to get /usersEventSchedule/byUserIdEventScheduleId ", usereventSchedule);
+        $http.get('/usersEventSchedule/byUserIdEventScheduleId', {params: usereventSchedule}).then(function(response){
+            console.log("Output from get /usersEventSchedule/byUserIdEventScheduleId ", response.data);
         });
 
     };
@@ -856,8 +1187,8 @@ app.controller('TestSqlController',['$scope', '$http', function ($scope, $http) 
 
 }]);
 
-app.controller('UiCalendarController', ["$scope", "$http", "RegisterForClassFactory", "$location",
-    function($scope, $http, RegisterForClassFactory, $location) {
+app.controller('UiCalendarController', ["$scope", "$http", "RegisterForClassFactory", "$location", "$localstorage",
+    function($scope, $http, RegisterForClassFactory, $location, $localstorage) {
     console.log("hi from ui calendar controller");
     /* config object */
     $scope.tempEvents;
@@ -965,6 +1296,11 @@ app.controller('UiCalendarController', ["$scope", "$http", "RegisterForClassFact
         $scope.alertEventOnClick = function(date, jsEvent, view) {
             console.log("this is the date: ",date);
             console.log("this is the jsEvent: ", jsEvent);
+
+            $localstorage.set('eventId', null);
+            $localstorage.set('eventDate', date.format());
+            $localstorage.set('eventInsertBoolean', true);
+            $location.path('/addevent');
         };
 
 
