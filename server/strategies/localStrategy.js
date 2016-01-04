@@ -14,14 +14,14 @@ passport.serializeUser(function(user, done){
 
   // user parameter comes from the successful "done" in the bcrypt.compare method
   // in the strategy
-  console.log('Serializer, what is the value of user', user);
+  //console.log('Serializer, what is the value of user', user);
   done(null, user.username);//this value (the second one) is passed into the deserializer 'id' parameter
 });
 
 // this puts things onto req.user.  Will put things on the req during
 // preprocessing/middleware
 passport.deserializeUser(function(id, done){
-  console.log('deserialize id is: ', id);
+  //console.log('deserialize id is: ', id);
 
   //a DB call isn't necessary here.  I'm leaving it in in case we want to stick some stuff
   //from the DB onto the req.user.
@@ -60,7 +60,12 @@ passport.use('local', new localStrategy({
 
     //don't add in 'done' as the third parameter, it will eat the 'done' that
     //the callback strategy needs.
+
     pg.connect(connectionString, function (err,client) {
+      if (err){
+        console.log('err on db connect, ', err);
+        return err;
+      }
 
       //get hashed password to compare
       client.query("select password from users where user_name = $1", [req.body.username],
