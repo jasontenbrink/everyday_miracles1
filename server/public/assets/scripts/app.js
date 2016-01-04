@@ -35,7 +35,7 @@ app.config(['$routeProvider', '$httpProvider', function($routeProvider, $httpPro
                      controller: "AddEventController"
                  })
                  .when('/chooseclassdates', {
-                     templateUrl: '/templates/chooseclassdates.jade',
+                     templateUrl: '/secure/templates/chooseclassdates.jade',
                      controller: "ChooseClassDatesController"
                  })
                  .when('/confirmclasssignup', {

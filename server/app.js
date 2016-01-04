@@ -62,7 +62,7 @@ app.use('/usersEventSchedule', usersEventSchedule);
 app.use('/secure/templates',function (req, res, next) {
 console.log('banana');
 next();
-}, secureTemplates);
+}, authenticate, secureTemplates);
 //app.use('/*', authenticate);
 app.use('/', index);
 
