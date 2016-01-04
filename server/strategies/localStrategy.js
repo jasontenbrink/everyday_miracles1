@@ -28,11 +28,14 @@ passport.deserializeUser(function(id, done){
   pg.connect(connectionString, function (err, client) {
     client.query("select user_name, role_id from users where user_name = $1", [id],
       function (err, response) {
-      //  client.end();
+       client.end();
+      if (err) done(err);
+      //console.log('deserialize error', err);
         console.log('deserializer, response', response.rows[0]);
+        var username = {};
         username = response.rows[0];
 
-        //at this point we put whatever we want into the req.user property (second argument
+        //at this point we set up what we want to put into the req.user property on future requests(second argument
         // of done).
         //req.user will automatically get added to all requests coming from this client
         //(determined by the cookie the client gives us).  It gets added on by Passport
