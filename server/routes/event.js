@@ -6,6 +6,7 @@ var connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/ev
 
 // Select
 router.get('/byDateRange', function(req,res){
+    console.log('on the event route, req.user = ', req.user);
     var queryOptions = {
         start_date: req.query.startDate,
         end_date: req.query.endDate
@@ -170,6 +171,38 @@ router.get('/byEventId', function(req,res){
     });
 });
 
+// Select
+router.get('/categories', function(req,res){
+
+    var results = [];
+
+    //SQL Query > SELECT data from table
+    pg.connect(connectionString, function (err, client, done) {
+        var query = client.query("SELECT \
+                        event_category_id, \
+                        name \
+                    FROM \
+                        event_category \
+                    ORDER BY event_category_id;");
+        //console.log(query);
+        // Stream results back one row at a time, push into results array
+        query.on('row', function (row) {
+            results.push(row);
+        });
+
+        // After all data is returned, close connection and return results
+        query.on('end', function () {
+            client.end();
+            return res.json(results);
+        });
+
+        // Handle Errors
+        if (err) {
+            console.log(err);
+        }
+    });
+});
+
 // Insert
 router.post('/', function(req,res){
 
@@ -190,7 +223,7 @@ router.post('/', function(req,res){
     };
 
     pg.connect(connectionString, function (err, client) {
-
+        client.on('drain', client.end.bind(client));
         client.query("INSERT INTO event (title, \
             description, \
             event_category_id, \
@@ -205,7 +238,7 @@ router.post('/', function(req,res){
             repeat_friday_ind, \
             repeat_saturday_ind) \
         VALUES \
-        ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13);",
+        ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) RETURNING event_id;",
             [queryOptions.title,
                 queryOptions.description,
                 queryOptions.event_category_id,
@@ -222,9 +255,9 @@ router.post('/', function(req,res){
             function(err, result) {
                 if(err) {
                     console.log("Error inserting data: ", err);
-                    res.send(false);
+                    res.send(result);
                 }
-                res.send(true);
+                res.send(result);
             });
     });
 
@@ -251,7 +284,7 @@ router.put('/', function(req,res){
     };
 
     pg.connect(connectionString, function (err, client) {
-
+        client.on('drain', client.end.bind(client));
         client.query("UPDATE event \
                     SET title = $1, \
                         description = $2, \
@@ -294,6 +327,7 @@ router.put('/', function(req,res){
 // Delete
 router.delete('/delete:id', function(req,res){
     pg.connect(connectionString, function (err, client) {
+        client.on('drain', client.end.bind(client));
         client.query("DELETE FROM event WHERE event_id = $1", [req.params.id],
             function (err, result) {
                 if (err) {

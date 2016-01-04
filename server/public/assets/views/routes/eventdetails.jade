@@ -1,6 +1,6 @@
 
 //login button
--var req = { user: {role: 'student'}}
+-var req = { user: {role: 'admin'}}
 
 if !req.user.role
   .login-button
@@ -11,7 +11,8 @@ else
 
 h1 {{event.title}}
 
-.class-date {{event.start}}
+//once the database gets up, filter the display of this date
+.class-date {{event.start_datetime|date:'shortTime':'+12:00'}}
 
 .class-details {{event.description}}
 
@@ -30,3 +31,6 @@ if (req.user.role === 'admin')
 if (req.user.role === 'teacher') || (req.user.role === 'admin')
   .cancel-class-button
     md-button(class = "md-raised md-warn" ng-click = "cancelClass(event)") Cancel Class
+
+.go-back-button
+  md-button(class = "md-raised" ng-click = "goBack()") Go Back

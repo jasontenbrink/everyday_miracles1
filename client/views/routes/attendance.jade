@@ -1,0 +1,27 @@
+md-content(layout-padding)
+    h2 Take Attendance
+    h3 {{event.title}}
+    h4 {{event.schedule_date|date:'fullDate'}} {{event.start_datetime|date:'shortTime'}} {{event.end_datetime|date:'shortTime'}}
+
+    ng-form(name='attendanceForm')
+
+        div()
+            div(layout="row")
+                div(flex="25") Status
+                div(flex="25") Name
+                div(flex="25") Phone Number
+                div(flex="25") Payment Type
+            div(layout="column" ng-repeat="users in usersEventSchedule")
+                div(layout="row" ng-click="users.status='Attended'; users.changed=true")
+                    div(flex="25")
+                        select(class="" name="status" ng-model="users.status" ng-change="users.changed=true")
+                            option(value="Registered") Registered
+                            option(value="Attended") Attended
+                            option(value="Not attended") Not attended
+                    div(flex="25") {{users.first_name}} {{users.last_name}}
+                    div(flex="25") {{users.phone_number}}
+                    div(flex="25") {{users.payment_type}}
+
+        md-button(ng-click="submitAttendance()" class="md-primary md-raised") Submit Attendance
+
+        md-button(ng-click="findWalkin()" class="md-primary md-raised") Add Walk-in

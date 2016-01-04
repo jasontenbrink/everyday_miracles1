@@ -1,5 +1,5 @@
-app.controller('UiCalendarController', ["$scope", "$http", "RegisterForClassFactory", "$location",
-    function($scope, $http, RegisterForClassFactory, $location) {
+app.controller('UiCalendarController', ["$scope", "$http", "RegisterForClassFactory", "$location", "$localstorage",
+    function($scope, $http, RegisterForClassFactory, $location, $localstorage) {
     console.log("hi from ui calendar controller");
     /* config object */
     $scope.tempEvents;
@@ -7,40 +7,25 @@ app.controller('UiCalendarController', ["$scope", "$http", "RegisterForClassFact
     $scope.eventSources.events = [];
     $scope.uiConfig = {};
     $scope.registerForClassFactory = RegisterForClassFactory;
-    //dateRange related variables
-    $scope.today;
-    $scope.previousMonth = 0;
-    $scope.nextMonth = 0;
-    $scope.startYear = 0;
-    $scope.endYear = 0;
 
     //load the calendar
-    $scope.loadCalendar = function() {
-
+    $scope.loadCalendar = function(){
         //sets dateRange to the present month
         $scope.setDateRange = function() {
             $scope.today = new Date();
-            $scope.previousMonth = $scope.today.getMonth();
-            $scope.startYear = $scope.today.getFullYear();
-            $scope.endYear = $scope.today.getFullYear();
 
-            if ($scope.previousMonth == 11){
-                $scope.nextMonth = 1;
-                $scope.endYear += 1;
-            } else if ($scope.previousMonth == 0){
-                $scope.previousMonth = 12;
-                $scope.startYear -= 1;
-            } else {
-                $scope.nextMonth = $scope.previousMonth+2;
-            }
+            $scope.month = $scope.today.getMonth();
+            $scope.year = $scope.today.getFullYear();
 
 
+            // the 0th day of the next month returns the last day of this month
 
-            //sets var dateRange
             $scope.dateRange = {
-                startDate: $scope.startYear+'-'+$scope.previousMonth+'-'+'01',
-                endDate: $scope.endYear+'-'+$scope.nextMonth+'-'+'31'
+                startDate: new Date($scope.year - 1, $scope.month, 1),
+                endDate: new Date($scope.year + 1, $scope.month + 1, 0)
             };
+
+            console.log("date range ", $scope.dateRange);
 
         };
 
@@ -89,8 +74,8 @@ app.controller('UiCalendarController', ["$scope", "$http", "RegisterForClassFact
                     eventClick: $scope.eventClick
                 }
             };
-        });
 
+        });
 
         //functions
         //saves the unique id of the clicked on class
@@ -106,11 +91,13 @@ app.controller('UiCalendarController', ["$scope", "$http", "RegisterForClassFact
         $scope.alertEventOnClick = function(date, jsEvent, view) {
             console.log("this is the date: ",date);
             console.log("this is the jsEvent: ", jsEvent);
+
+            $localstorage.set('eventId', null);
+            $localstorage.set('eventDate', date.format());
+            $localstorage.set('eventInsertBoolean', true);
+            $location.path('/addevent');
         };
-
-
     };
-
 
 $scope.loadCalendar();
 

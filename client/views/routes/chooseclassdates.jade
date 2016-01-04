@@ -1,23 +1,15 @@
 
 div
   h1
-    | Class Dates
+    | {{eventFromFactory.title}} Class Dates
 
 div
   h2
-    | Please choose the dates you
+    | Please choose the date(s) that you
     br
-    | would like to attend class
+    | would like to attend the {{eventFromFactory.title}} class
 
-
-
-.classdates-input
-
-  ul(ng-repeat="date in classdates")
-
-    md-checkbox(md-no-ink aria-label="Class Picker Checkbox" class="md-primary" ng-checked=False)
-    p.buttonDates {{date}}
-
+md-checkbox(ng-repeat="date in event | limitTo:10" ng-model="date.addCheckbox" md-no-ink aria-label="Class Picker Checkbox") {{date.schedule_date|date:'fullDate':'+12:00'}} {{date.start_datetime|date:'shortTime':'+12:00'}} {{date.end_datetime|date:'shortTime':'+12:00'}}
 
 .sign-up-button
   md-button(class="md-raised" ng-click="signUp(event)") Sign Up

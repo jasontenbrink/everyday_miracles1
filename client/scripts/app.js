@@ -1,7 +1,9 @@
 var app = angular.module('app',['ngAnimate','ngRoute', 'ui.grid',
   'ui.grid.selection','ngMaterial', 'ui.grid.exporter', 'ui.calendar']);
 
-app.config(['$routeProvider', function($routeProvider){
+app.config(['$routeProvider', '$httpProvider', function($routeProvider, $httpProvider){
+
+  $httpProvider.interceptors.push('AuthenticationRedirectInjector');
 
   $routeProvider
                 .when('/calendar', {
@@ -13,11 +15,11 @@ app.config(['$routeProvider', function($routeProvider){
                     controller: "TestSqlController"
                 })
                 .when('/uicalendar', {
-                    templateUrl: 'assets/views/routes/uicalendar.html',
+                    templateUrl: '/templates/uicalendar.jade',
                     controller: "UiCalendarController"
                 })
                 .when('/jade', {
-                    templateUrl: '/templates/test.jade',
+                    templateUrl: '/secure/templates/test.jade',
                     controller: "JadeController"
                  })
                 .when('/anotherroute', {
@@ -29,7 +31,7 @@ app.config(['$routeProvider', function($routeProvider){
                     controller: "EventDetailsController"
                  })
                  .when('/addevent', {
-                     templateUrl: '/templates/addevent.jade',
+                     templateUrl: '/secure/templates/addevent.jade',
                      controller: "AddEventController"
                  })
                  .when('/chooseclassdates', {
@@ -40,8 +42,12 @@ app.config(['$routeProvider', function($routeProvider){
                      templateUrl: '/templates/confirmclasssignup.jade',
                      controller: "ConfirmClassSignupController"
                  })
+                 .when('/profile', {
+                     templateUrl:'/templates/profile.jade',
+                     controller: "ProfileController"
+                  })
                  .when('/editevent', {
-                     templateUrl: '/templates/editevent.jade',
+                     templateUrl: '/secure/templates/editevent.jade',
                      controller: "EditEventController"
                  })
                  .when('/login', {
@@ -51,7 +57,27 @@ app.config(['$routeProvider', function($routeProvider){
                  .when('/userregistration', {
                      templateUrl: '/templates/userregistration.jade',
                      controller: "UserRegistrationController"
-                 });
+                 })
+                  .when('/attendance', {
+                      templateUrl: '/templates/attendance.jade',
+                      controller: "AttendanceController"
+                  })
+                  .when('/findwalkin', {
+                      templateUrl: '/templates/findwalkin.jade',
+                      controller: "FindWalkinController"
+                  })
+                  .when('/addwalkin', {
+                      templateUrl: '/templates/addwalkin.jade',
+                      controller: "AddWalkinController"
+                  })
+                  .when('/studentclasslist', {
+                      templateUrl: '/templates/studentclasslist.jade',
+                      controller: 'StudentClassListController'
+                  })
+                  .when('/directory', {
+                      templateUrl: '/templates/directory.jade',
+                      controller: "DirectoryController"
+                  });
 
 
 }]);

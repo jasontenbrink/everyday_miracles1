@@ -1,2 +1,50 @@
-div.
-  this is addevent
+md-content(layout-padding)
+
+  h2(ng-show="{{eventInsertBoolean}}") Add Event
+  h2(ng-hide="{{eventInsertBoolean}}") Edit Event
+
+  form(name='addEventForm')
+    md-input-container(class='md-block')
+      label Title
+      input(type='text' name='title' ng-model="event.title" required)
+    md-input-container(class='md-block')
+      label Description
+      input(type='text' name='description' ng-model="event.description" required)
+    md-input-container(flex)
+      label  Category
+      md-select(name="categorySelect" ng-model="event.eventCategoryId")
+        md-option(ng-repeat="category in categories" value="{{category.event_category_id}}") {{category.name}}
+
+  form(name='addEventScheduleForm')
+    .layout-row
+      md-input-container(flex)
+        label Schedule Date
+        input(type='date' name='scheduledate' ng-model="eventScheduleAdd.scheduleDate" required)
+      md-input-container(flex)
+        label Start Time
+        input(type='time' name='startdatetime' ng-model="eventScheduleAdd.startDateTime" required)
+      md-input-container(flex)
+        label End Time
+        input(type='time' name='enddatetime' ng-model="eventScheduleAdd.endDateTime" required)
+      md-input-container(flex)
+        label Teacher
+        md-select(name="teacherSelect" ng-model="eventScheduleAdd.teacherUserId")
+          md-option(ng-repeat="teacher in teachers" value="{{teacher.user_id}}") {{teacher.first_name}} {{teacher.last_name}}
+
+    .layout-row
+      md-input-container(flex)
+        label Repeat Type
+        md-select(name='repeattype' ng-model="event.repeatType")
+          md-option(value='None') None
+          md-option(value='Daily') Daily
+          md-option(value='Weekly') Weekly
+          md-option(value='Monthly') Monthly
+      md-input-container(flex)
+        label Repeat To Date
+        input(type='date' name='title' ng-model="event.repeatToDate" ng-required="event.repeatType")
+
+    md-button(ng-click="submitEvent()" class="md-raised md-primary" ng-disabled="addEventForm.$invalid") Save Event
+    md-button(ng-click="submitEventSchedule()" class="md-raised md-primary"
+    ng-disabled="addEventScheduleForm.$invalid || addEventForm.$invalid") Schedule Event
+
+    <div ui-grid="gridOptions" class="eventScheduleGrid"></div>

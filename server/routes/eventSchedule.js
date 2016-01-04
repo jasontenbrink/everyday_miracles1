@@ -25,8 +25,10 @@ router.get('/byEventId', function(req,res){
             schedule_date, \
             start_datetime, \
             end_datetime, \
-            teacher_user_id \
+            teacher_user_id, \
+            concat(first_name,' ',last_name) as teacher_name \
         FROM event_schedule \
+        LEFT JOIN users on event_schedule.teacher_user_id = users.user_id \
         WHERE event_id = $1;", [queryOptions.event_id]);
         //console.log(query);
         // Stream results back one row at a time, push into results arrayd
@@ -50,35 +52,41 @@ router.get('/byEventId', function(req,res){
 // Insert
 router.post('/', function(req,res){
 
-    var queryOptions = {
-        event_id: req.body.eventId,
-        schedule_date: req.body.scheduleDate,
-        start_datetime: req.body.startDateTime,
-        end_datetime: req.body.endDateTime,
-        teacher_user_id : req.body.teacherUserId
-    };
+    var queryOptionsArray = req.body;
 
     pg.connect(connectionString, function (err, client) {
+        client.on('drain', client.end.bind(client));
+        // build values string as
+        //(13, '2015-12-12', '2015-12-12', '2015-12-12', 1),
+        //    (13, '2015-12-12', '2015-12-12', '2015-12-12', 1)
+        var valuesString = "";
+        for (var i = 0; i < queryOptionsArray.length; i++) {
+            if (queryOptionsArray[i].teacherUserId == undefined){
+                queryOptionsArray[i].teacherUserId = "null";
+            }
+            valuesString += "(" + queryOptionsArray[i].eventId + ",'" + queryOptionsArray[i].scheduleDate + "'," +
+                "'" + queryOptionsArray[i].startDateTime + "'," +
+                "'" + queryOptionsArray[i].endDateTime + "'," +
+                "" + queryOptionsArray[i].teacherUserId + ")"
+            if (i != queryOptionsArray.length-1) {
+                valuesString += ",";
+            }
+        }
+        //console.log("valuestring ", valuesString);
 
         client.query("INSERT INTO event_schedule (event_id, \
-            schedule_date, \
-            start_datetime, \
-            end_datetime, \
-            teacher_user_id) \
-        VALUES \
-        ($1, $2, $3, $4, $5);",
-            [queryOptions.event_id,
-                queryOptions.schedule_date,
-                queryOptions.start_datetime,
-                queryOptions.end_datetime,
-                queryOptions.teacher_user_id],
-            function(err, result) {
-                if(err) {
+                schedule_date, \
+                start_datetime, \
+                end_datetime, \
+                teacher_user_id) \
+            VALUES " + valuesString + ";",
+            function (err, result) {
+                if (err) {
                     console.log("Error inserting data: ", err);
                     res.send(false);
                 }
-                res.send(true);
             });
+        res.send(true);
     });
 
 });
@@ -96,7 +104,7 @@ router.put('/', function(req,res){
     };
 
     pg.connect(connectionString, function (err, client) {
-
+        client.on('drain', client.end.bind(client));
         client.query("UPDATE event_schedule \
                     SET event_id = $1, \
                         schedule_date = $2, \
@@ -123,6 +131,7 @@ router.put('/', function(req,res){
 // Delete
 router.delete('/delete:id', function(req,res){
     pg.connect(connectionString, function (err, client) {
+        client.on('drain', client.end.bind(client));
         client.query("DELETE FROM event_schedule WHERE event_schedule_id = $1", [req.params.id],
             function (err, result) {
                 if (err) {

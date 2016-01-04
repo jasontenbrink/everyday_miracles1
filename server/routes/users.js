@@ -55,6 +55,72 @@ router.get('/byUserId', function(req,res){
         }
     });
 });
+
+// Select
+router.get('/roles', function(req,res){
+
+    var results = [];
+
+    //SQL Query > SELECT data from table
+    pg.connect(connectionString, function (err, client, done) {
+        var query = client.query("SELECT \
+                        role_id, \
+                        name \
+                    FROM \
+                        role \
+                    ORDER BY role_id;");
+        //console.log(query);
+        // Stream results back one row at a time, push into results array
+        query.on('row', function (row) {
+            results.push(row);
+        });
+
+        // After all data is returned, close connection and return results
+        query.on('end', function () {
+            client.end();
+            return res.json(results);
+        });
+
+        // Handle Errors
+        if (err) {
+            console.log(err);
+        }
+    });
+});
+
+// Select
+router.get('/teachers', function(req,res){
+
+    var results = [];
+
+    //SQL Query > SELECT data from table
+    pg.connect(connectionString, function (err, client, done) {
+        var query = client.query("SELECT \
+                        user_id, \
+                        first_name, \
+                        last_name \
+                    FROM \
+                        users \
+                    WHERE role_id = 3 \
+                    ORDER BY first_name, last_name;");
+        //console.log(query);
+        // Stream results back one row at a time, push into results array
+        query.on('row', function (row) {
+            results.push(row);
+        });
+
+        // After all data is returned, close connection and return results
+        query.on('end', function () {
+            client.end();
+            return res.json(results);
+        });
+
+        // Handle Errors
+        if (err) {
+            console.log(err);
+        }
+    });
+});
 // Select
 router.get('/byUserName', function(req,res){
     var queryOptions = {
@@ -106,12 +172,13 @@ router.get('/byUserName', function(req,res){
 });
 // Select
 router.get('/byNameOrPhone', function(req,res){
+  console.log("on users/byNameOrPhone, req.query is ", req.query);
     var queryOptions = {
-        first_name: req.query.firstName,
-        last_name: req.query.lastName,
-        phone_number: req.query.phoneNumber
+        first_name: req.query.firstName + '%',
+        last_name: req.query.lastName + '%',
+        phone_number: req.query.phoneNumber + '%'
     };
-
+    console.log('query options, ', queryOptions);
     var results = [];
 
     /*jshint multistr: true */
@@ -120,7 +187,6 @@ router.get('/byNameOrPhone', function(req,res){
         var query = client.query("SELECT \
                         user_id, \
                         user_name, \
-                        password, \
                         first_name, \
                         last_name, \
                         users.role_id, \
@@ -176,7 +242,7 @@ router.post('/', function(req,res){
     };
 
     pg.connect(connectionString, function (err, client) {
-
+        client.on('drain', client.end.bind(client));
         client.query("INSERT INTO users (user_name, \
             password, \
             first_name, \
@@ -209,9 +275,9 @@ router.post('/', function(req,res){
             function(err, result) {
                 if(err) {
                     console.log("Error inserting data: ", err);
-                    res.send(false);
+                    res.send(result);
                 }
-                res.send(true);
+                res.send(result);
             });
     });
 
@@ -238,7 +304,7 @@ router.put('/', function(req,res){
     };
 
     pg.connect(connectionString, function (err, client) {
-
+        client.on('drain', client.end.bind(client));
         client.query("UPDATE users \
                     SET user_name = $1, \
                         password = $2, \
@@ -281,6 +347,7 @@ router.put('/', function(req,res){
 // Delete
 router.delete('/delete:id', function(req,res){
     pg.connect(connectionString, function (err, client) {
+        client.on('drain', client.end.bind(client));
         client.query("DELETE FROM users WHERE user_id = $1", [req.params.id],
             function (err, result) {
                 if (err) {
