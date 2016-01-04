@@ -1,19 +1,11 @@
-app.controller('AttendanceController',['$scope', '$http', 'RegisterForClassFactory', '$location',
-    function ($scope, $http, RegisterForClassFactory, $location) {
+app.controller('AttendanceController',['$scope', '$http', '$localstorage', '$location',
+    function ($scope, $http, $localstorage, $location) {
 
     $scope.usersEventSchedule = [];
     $scope.event = {};
 
-    $scope.registerForClassFactory = RegisterForClassFactory;
-
-    //get event info from the registerForClassFactory
-    //should be event info corresponding to event clicked on in calendar view
-    $scope.eventFromFactory = $scope.registerForClassFactory.getEvent();
-
-    console.log("scope.eventFromFactory: ",$scope.eventFromFactory);
-
-    $scope.eventId = $scope.eventFromFactory.eventId;
-    $scope.eventScheduleId = $scope.eventFromFactory.eventScheduleId;
+    $scope.eventId = $localstorage.get('eventId');
+    $scope.eventScheduleId = $localstorage.get('eventScheduleId');
 
     var event2 = {eventId: $scope.eventId,
         eventScheduleId: $scope.eventScheduleId};

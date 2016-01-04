@@ -1,5 +1,8 @@
 md-content(layout-padding)
     h2 Add New Walk-in
+    h3 {{event.title}}
+    h4 {{event.schedule_date|date:'fullDate'}} {{event.start_datetime|date:'shortTime'}} {{event.end_datetime|date:'shortTime'}}
+
 
     form(name='addWalkinForm')
         md-input-container(class='md-block')
@@ -15,8 +18,10 @@ md-content(layout-padding)
             label Date of Birth
             input(type="date" ng-model="user.dateOfBirth" required)
         md-input-container(class='md-block')
-            label Payment Type
-            input(ng-model="user.paymentType" type="text" required)
+            md-radio-group(ng-model = "user.paymentType" required)
+                label Payment Type
+                md-radio-button(value = "insurance") Insurance (I have state-funded insurance)
+                md-radio-button(value = "cash") Out of pocket (check or cash in-person)
 
         md-button(ng-click="addWalkin()" class="md-primary md-raised" ng-disabled="addWalkinForm.$invalid") Submit
 

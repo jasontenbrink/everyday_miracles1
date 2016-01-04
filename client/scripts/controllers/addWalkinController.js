@@ -1,21 +1,21 @@
-app.controller('AddWalkinController',['$scope', '$http', 'RegisterForClassFactory', '$location',
-    function ($scope, $http, RegisterForClassFactory, $location) {
+app.controller('AddWalkinController',['$scope', '$http', '$localstorage', '$location',
+    function ($scope, $http, $localstorage, $location) {
 
         $scope.usersEventSchedule = [];
         $scope.event = {};
         $scope.user = {};
 
-        $scope.registerForClassFactory = RegisterForClassFactory;
+        $scope.eventId = $localstorage.get('eventId');
+        $scope.eventScheduleId = $localstorage.get('eventScheduleId');
 
-        //get event info from the registerForClassFactory
-        //should be event info corresponding to event clicked on in calendar view
-        $scope.eventFromFactory = $scope.registerForClassFactory.getEvent();
+        var event2 = {eventId: $scope.eventId,
+            eventScheduleId: $scope.eventScheduleId};
 
-        console.log("scope.eventFromFactory: ",$scope.eventFromFactory);
-
-        $scope.eventId = $scope.eventFromFactory.eventId;
-        $scope.eventScheduleId = $scope.eventFromFactory.eventScheduleId;
-
+        console.log("Input to get /event/byEventIdEventScheduleId ", event2);
+        $http.get('/event/byEventIdEventScheduleId', {params: event2}).then(function(response){
+            console.log("Output from get /event/byEventIdEventScheduleId ", response.data);
+            $scope.event = response.data[0];
+        });
 
         $scope.addWalkin = function() {
             var insertuser = {
