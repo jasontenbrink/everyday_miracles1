@@ -18,10 +18,12 @@ p.class-dates {
   background-color: white;
 }
 
-.fc-day-grid-container .fc-scroller {
-  height: 600px;
-}
-
 .fc-week {
   height: 100px;
+}
+
+.md-image-content {
+  width: 50px;
+  height: auto;
+  float: left;
 }
