@@ -7,12 +7,6 @@ app.controller('UiCalendarController', ["$scope", "$http", "RegisterForClassFact
     $scope.eventSources.events = [];
     $scope.uiConfig = {};
     $scope.registerForClassFactory = RegisterForClassFactory;
-    //dateRange related variables
-    $scope.today;
-    $scope.previousMonth = 0;
-    $scope.nextMonth = 0;
-    $scope.startYear = 0;
-    $scope.endYear = 0;
 
     //load the calendar
     $scope.loadCalendar = function() {
@@ -20,28 +14,18 @@ app.controller('UiCalendarController', ["$scope", "$http", "RegisterForClassFact
         //sets dateRange to the present month
         $scope.setDateRange = function() {
             $scope.today = new Date();
-            $scope.previousMonth = $scope.today.getMonth();
-            $scope.startYear = $scope.today.getFullYear();
-            $scope.endYear = $scope.today.getFullYear();
 
-            if ($scope.previousMonth == 11){
-                $scope.nextMonth = 1;
-                $scope.endYear += 1;
-            } else if ($scope.previousMonth == 0){
-                $scope.previousMonth = 12;
-                $scope.nextMonth = 1;
-                $scope.startYear -= 1;
-            } else {
-                $scope.nextMonth = $scope.previousMonth+2;
-            }
+            $scope.month = $scope.today.getMonth();
+            $scope.year = $scope.today.getFullYear();
 
 
-
-            //sets var dateRange
+            // the 0th day of the next month returns the last day of this month
             $scope.dateRange = {
-                startDate: $scope.startYear+'-'+$scope.previousMonth+'-'+'01',
-                endDate: $scope.endYear+'-'+$scope.nextMonth+'-'+'31'
+                startDate: new Date($scope.year, $scope.month, 1),
+                endDate: new Date($scope.year, $scope.month + 1, 0)
             };
+
+            console.log("date range ", $scope.dateRange);
 
         };
 
