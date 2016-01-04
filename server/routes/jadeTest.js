@@ -11,7 +11,7 @@ router.get('/:name?', function (req, res) {
     res.render('templates/' + name, {message: 'Hello there!'});
   }
   else{
-    res.render('routes/' + name, {message: 'Hello there!'});
+    res.render('routes/' + name, {message: 'hi there'});
   }
 });
 

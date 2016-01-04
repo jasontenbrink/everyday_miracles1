@@ -11,7 +11,8 @@ router.get('/:name', function (req, res) {
     res.render('templates/' + name, {message: 'Hello there!'});
   }
   else{
-    res.render('routes/' + name, {message: 'Hello there!'});
+    console.log('req.user on secureTemplates route', req.user);
+    res.render('routes/' + name, {user: req.user});
   }
 });
 
