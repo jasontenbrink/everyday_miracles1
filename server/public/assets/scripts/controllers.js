@@ -707,11 +707,11 @@ app.controller('FindWalkinController',['$scope', '$http', '$localstorage', '$loc
                     });
                 }
             });
-        }
+        };
 
         $scope.newUser = function() {
             $location.path('/addwalkin');
-        }
+        };
 
 
 }]);
