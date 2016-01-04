@@ -1248,9 +1248,14 @@ app.controller('UiCalendarController', ["$scope", "$http", "RegisterForClassFact
     $scope.registerForClassFactory = RegisterForClassFactory;
 
     //load the calendar
+<<<<<<< HEAD
+    $scope.loadCalendar = function(){
+        //sets dateRange to the present month
+=======
     $scope.loadCalendar = function() {
 
         //sets dateRange from the previous month to the following month
+>>>>>>> 2cab6105f02cd93e3b8a78d322f3ee1842a11fb4
         $scope.setDateRange = function() {
             $scope.today = new Date();
 
@@ -1261,8 +1266,8 @@ app.controller('UiCalendarController', ["$scope", "$http", "RegisterForClassFact
             // the 0th day of the next month returns the last day of this month
 
             $scope.dateRange = {
-                startDate: new Date($scope.year, $scope.month, 1),
-                endDate: new Date($scope.year, $scope.month + 1, 0)
+                startDate: new Date($scope.year - 1, $scope.month, 1),
+                endDate: new Date($scope.year + 1, $scope.month + 1, 0)
             };
 
             console.log("date range ", $scope.dateRange);
@@ -1314,8 +1319,8 @@ app.controller('UiCalendarController', ["$scope", "$http", "RegisterForClassFact
                     eventClick: $scope.eventClick
                 }
             };
-        });
 
+        });
 
         //functions
         //saves the unique id of the clicked on class
@@ -1337,10 +1342,7 @@ app.controller('UiCalendarController', ["$scope", "$http", "RegisterForClassFact
             $localstorage.set('eventInsertBoolean', true);
             $location.path('/addevent');
         };
-
-
     };
-
 
 $scope.loadCalendar();
 
