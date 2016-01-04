@@ -1248,14 +1248,8 @@ app.controller('UiCalendarController', ["$scope", "$http", "RegisterForClassFact
     $scope.registerForClassFactory = RegisterForClassFactory;
 
     //load the calendar
-<<<<<<< HEAD
     $scope.loadCalendar = function(){
         //sets dateRange to the present month
-=======
-    $scope.loadCalendar = function() {
-
-        //sets dateRange from the previous month to the following month
->>>>>>> 2cab6105f02cd93e3b8a78d322f3ee1842a11fb4
         $scope.setDateRange = function() {
             $scope.today = new Date();
 
