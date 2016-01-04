@@ -100,8 +100,8 @@ app.controller('AddEventController',['$scope', '$http', '$localstorage', functio
           { name: 'event_id', displayName: 'Event ID', width:"10%"},
           { name: 'schedule_date', cellFilter:"date: 'fullDate'", displayName: 'Schedule Date', width:"20%"},
           { name: 'teacher_name', displayName: 'Teacher Name', width:"20%"},
-          { name: 'start_datetime', cellFilter:"date: 'shortTime':'-1200'", displayName: 'Start Time', width:"10%"},
-          { name: 'end_datetime', cellFilter:"date: 'shortTime':'-1200'", displayName: 'End Time', width:"10%"},
+          { name: 'start_datetime', cellFilter:"date: 'shortTime'", displayName: 'Start Time', width:"10%"},
+          { name: 'end_datetime', cellFilter:"date: 'shortTime'", displayName: 'End Time', width:"10%"},
           {name: 'Action', width:"10%",
             cellEditableCondition: false,
             cellTemplate: '<button ng-click="grid.appScope.deleteEventSchedule(row.entity)" class="ui-grid-button">Delete</button>' }],
@@ -1196,12 +1196,6 @@ app.controller('UiCalendarController', ["$scope", "$http", "RegisterForClassFact
     $scope.eventSources.events = [];
     $scope.uiConfig = {};
     $scope.registerForClassFactory = RegisterForClassFactory;
-    //dateRange related variables
-    $scope.today;
-    $scope.previousMonth = 0;
-    $scope.nextMonth = 0;
-    $scope.startYear = 0;
-    $scope.endYear = 0;
 
     //load the calendar
     $scope.loadCalendar = function() {
@@ -1209,27 +1203,16 @@ app.controller('UiCalendarController', ["$scope", "$http", "RegisterForClassFact
         //sets dateRange to the present month
         $scope.setDateRange = function() {
             $scope.today = new Date();
-            $scope.previousMonth = $scope.today.getMonth();
-            $scope.startYear = $scope.today.getFullYear();
-            $scope.endYear = $scope.today.getFullYear();
+            $scope.month = $scope.today.getMonth();
+            $scope.year = $scope.today.getFullYear();
 
-            if ($scope.previousMonth == 11){
-                $scope.nextMonth = 1;
-                $scope.endYear += 1;
-            } else if ($scope.previousMonth == 0){
-                $scope.previousMonth = 12;
-                $scope.startYear -= 1;
-            } else {
-                $scope.nextMonth = $scope.previousMonth+2;
-            }
-
-
-
-            //sets var dateRange
+            // the 0th day of the next month returns the last day of this month
             $scope.dateRange = {
-                startDate: $scope.startYear+'-'+$scope.previousMonth+'-'+'01',
-                endDate: $scope.endYear+'-'+$scope.nextMonth+'-'+'31'
+                startDate: new Date($scope.year, $scope.month, 1),
+                endDate: new Date($scope.year, $scope.month + 1, 0)
             };
+
+            console.log("date range ", $scope.dateRange);
 
         };
 
