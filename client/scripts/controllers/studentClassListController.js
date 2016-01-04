@@ -1,13 +1,19 @@
 app.controller('StudentClassListController', ["$scope", "$http", function($scope,$http){
     console.log("student class controller says hi");
     $scope.user = {};
-
     $scope.allClasses = [];
-
     $scope.gridOptions1 = {};
     $scope.gridOptions1.data = [];
     $scope.gridOptions2 = {};
     $scope.gridOptions2.data = [];
+
+    $scope.clearVariables = function() {
+        $scope.allClasses = [];
+        $scope.gridOptions1 = {};
+        $scope.gridOptions1.data = [];
+        $scope.gridOptions2 = {};
+        $scope.gridOptions2.data = [];
+    };
 
     $scope.gridOptions1 = {
         columnDefs: [
@@ -39,6 +45,7 @@ app.controller('StudentClassListController', ["$scope", "$http", function($scope
     };
 
     $scope.getClasses = function(someuser) {
+
         $http.get('/usersEventSchedule/byUserId', {params: someuser}).then(function(response){
             console.log("Output from get /usersEventSchedule/byUserId ", response.data);
             $scope.allClasses = response.data;
@@ -50,6 +57,22 @@ app.controller('StudentClassListController', ["$scope", "$http", function($scope
                 }
             }
         });
+    };
+
+    $scope.deleteClass = function(someclass) {
+        console.log("someclass: ", someclass);
+        //$scope.deleteUsersEventSchedule = function() {
+        //
+            var event = {userId: someclass.user_id,
+                eventScheduleId: someclass.event_schedule_id};
+        console.log("variable event: ", event);
+        //
+            $http.get('/usersEventSchedule/delete', {params: event}).then(function(response){
+                console.log("output from delete userseventSchedule ", response.data);
+                $scope.clearVariables();
+                $scope.getClasses($scope.user);
+            });
+        //};
     };
 
     $scope.getUserInfo($scope.user);
