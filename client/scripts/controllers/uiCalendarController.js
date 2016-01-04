@@ -11,13 +11,16 @@ app.controller('UiCalendarController', ["$scope", "$http", "RegisterForClassFact
     //load the calendar
     $scope.loadCalendar = function() {
 
-        //sets dateRange to the present month
+        //sets dateRange from the previous month to the following month
         $scope.setDateRange = function() {
             $scope.today = new Date();
+
             $scope.month = $scope.today.getMonth();
             $scope.year = $scope.today.getFullYear();
 
+
             // the 0th day of the next month returns the last day of this month
+
             $scope.dateRange = {
                 startDate: new Date($scope.year, $scope.month, 1),
                 endDate: new Date($scope.year, $scope.month + 1, 0)
