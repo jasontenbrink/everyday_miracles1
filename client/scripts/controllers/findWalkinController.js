@@ -26,7 +26,7 @@ app.controller('FindWalkinController',['$scope', '$http', '$localstorage', '$loc
                 $scope.foundUser = response.data[0];
                 $scope.foundUser.expected_birth_date = new Date($scope.foundUser.expected_birth_date);
             });
-        }
+        };
 
         $scope.submitUser = function() {
             console.log("submitting user ", $scope.foundUser);
@@ -79,11 +79,11 @@ app.controller('FindWalkinController',['$scope', '$http', '$localstorage', '$loc
                     });
                 }
             });
-        }
+        };
 
         $scope.newUser = function() {
             $location.path('/addwalkin');
-        }
+        };
 
 
 }]);

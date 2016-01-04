@@ -425,34 +425,69 @@ app.controller('ConfirmClassSignupController',['$scope', '$http', "RegisterForCl
   console.log('hi, from confirm class signup Controller');
   $scope.user = {};
   $scope.event = {};
-
+  $scope.registeredEvents = [];
   $scope.registerForClassFactory = RegisterForClassFactory;
 
   $scope.user.name = "Jane Doe";
+  $scope.user.userId = 1;
 
   $scope.studentEvents = $scope.registerForClassFactory.getStudentEvents();
   console.log("$scope.eventFromFactory: ",$scope.studentEvents);
   $scope.event = $scope.registerForClassFactory.getEvent();
 
-  $scope.confirmClass = function(userEvents, comments) {
+
+  $scope.getRegisteredClasses = function(event, someuser) {
+
+    var eventSchedule = {
+      userId: someuser.userId,
+      eventId: event.eventId
+    };
+
+    console.log("in registered classes(). the event :",eventSchedule);
+    $http.get('/usersEventSchedule/byEventIdUserId', {params: eventSchedule}).then(function(response){
+      console.log("Output from get /usersEventSchedule/byEventScheduleId ", response.data);
+      $scope.registeredEvents = response.data;
+    });
+  };
+
+  $scope.confirmClass = function(userEvents, comments, registeredClasses) {
+
     console.log("this is the class registered for: ", userEvents);
     console.log("these are the comments: ", comments);
-    for(var i = 0; i < userEvents.length; i++){
-      userEvents[i].comments = comments;
+    console.log("these are the registeredClasses: ", registeredClasses);
 
-      var userEvent = {
-        userId: 1,
-        eventScheduleId: userEvents[i].event_schedule_id,
-        status: "Registered",
-        comments: userEvents[i].comments
-      };
+    for (var j = 0; j < registeredClasses.length; j++) {
+      for (var i = 0; i < userEvents.length; i++) {
+        userEvents[i].comments = comments;
 
-      console.log("Input to post /usersEventSchedule ", userEvent);
-      $http.post('/usersEventSchedule', userEvent).then(function (response) {
-        console.log("Output from post /usersEventSchedule ", response.data);
-      });
+
+        if (registeredClasses[j].event_schedule_id == userEvents[i].event_schedule_id) {
+          userEvents[i].registered = true;
+        }
+
+      }
     }
 
+    console.log("the userEvents: ", userEvents);
+
+    for (i = 0; i < userEvents.length; i++) {
+      if (userEvents[i].registered == true) {
+        console.log("the event has been registered");
+      } else {
+        var userEvent = {
+          userId: 1,
+          eventScheduleId: userEvents[i].event_schedule_id,
+          status: "Registered",
+          comments: userEvents[i].comments
+        };
+        console.log("Event to post to the database: ", userEvent);
+        $http.post('/usersEventSchedule', userEvent).then(function (response) {
+          console.log("Output from post /usersEventSchedule ", response.data);
+        });
+      }
+    }
+
+    $location.path('/studentclasslist');
   };
 
   $scope.goBack = function() {
@@ -460,16 +495,8 @@ app.controller('ConfirmClassSignupController',['$scope', '$http', "RegisterForCl
     console.log("I hit the go back button: ");
   };
 
-  $scope.insertUsersEventSchedule = function() {
-    //var userEvent = {
-    //  userId: 1,
-    //  eventScheduleId: 2,
-    //  status: 'registered',
-    //  comments: 'this is a comment'
-    //};
+  $scope.getRegisteredClasses($scope.event, $scope.user);
 
-
-  };
 }]);
 
 app.controller('DirectoryController',['$scope', '$http', 'ActiveProfileFactory', 'uiGridConstants',
@@ -654,7 +681,7 @@ app.controller('FindWalkinController',['$scope', '$http', '$localstorage', '$loc
                 $scope.foundUser = response.data[0];
                 $scope.foundUser.expected_birth_date = new Date($scope.foundUser.expected_birth_date);
             });
-        }
+        };
 
         $scope.submitUser = function() {
             console.log("submitting user ", $scope.foundUser);
@@ -707,11 +734,11 @@ app.controller('FindWalkinController',['$scope', '$http', '$localstorage', '$loc
                     });
                 }
             });
-        }
+        };
 
         $scope.newUser = function() {
             $location.path('/addwalkin');
-        }
+        };
 
 
 }]);
@@ -808,13 +835,19 @@ app.controller("ProfileController", ["$scope", "$http", "ActiveProfileFactory",
 app.controller('StudentClassListController', ["$scope", "$http", function($scope,$http){
     console.log("student class controller says hi");
     $scope.user = {};
-
     $scope.allClasses = [];
-
     $scope.gridOptions1 = {};
     $scope.gridOptions1.data = [];
     $scope.gridOptions2 = {};
     $scope.gridOptions2.data = [];
+
+    $scope.clearVariables = function() {
+        $scope.allClasses = [];
+        $scope.gridOptions1 = {};
+        $scope.gridOptions1.data = [];
+        $scope.gridOptions2 = {};
+        $scope.gridOptions2.data = [];
+    };
 
     $scope.gridOptions1 = {
         columnDefs: [
@@ -846,6 +879,7 @@ app.controller('StudentClassListController', ["$scope", "$http", function($scope
     };
 
     $scope.getClasses = function(someuser) {
+
         $http.get('/usersEventSchedule/byUserId', {params: someuser}).then(function(response){
             console.log("Output from get /usersEventSchedule/byUserId ", response.data);
             $scope.allClasses = response.data;
@@ -857,6 +891,22 @@ app.controller('StudentClassListController', ["$scope", "$http", function($scope
                 }
             }
         });
+    };
+
+    $scope.deleteClass = function(someclass) {
+        console.log("someclass: ", someclass);
+        //$scope.deleteUsersEventSchedule = function() {
+        //
+            var event = {userId: someclass.user_id,
+                eventScheduleId: someclass.event_schedule_id};
+        console.log("variable event: ", event);
+        //
+            $http.get('/usersEventSchedule/delete', {params: event}).then(function(response){
+                console.log("output from delete userseventSchedule ", response.data);
+                $scope.clearVariables();
+                $scope.getClasses($scope.user);
+            });
+        //};
     };
 
     $scope.getUserInfo($scope.user);
@@ -1198,14 +1248,23 @@ app.controller('UiCalendarController', ["$scope", "$http", "RegisterForClassFact
     $scope.registerForClassFactory = RegisterForClassFactory;
 
     //load the calendar
+<<<<<<< HEAD
     $scope.loadCalendar = function(){
         //sets dateRange to the present month
+=======
+    $scope.loadCalendar = function() {
+
+        //sets dateRange from the previous month to the following month
+>>>>>>> 2cab6105f02cd93e3b8a78d322f3ee1842a11fb4
         $scope.setDateRange = function() {
             $scope.today = new Date();
+
             $scope.month = $scope.today.getMonth();
             $scope.year = $scope.today.getFullYear();
 
+
             // the 0th day of the next month returns the last day of this month
+
             $scope.dateRange = {
                 startDate: new Date($scope.year - 1, $scope.month, 1),
                 endDate: new Date($scope.year + 1, $scope.month + 1, 0)
