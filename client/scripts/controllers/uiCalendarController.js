@@ -18,6 +18,7 @@ app.controller('UiCalendarController', ["$scope", "$http", "RegisterForClassFact
             $scope.month = $scope.today.getMonth();
             $scope.year = $scope.today.getFullYear();
 
+
             // the 0th day of the next month returns the last day of this month
 
             $scope.dateRange = {
