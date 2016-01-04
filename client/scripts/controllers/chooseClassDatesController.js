@@ -3,7 +3,6 @@ app.controller('ChooseClassDatesController',['$scope', '$http', "RegisterForClas
 
   $scope.user = {};
   $scope.today = new Date();
-  console.log("today!!!  ",$scope.today);
   //test user info
   $scope.user.userId = 1;
 
@@ -36,6 +35,7 @@ app.controller('ChooseClassDatesController',['$scope', '$http', "RegisterForClas
 
   //get all class instances for this particular class
   $scope.loadEventData =  function(event) {
+    console.log("the event from factory: ", event);
     var eventId = {
       eventId: event.eventId
     };
@@ -57,6 +57,10 @@ app.controller('ChooseClassDatesController',['$scope', '$http', "RegisterForClas
         if ($scope.registeredEvents[i].event_schedule_id == $scope.event[j].event_schedule_id) {
             $scope.event[j].addCheckbox = true;
             //console.log("true");
+        }
+        if ($scope.event[j].event_schedule_id == $scope.eventFromFactory.eventScheduleId) {
+          console.log("making sure the event clicked on is checked");
+          $scope.event[j].addCheckbox = true;
         }
       }
     }

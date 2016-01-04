@@ -59,7 +59,10 @@ app.use('/event', event);
 app.use('/eventSchedule', eventSchedule);
 app.use('/usersEventSchedule', usersEventSchedule);
 
-app.use('/secure/templates', authenticate, secureTemplates);
+app.use('/secure/templates',function (req, res, next) {
+console.log('banana');
+next();
+}, secureTemplates);
 //app.use('/*', authenticate);
 app.use('/', index);
 
