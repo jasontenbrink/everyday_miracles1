@@ -62,7 +62,7 @@ app.controller('UiCalendarController', ["$scope", "$http", "RegisterForClassFact
             //uiConfigurations for experimentation
             $scope.uiConfig = {
                 calendar:{
-                    height: 450,
+                    height: 600,
                     editable: true,
                     header:{
                         left: 'month basicWeek basicDay',
