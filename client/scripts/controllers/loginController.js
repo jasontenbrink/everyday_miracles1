@@ -9,7 +9,7 @@ app.controller('LoginController',['$scope', '$http', '$location',
       .then(function (response) {
         //console.log('is this html?', response.data);
         console.log('response is', response);
-        console.log('response status', response.status);
+        //console.log('response status', response.status);
         if (response.status===200){
           $location.path('/uicalendar');
         }

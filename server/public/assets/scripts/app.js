@@ -1,7 +1,9 @@
 var app = angular.module('app',['ngAnimate','ngRoute', 'ui.grid',
   'ui.grid.selection','ngMaterial', 'ui.grid.exporter', 'ui.calendar']);
 
-app.config(['$routeProvider', function($routeProvider){
+app.config(['$routeProvider', '$httpProvider', function($routeProvider, $httpProvider){
+
+  $httpProvider.interceptors.push('AuthenticationRedirectInjector');
 
   $routeProvider
                 .when('/calendar', {
@@ -13,11 +15,11 @@ app.config(['$routeProvider', function($routeProvider){
                     controller: "TestSqlController"
                 })
                 .when('/uicalendar', {
-                    templateUrl: 'assets/views/routes/uicalendar.html',
+                    templateUrl: '/templates/uicalendar.jade',
                     controller: "UiCalendarController"
                 })
                 .when('/jade', {
-                    templateUrl: '/templates/test.jade',
+                    templateUrl: '/secure/templates/test.jade',
                     controller: "JadeController"
                  })
                 .when('/anotherroute', {
@@ -29,7 +31,7 @@ app.config(['$routeProvider', function($routeProvider){
                     controller: "EventDetailsController"
                  })
                  .when('/addevent', {
-                     templateUrl: '/templates/addevent.jade',
+                     templateUrl: '/secure/templates/addevent.jade',
                      controller: "AddEventController"
                  })
                  .when('/chooseclassdates', {
@@ -45,7 +47,7 @@ app.config(['$routeProvider', function($routeProvider){
                      controller: "ProfileController"
                   })
                  .when('/editevent', {
-                     templateUrl: '/templates/editevent.jade',
+                     templateUrl: '/secure/templates/editevent.jade',
                      controller: "EditEventController"
                  })
                  .when('/login', {
