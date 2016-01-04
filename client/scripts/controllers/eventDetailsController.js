@@ -2,11 +2,11 @@ app.controller('EventDetailsController',['$scope', '$http', "RegisterForClassFac
   function ($scope, $http, RegisterForClassFactory, $location, $localstorage) {
 
   console.log('hi, from event details controller');
-  $scope.user = {};
-
-  $scope.user.loginstatus = true;
-
-  $scope.user.role = "admin";
+  //$scope.user = {};
+  //
+  //$scope.user.loginstatus = true;
+  //
+  //$scope.user.role = "admin";
 
   $scope.registerForClassFactory = RegisterForClassFactory;
 
