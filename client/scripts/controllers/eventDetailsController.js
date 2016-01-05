@@ -1,8 +1,7 @@
 app.controller('EventDetailsController',['$scope', '$http', "RegisterForClassFactory", "$location", "$localstorage",
   function ($scope, $http, RegisterForClassFactory, $location, $localstorage) {
 
-  console.log('hi, from event details controller');
-
+  $scope.usersEventSchedule = [];
 
   $scope.registerForClassFactory = RegisterForClassFactory;
 
@@ -41,8 +40,43 @@ app.controller('EventDetailsController',['$scope', '$http', "RegisterForClassFac
     $location.path('/attendance');
   };
   $scope.cancelClass = function(someevent) {
-    console.log("cancel class button clicked");
-    //$window.alert message
+
+    var answer = confirm("Are you sure you want to cancel class " + $scope.event.title + " " +
+        $scope.event.schedule_date + " " + $scope.event.start_datetime + " - " + $scope.event.end_datetime + "?");
+    if (answer){
+      //notify students
+      // get student list for the class
+      var eventSchedule = {eventScheduleId: $scope.eventFromFactory.eventScheduleId};
+      console.log("Input to get /usersEventSchedule/byEventScheduleId ", eventSchedule);
+      $http.get('/usersEventSchedule/byEventScheduleId', {params: eventSchedule}).then(function(response){
+        //console.log("Output from get /usersEventSchedule/byEventScheduleId ", response.data);
+        $scope.usersEventSchedule = response.data;
+        console.log("userseventschedule ", $scope.usersEventSchedule);
+
+        var phoneNumberArray = [];
+        var emailArray = [];
+
+        // loop through the students and populate email or phone number array
+        for (var i = 0; i < $scope.usersEventSchedule.length; i++) {
+          var obj = $scope.usersEventSchedule[i];
+          if (obj.contact_type=="email" && obj.email_address != null){
+            emailArray.push(obj.email_address);
+          }else if (obj.contact_type=="text" && obj.phone_number != null){
+            phoneNumberArray.push(obj.phone_number);
+          }
+        }
+
+      });
+
+
+      //delete the class
+
+      //return to calendar
+      //$location.path('/uicalendar');
+    }
+    else {
+      // do nothing
+    }
 
   };
   $scope.editClass = function(someevent) {

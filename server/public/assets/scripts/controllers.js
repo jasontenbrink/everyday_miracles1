@@ -579,8 +579,7 @@ app.controller('EditEventController',['$scope', '$http', function ($scope, $http
 app.controller('EventDetailsController',['$scope', '$http', "RegisterForClassFactory", "$location", "$localstorage",
   function ($scope, $http, RegisterForClassFactory, $location, $localstorage) {
 
-  console.log('hi, from event details controller');
-
+  $scope.usersEventSchedule = [];
 
   $scope.registerForClassFactory = RegisterForClassFactory;
 
@@ -619,8 +618,29 @@ app.controller('EventDetailsController',['$scope', '$http', "RegisterForClassFac
     $location.path('/attendance');
   };
   $scope.cancelClass = function(someevent) {
-    console.log("cancel class button clicked");
-    //$window.alert message
+
+    var answer = confirm("Are you sure you want to cancel class " + $scope.event.title + " " +
+        $scope.event.schedule_date + " " + $scope.event.start_datetime + " - " + $scope.event.end_datetime + "?");
+    if (answer){
+      //notify students
+      // get student list for the class
+      var eventSchedule = {eventScheduleId: $scope.eventFromFactory.eventScheduleId};
+      console.log("Input to get /usersEventSchedule/byEventScheduleId ", eventSchedule);
+      $http.get('/usersEventSchedule/byEventScheduleId', {params: eventSchedule}).then(function(response){
+        //console.log("Output from get /usersEventSchedule/byEventScheduleId ", response.data);
+        $scope.usersEventSchedule = response.data;
+        console.log("userseventschedule ", $scope.usersEventSchedule);
+      });
+
+
+      //delete the class
+
+      //return to calendar
+      //$location.path('/uicalendar');
+    }
+    else {
+      // do nothing
+    }
 
   };
   $scope.editClass = function(someevent) {

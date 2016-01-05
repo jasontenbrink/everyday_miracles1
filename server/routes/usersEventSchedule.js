@@ -129,7 +129,9 @@ router.get('/byEventScheduleId', function(req,res){
             users.first_name, \
             users.last_name, \
             users.phone_number, \
-            users.payment_type \
+            users.payment_type, \
+            users.contact_type, \
+            users.email_address \
         FROM \
         event \
         JOIN event_schedule on event.event_id = event_schedule.event_id \
