@@ -789,8 +789,6 @@ app.controller("ProfileController", ["$scope", "$http", "ActiveProfileFactory",
     console.log('testUser.userId', testUser.userId);
     
 
-    if (testUser.userId == )
-
     //test user data to populate form
     // var testUser = {
     //     userId: 1
