@@ -103,8 +103,9 @@ app.factory('$localstorage', ['$window', function($window) {
         getObject: function(key) {
             return JSON.parse($window.localStorage[key] || '{}');
         }
-    }
+    };
 }]);
+
 app.factory("RegisterForClassFactory", ["$http", function($http){
   var event = {};
   var studentEvents = [];

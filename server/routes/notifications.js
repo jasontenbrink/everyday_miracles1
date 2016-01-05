@@ -9,26 +9,31 @@ router.get('/text', function(req, res){
 
     console.log(textMessage);
     // Your accountSid and authToken from twilio.com/user/account
-    var accountSid = 'ACa9b539731d1b87ec42fc2ae3cfe723e9';
-    var authToken = "b84fc0b15d8b8477a95743277dec586b";
-    var client = require('twilio')(accountSid, authToken);
+    var twilio = require('twilio');
+    var client = new twilio.RestClient(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
+
 
     //var phoneNumber = ["+16129783936", "+16518906678"];
 
-    for (i=0; i<phoneNumber.length; i++) {
+    for (var i=0; i<phoneNumber.length; i++) {
 
-        client.messages.create({
-            body: textMessage.message,
-            to: phoneNumber[i],
-            from: "+17639511796"
+        client.sms.messages.create({
+            to: textMessage.phoneNumber[i],
+            from: "+17639511796",
+            body: textMessage.message
         }, function (err, message) {
-            if (err) {
-                console.log("Error, ", err);
+            if (!err) {
+                console.log('Success! The SID for this SMS message is:');
+                console.log(message.sid);
+                console.log('Message sent on:');
+                console.log(message.dateCreated);
+            } else {
+                console.log('Oops! There was an error.');
             }
-            console.log(message.sid);
-            process.stdout.write(message.sid);
         });
     }
+
+    res.send(true);
 
 });
 
