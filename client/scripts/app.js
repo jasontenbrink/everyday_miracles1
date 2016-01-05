@@ -46,6 +46,10 @@ app.config(['$routeProvider', '$httpProvider', function($routeProvider, $httpPro
                      templateUrl:'/templates/profile.jade',
                      controller: "ProfileController"
                   })
+                 .when('/changepassword', {
+                     templateUrl:'secure/templates/changepassword.jade',
+                     controller:'ChangePasswordController'
+                  })
                  .when('/editevent', {
                      templateUrl: '/secure/templates/editevent.jade',
                      controller: "EditEventController"
