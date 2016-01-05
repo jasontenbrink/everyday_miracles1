@@ -1,11 +1,4 @@
 
-//login button
-
-//-var req = { user: {role: 'student'}}
-
-
-
-
 if (user === undefined)
   .login-button
     md-button(class = "md-raised" ng-click = "loginUser()") Login
@@ -16,17 +9,19 @@ h1 {{event.title}}
 
 .class-details {{event.description}}
 
-.register-button
-  md-button(class = "md-raised" ng-click = "registerForClass(event)") Register for Class
+if (user === undefined) || (user.role == 'student')
+  .register-button
+    md-button(class = "md-raised" ng-click = "registerForClass(event)") Register for Class
+
 if (user === undefined)
 else
-  if (user.name == 'teacher') || (user.name === 'admin')
+  if (user.role == 'teacher') || (user.role === 'admin')
     .attendance-button
       md-button(class = "md-raised" ng-click = "seeAttendance(event)") Attendance
-  if (user.name === 'admin')
+  if (user.role === 'admin')
     .edit-class-button
       md-button(class = "md-raised" ng-click ="editClass(event)") Edit Class
-  if (user.name === 'teacher') || (user.name === 'admin')
+  if (user.role === 'teacher') || (user.role === 'admin')
     .cancel-class-button
       md-button(class = "md-raised md-warn" ng-click = "cancelClass(event)") Cancel Class
 

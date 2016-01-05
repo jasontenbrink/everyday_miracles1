@@ -579,11 +579,7 @@ app.controller('EventDetailsController',['$scope', '$http', "RegisterForClassFac
   function ($scope, $http, RegisterForClassFactory, $location, $localstorage) {
 
   console.log('hi, from event details controller');
-  //$scope.user = {};
-  //
-  //$scope.user.loginstatus = true;
-  //
-  //$scope.user.role = "admin";
+
 
   $scope.registerForClassFactory = RegisterForClassFactory;
 
@@ -632,6 +628,9 @@ app.controller('EventDetailsController',['$scope', '$http', "RegisterForClassFac
   };
   $scope.goBack = function(){
     $location.path('/uicalendar');
+  };
+  $scope.loginUser = function(){
+    $location.path('/login');
   };
 
   $scope.getEventDetails($scope.eventFromFactory);
