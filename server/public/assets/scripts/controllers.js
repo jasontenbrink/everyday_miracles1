@@ -331,6 +331,19 @@ app.controller('CalendarController',['$scope', function ($scope) {
 }]);
 
 
+app.controller("ChangePasswordController", ["$scope", "$http", "$location", "ActiveProfileFactory",
+    function($scope, $http, $location, ActiveProfileFactory){
+        //console.log("hi from changepasswordcontroller");
+        //$scope.hi = "hi from controller"
+        $scope.user = {};
+        var activeProfileFactory = ActiveProfileFactory;
+
+        $scope.user = activeProfileFactory.getActiveProfileData();
+        $scope.confirmPassword = function(someuser){
+            console.log("the user: ",$scope.user);
+            //http request
+        }
+    }]);
 app.controller('ChooseClassDatesController',['$scope', '$http', "RegisterForClassFactory", '$location', function ($scope, $http, RegisterForClassFactory, $location) {
   console.log('hi, from choose class dates Controller');
 
@@ -779,20 +792,15 @@ app.controller('NavController',['$scope', 'ActiveProfileFactory', '$location',
   };
 }]);
 
-app.controller("ProfileController", ["$scope", "$http", "ActiveProfileFactory",
-  function($scope, $http, ActiveProfileFactory){
+app.controller("ProfileController", ["$scope", "$http", "ActiveProfileFactory", "$location",
+  function($scope, $http, ActiveProfileFactory, $location){
     var activeProfileFactory = ActiveProfileFactory;
     $scope.user = {};
     $scope.tempUser = {};
 
     var testUser = activeProfileFactory.getActiveProfileData();
     console.log('testUser.userId', testUser.userId);
-    
 
-    //test user data to populate form
-    // var testUser = {
-    //     userId: 1
-    // };
 
     //get profile info for profile page
     $scope.getUser = function(someuser){
@@ -806,28 +814,38 @@ app.controller("ProfileController", ["$scope", "$http", "ActiveProfileFactory",
             $scope.user.lastName = $scope.tempUser.last_name;
             $scope.user.userId = $scope.tempUser.user_id;
             $scope.user.userName = $scope.tempUser.user_name;
-            $scope.user.password = $scope.tempUser.password;
             $scope.user.roleName = $scope.tempUser.role_name;
             $scope.user.roleId = $scope.tempUser.role_id;
-            $scope.user.dateOfBirth = $scope.tempUser.date_of_birth;
+            $scope.user.dateOfBirth = new Date($scope.tempUser.date_of_birth);
             $scope.user.phoneNumber = $scope.tempUser.phone_number;
             $scope.user.emailAdress = $scope.tempUser.email_address;
             $scope.user.contactType = $scope.tempUser.contact_type;
             $scope.user.paymentType = $scope.tempUser.payment_type;
             $scope.user.everydayMiraclesClientInd = $scope.tempUser.everyday_miracles_client_ind;
             $scope.user.doulaName = $scope.tempUser.doula_name;
-            $scope.user.expectedBirthDate = $scope.tempUser.expected_birth_date;
+            $scope.user.expectedBirthDate = new Date($scope.tempUser.expected_birth_date);
 
             console.log("the #scope.user: ", $scope.user);
         });
     };
 
-    $scope.saveProfile = function(someuser) {
+    $http.get('/users/roles').then(function (response) {
+        $scope.roles = response.data;
+    });
 
+    //save profile
+    $scope.saveProfile = function(someuser) {
         console.log("Input to put /users ", someuser);
+
         $http.put('/users', someuser).then(function (response) {
             console.log("Output from put /users ", response.data);
         });
+    };
+
+    //change password
+    $scope.changePassword = function() {
+        console.log("clicked the change password");
+        $location.path('/changepassword');
     };
     $scope.getUser(testUser);
 
@@ -1232,6 +1250,32 @@ app.controller('TestSqlController',['$scope', '$http', function ($scope, $http) 
         console.log(textMessage);
         $http.get('/usersEventSchedule/classCancelled/data', {params: textMessage}).then(function(response){
             console.log("output from classCancelled ", response.data);
+        });
+
+    };
+
+    $scope.notifications = function() {
+        var phoneNumber = ["6129783936", "6518906678"];
+
+        var textMessage2 = {
+            "phoneNumber[]": phoneNumber,
+            message: "this is a test text message"
+        };
+
+        console.log(textMessage2);
+        $http.get('/notifications/text', {params: textMessage2}).then(function(response){
+            console.log("output from /notifications/text ", response.data);
+        });
+
+        var emailMessage = {
+            "sendTo[]": ['jdrew5@hotmail.com', 'jason.tenbrink@gmail.com'],
+            subject: "this is a subject",
+            message: "this is a test email message"
+        };
+
+        console.log(emailMessage);
+        $http.get('/notifications/email', {params: emailMessage}).then(function(response){
+            console.log("output from /notifications/email ", response.data);
         });
 
     };
