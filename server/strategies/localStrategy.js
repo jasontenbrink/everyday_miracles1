@@ -35,7 +35,7 @@ passport.deserializeUser(function(id, done){
        client.end();
       if (err) done(err);
       //console.log('deserialize error', err);
-        console.log('deserializer, response', response.rows[0]);
+      //console.log('deserializer, response', response.rows[0]);
         var username = {};
         username = response.rows[0];
 
