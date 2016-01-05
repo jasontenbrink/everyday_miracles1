@@ -340,8 +340,10 @@ app.controller("ChangePasswordController", ["$scope", "$http", "$location", "Act
 
         $scope.user = activeProfileFactory.getActiveProfileData();
         $scope.confirmPassword = function(someuser){
-            console.log("the user: ",$scope.user);
-            //http request
+            console.log("the user and their password to change: ",$scope.user);
+            $http.put('/changePassword', {params: $scope.user}).then(function(response){
+                console.log("Response from the change password attempt");
+            })
         }
     }]);
 app.controller('ChooseClassDatesController',['$scope', '$http', "RegisterForClassFactory", '$location', function ($scope, $http, RegisterForClassFactory, $location) {

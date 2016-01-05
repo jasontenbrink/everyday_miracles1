@@ -14,9 +14,15 @@ body, html {
   height: 100%;
 }
 
+p.ng-scope {
+  padding: 5px;
+}
+
 md-menu-content {
   padding: 0;
   width: 100px;
+  border-radius: 10px;
+  margin-right: 20px;
   background-color: #006B76;
   color: whitesmoke;
   font-weight: bold;
@@ -30,11 +36,11 @@ md-menu-content {
   border-radius: 10px;
 }
 
-
 .md-menu-content.md-default-theme {
   padding: 0;
   width: 100px;
   background-color: #006B76;
+  margin-right: 20px;
   color: whitesmoke;
   font-weight: bold;
 }
@@ -91,6 +97,10 @@ a.ng-binding.ng-scope {
 }
 
 span {
+  padding: 2px;
+}
+
+.ui-grid-cell-contents {
   padding: 10px;
 }
 
