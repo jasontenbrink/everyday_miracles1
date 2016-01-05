@@ -1,13 +1,13 @@
 md-content
   md-toolbar
-    div(class="md-toolbar-tools")
+    div(class="md-toolbar-tools" ng-controller="NavController")
       md-menu
         md-button(aria-label="menu" ng-click="$mdOpenMenu($event)") nav
         md-menu-content(width="4")
           md-menu-item
             md-button(href="#uicalendar") calendar
           md-menu-item
-            md-button(href="#/profile") profile
+            md-button(ng-click="goToProfile()") profile
           md-menu-item
             md-button(href="#/login") login
           md-menu-item
