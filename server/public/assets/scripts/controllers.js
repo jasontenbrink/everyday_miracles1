@@ -511,6 +511,7 @@ app.controller('DirectoryController',['$scope', '$http', 'ActiveProfileFactory',
   $scope.searchObject = new SearchObject();
   $scope.gridOptions = {};
 
+//sets user on activeProfile Factory
   $scope.sendSelectedMemberInfo = function(id) {
     console.log('this is the user id', id);
     activeProfileFactory.setActiveProfileData(id);
@@ -772,6 +773,8 @@ app.controller("ProfileController", ["$scope", "$http", "ActiveProfileFactory",
     $scope.tempUser = {};
 
     var testUser = activeProfileFactory.getActiveProfileData();
+
+    if (testUser.userId == )
 
     //test user data to populate form
     // var testUser = {
