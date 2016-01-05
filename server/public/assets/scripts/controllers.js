@@ -511,6 +511,7 @@ app.controller('DirectoryController',['$scope', '$http', 'ActiveProfileFactory',
   $scope.searchObject = new SearchObject();
   $scope.gridOptions = {};
 
+//sets user on activeProfile Factory
   $scope.sendSelectedMemberInfo = function(id) {
     console.log('this is the user id', id);
     activeProfileFactory.setActiveProfileData(id);
@@ -740,8 +741,9 @@ app.controller('JadeController',['$scope', '$http', function ($scope, $http) {
 
 }]);
 
-app.controller('LoginController',['$scope', '$http', '$location',
-  function ($scope, $http, $location) {
+app.controller('LoginController',['$scope', '$http', '$location', 'ActiveProfileFactory',
+  function ($scope, $http, $location, ActiveProfileFactory) {
+  var activeProfileFactory = ActiveProfileFactory;
   console.log('hi, from Login Controller');
 
   $scope.user = {};
@@ -753,6 +755,7 @@ app.controller('LoginController',['$scope', '$http', '$location',
         console.log('response is', response);
         //console.log('response status', response.status);
         if (response.status===200){
+          activeProfileFactory.setLoggedInUser(response.data.userId);
           $location.path('/uicalendar');
         }
         else{
@@ -765,6 +768,17 @@ app.controller('LoginController',['$scope', '$http', '$location',
 
 }]);
 
+app.controller('NavController',['$scope', 'ActiveProfileFactory', '$location',
+  function ($scope, ActiveProfileFactory, $location) {
+
+  var activeProfileFactory = ActiveProfileFactory;
+
+  $scope.goToProfile = function () {
+    activeProfileFactory.setLoggedInUserToActiveProfile();
+    $location.path('/profile');
+  };
+}]);
+
 app.controller("ProfileController", ["$scope", "$http", "ActiveProfileFactory",
   function($scope, $http, ActiveProfileFactory){
     var activeProfileFactory = ActiveProfileFactory;
@@ -772,6 +786,8 @@ app.controller("ProfileController", ["$scope", "$http", "ActiveProfileFactory",
     $scope.tempUser = {};
 
     var testUser = activeProfileFactory.getActiveProfileData();
+    console.log('testUser.userId', testUser.userId);
+    
 
     //test user data to populate form
     // var testUser = {

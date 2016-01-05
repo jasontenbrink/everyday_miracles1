@@ -76,9 +76,10 @@ passport.use('local', new localStrategy({
       }
 
       //get hashed password to compare
-      client.query("select password from users where user_name = $1", [req.body.username],
+      client.query("select password, user_id from users where user_name = $1", [req.body.username],
       function (err, response) {
         var dbPassword = response.rows[0].password;
+        var user_id = response.rows[0].user_id;
         client.end();
         console.log('the password from the DB', dbPassword);
 
@@ -93,7 +94,8 @@ passport.use('local', new localStrategy({
                 //the session.
                 var objectSentToSerializer = {
                   username: req.body.username,
-                  randomFunMessage: 'chickenButt'
+                  randomFunMessage: 'chickenButt',
+                  userId: user_id
                 };
 
                 if (isMatch){
