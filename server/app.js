@@ -1,5 +1,5 @@
 //github test by john
-
+require('dotenv').load();
 var express = require("express");
 var app = express();
 var path = require('path');
@@ -34,7 +34,7 @@ app.use(bodyParser.urlencoded({
 
 //Passport Session Configuration
 app.use(session({
-   secret: 'secret',
+   secret: process.env.SECRET,
    key: 'user', //this is the name of the key that will be attached to req.session
    resave: 'true',
    saveUninitialized: false,
