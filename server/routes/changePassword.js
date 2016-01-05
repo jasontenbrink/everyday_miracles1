@@ -8,6 +8,7 @@ var Promise = require('bluebird');
 var bcrypt = Promise.promisifyAll(require('bcrypt'));
 var SALT_WORK_FACTOR = 10;
 
+/*jshint multistr: true */
 
 var connectionString = process.env.DATABASE_URL   || 'postgres://localhost:5432/everyday_miracles';
 
@@ -18,9 +19,6 @@ var connectionString = process.env.DATABASE_URL   || 'postgres://localhost:5432/
 router.post('/', function(req,res,next){
   var user = req.body;
   console.log('req.body in post', req.body);
-
-//  if(!user.isModified('password')) return next;
-
 
     bcrypt.genSaltAsync(SALT_WORK_FACTOR).then(function(salt){
       //  if(err) return next(err);
@@ -34,8 +32,10 @@ router.post('/', function(req,res,next){
             //next();
             pg.connect(connectionString, function (err, client, done) {
               if (err) console.log(err);
-              console.log('pwd from just before DB write req', req.body.password);
-              client.query('insert into users (user_name, password) VALUES ($1, $2)',
+              console.log('pwd from just before DB write', user);
+              client.query("UPDATE users \
+                            SET password = $1, \
+                            WHERE user_id = $2;",
                   [req.body.username, req.body.password],
                   function (err, res) {
                     if (err) console.log(err);
