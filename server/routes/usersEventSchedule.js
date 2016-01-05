@@ -299,6 +299,23 @@ router.get('/delete', function(req,res){
 
 });
 
+// Delete
+router.delete('/deleteByEventScheduleId:id', function(req,res){
+    pg.connect(connectionString, function (err, client) {
+        client.on('drain', client.end.bind(client));
+        client.query("DELETE FROM users_event_schedule WHERE event_schedule_id = $1", [req.params.id],
+            function (err, result) {
+                if (err) {
+                    console.log("Error deleting data: ", err);
+                    res.send(false);
+                }
+
+                res.send(true);
+            });
+    });
+
+});
+
 router.get('/classCancelled/data', function(req, res){
     var textMessage = {
         user_id: req.query.userId,

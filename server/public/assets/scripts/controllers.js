@@ -340,8 +340,10 @@ app.controller("ChangePasswordController", ["$scope", "$http", "$location", "Act
 
         $scope.user = activeProfileFactory.getActiveProfileData();
         $scope.confirmPassword = function(someuser){
-            console.log("the user: ",$scope.user);
-            //http request
+            console.log("the user and their password to change: ",$scope.user);
+            $http.put('/changePassword', {params: $scope.user}).then(function(response){
+                console.log("Response from the change password attempt");
+            })
         }
     }]);
 app.controller('ChooseClassDatesController',['$scope', '$http', "RegisterForClassFactory", '$location', function ($scope, $http, RegisterForClassFactory, $location) {
@@ -643,13 +645,71 @@ app.controller('EventDetailsController',['$scope', '$http', "RegisterForClassFac
         //console.log("Output from get /usersEventSchedule/byEventScheduleId ", response.data);
         $scope.usersEventSchedule = response.data;
         console.log("userseventschedule ", $scope.usersEventSchedule);
+
+        var phoneNumberArray = [];
+        var emailArray = [];
+
+        // loop through the students and populate email or phone number array
+        for (var i = 0; i < $scope.usersEventSchedule.length; i++) {
+          var obj = $scope.usersEventSchedule[i];
+          if (obj.contact_type=="email" && obj.email_address != null){
+            emailArray.push(obj.email_address);
+          }else if (obj.contact_type=="text" && obj.phone_number != null){
+            phoneNumberArray.push(obj.phone_number);
+          }
+        }
+
+        console.log("phone array ", phoneNumberArray);
+        console.log("email array ", emailArray);
+
+        var subject = "Everyday Miracles Class Cancellation Notice";
+        var message = "Everyday Miracles Class " + $scope.event.title + " " +
+          $scope.event.schedule_date + " " + $scope.event.start_datetime + " - " + $scope.event.end_datetime +
+                " has been cancelled.";
+
+        if (phoneNumberArray.length > 0) {
+          var textMessage = {
+            "phoneNumber[]": phoneNumberArray,
+            message: message
+          };
+
+          console.log(textMessage);
+          $http.get('/notifications/text', {params: textMessage}).then(function (response) {
+            console.log("output from /notifications/text ", response.data);
+          });
+        }
+
+        if (emailArray.length > 0) {
+          var emailMessage = {
+            "sendTo[]": emailArray,
+            subject: subject,
+            message: message
+          };
+
+          console.log(emailMessage);
+          $http.get('/notifications/email', {params: emailMessage}).then(function (response) {
+            console.log("output from /notifications/email ", response.data);
+          });
+        }
+
       });
 
+      //delete the users from the class then delete the class
 
-      //delete the class
+      $http.delete('/usersEventSchedule/deleteByEventScheduleId'+ $scope.eventFromFactory.eventScheduleId).then(function(response){
+        console.log("output from delete users eventSchedule by Event Schedule Id ", response.data);
+        //delete the class
+        if (response.data==true){
+          $http.delete('/eventSchedule/delete'+ $scope.eventFromFactory.eventScheduleId).then(function(response){
+            console.log("output from delete eventSchedule ", response.data);
+            if (response.data==true){
+              //return to calendar
+              $location.path('/uicalendar');
+            }
+          });
+        }
+      });
 
-      //return to calendar
-      //$location.path('/uicalendar');
     }
     else {
       // do nothing

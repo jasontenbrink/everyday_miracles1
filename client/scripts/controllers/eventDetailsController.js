@@ -66,13 +66,56 @@ app.controller('EventDetailsController',['$scope', '$http', "RegisterForClassFac
           }
         }
 
+        console.log("phone array ", phoneNumberArray);
+        console.log("email array ", emailArray);
+
+        var subject = "Everyday Miracles Class Cancellation Notice";
+        var message = "Everyday Miracles Class " + $scope.event.title + " " +
+          $scope.event.schedule_date + " " + $scope.event.start_datetime + " - " + $scope.event.end_datetime +
+                " has been cancelled.";
+
+        if (phoneNumberArray.length > 0) {
+          var textMessage = {
+            "phoneNumber[]": phoneNumberArray,
+            message: message.substring(0, 159)
+          };
+
+          console.log(textMessage);
+          $http.get('/notifications/text', {params: textMessage}).then(function (response) {
+            console.log("output from /notifications/text ", response.data);
+          });
+        }
+
+        if (emailArray.length > 0) {
+          var emailMessage = {
+            "sendTo[]": emailArray,
+            subject: subject,
+            message: message
+          };
+
+          console.log(emailMessage);
+          $http.get('/notifications/email', {params: emailMessage}).then(function (response) {
+            console.log("output from /notifications/email ", response.data);
+          });
+        }
+
       });
 
+      //delete the users from the class then delete the class
+      $http.delete('/usersEventSchedule/deleteByEventScheduleId'+ $scope.eventFromFactory.eventScheduleId).then(function(response){
+        console.log("output from delete users eventSchedule by Event Schedule Id ", response.data);
+        //delete the class
+        if (response.data==true){
+          $http.delete('/eventSchedule/delete'+ $scope.eventFromFactory.eventScheduleId).then(function(response){
+            console.log("output from delete eventSchedule ", response.data);
+            if (response.data==true){
+              //return to calendar
+              $location.path('/uicalendar');
+            }
+          });
+        }
+      });
 
-      //delete the class
-
-      //return to calendar
-      //$location.path('/uicalendar');
     }
     else {
       // do nothing
