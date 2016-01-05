@@ -1,15 +1,25 @@
 app.factory("ActiveProfileFactory", ["$http", function($http){
-  var user = new User();
+  var profile = new User();
+  var loggedInUser = new User();
 
   var publicApi = {
       setActiveProfileData: function(id) {
-        user.userId = id;
-        console.log('user: ', user);
-          return user.user_id;
+        profile.userId = id;
+        console.log('user: ', profile);
+          return profile.user_id;
       },
       getActiveProfileData: function(){
-        console.log("active user from factory, ", user);
-          return user;
+        console.log("active user from factory, ", profile);
+          return profile;
+      },
+      setLoggedInUserToActiveProfile: function () {
+        profile = loggedInUser;
+      },
+      setLoggedInUser: function (id) {
+        loggedInUser.userId = id;
+      },
+      getLoggedInUser: function () {
+        return loggedInUser;
       }
   };
 

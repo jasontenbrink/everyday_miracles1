@@ -61,6 +61,7 @@ app.use('/eventSchedule', eventSchedule);
 app.use('/usersEventSchedule', usersEventSchedule);
 app.use('/notifications', notifications);
 
+
 app.use('/secure/templates', authenticate, secureTemplates);
 //app.use('/*', authenticate);
 app.use('/', index);

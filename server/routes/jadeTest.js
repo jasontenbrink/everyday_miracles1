@@ -11,7 +11,8 @@ router.get('/:name?', function (req, res) {
     res.render('templates/' + name, {message: 'Hello there!'});
   }
   else{
-    res.render('routes/' + name, {message: 'hi there'});
+    //console.log("req.user: ", req.user);
+    res.render('routes/' + name, {user: req.user});
   }
 });
 
