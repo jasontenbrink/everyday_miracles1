@@ -6,6 +6,7 @@ app.controller('DirectoryController',['$scope', '$http', 'ActiveProfileFactory',
   $scope.searchObject = new SearchObject();
   $scope.gridOptions = {};
 
+//sets user on activeProfile Factory
   $scope.sendSelectedMemberInfo = function(id) {
     console.log('this is the user id', id);
     activeProfileFactory.setActiveProfileData(id);
