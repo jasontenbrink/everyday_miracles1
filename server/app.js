@@ -17,6 +17,7 @@ var login = require('./routes/login.js');
 var userRegistration = require('./routes/userRegistration');
 var authenticate = require('./routes/authenticate.js');
 var secureTemplates = require('./routes/secureTemplates');
+var notifications = require('./routes/notifications');
 
 //for Jade rendering
 app.set('views', path.join(__dirname,'./public/assets/views/'));
@@ -58,11 +59,9 @@ app.use('/users', users);
 app.use('/event', event);
 app.use('/eventSchedule', eventSchedule);
 app.use('/usersEventSchedule', usersEventSchedule);
+app.use('/notifications', notifications);
 
-app.use('/secure/templates',function (req, res, next) {
-console.log('banana');
-next();
-}, secureTemplates);
+app.use('/secure/templates', authenticate, secureTemplates);
 //app.use('/*', authenticate);
 app.use('/', index);
 
