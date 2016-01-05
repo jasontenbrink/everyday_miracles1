@@ -307,9 +307,7 @@ router.get('/classCancelled/data', function(req, res){
 
     console.log(textMessage);
     // Your accountSid and authToken from twilio.com/user/account
-    var accountSid = 'ACa9b539731d1b87ec42fc2ae3cfe723e9';
-    var authToken = "b84fc0b15d8b8477a95743277dec586b";
-    var client = require('twilio')(accountSid, authToken);
+    var client = require('twilio')(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 
     var phoneNumber = ["+16129783936", "+16518906678"];
 
@@ -327,6 +325,7 @@ router.get('/classCancelled/data', function(req, res){
             process.stdout.write(message.sid);
         });
     }
+    res.send(true);
 
 });
 

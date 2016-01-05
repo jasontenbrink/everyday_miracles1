@@ -1236,6 +1236,32 @@ app.controller('TestSqlController',['$scope', '$http', function ($scope, $http) 
 
     };
 
+    $scope.notifications = function() {
+        var phoneNumber = ["6129783936", "6518906678"];
+
+        var textMessage2 = {
+            "phoneNumber[]": phoneNumber,
+            message: "this is a test text message"
+        };
+
+        console.log(textMessage2);
+        $http.get('/notifications/text', {params: textMessage2}).then(function(response){
+            console.log("output from /notifications/text ", response.data);
+        });
+
+        var emailMessage = {
+            "sendTo[]": ['jdrew5@hotmail.com', 'jason.tenbrink@gmail.com'],
+            subject: "this is a subject",
+            message: "this is a test email message"
+        };
+
+        console.log(emailMessage);
+        $http.get('/notifications/email', {params: emailMessage}).then(function(response){
+            console.log("output from /notifications/email ", response.data);
+        });
+
+    };
+
 }]);
 
 app.controller('UiCalendarController', ["$scope", "$http", "RegisterForClassFactory", "$location", "$localstorage",
