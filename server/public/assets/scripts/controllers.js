@@ -331,6 +331,19 @@ app.controller('CalendarController',['$scope', function ($scope) {
 }]);
 
 
+app.controller("ChangePasswordController", ["$scope", "$http", "$location", "ActiveProfileFactory",
+    function($scope, $http, $location, ActiveProfileFactory){
+        //console.log("hi from changepasswordcontroller");
+        //$scope.hi = "hi from controller"
+        $scope.user = {};
+        var activeProfileFactory = ActiveProfileFactory;
+
+        $scope.user = activeProfileFactory.getActiveProfileData();
+        $scope.confirmPassword = function(someuser){
+            console.log("the user: ",$scope.user);
+            //http request
+        }
+    }]);
 app.controller('ChooseClassDatesController',['$scope', '$http', "RegisterForClassFactory", '$location', function ($scope, $http, RegisterForClassFactory, $location) {
   console.log('hi, from choose class dates Controller');
 
@@ -779,8 +792,8 @@ app.controller('NavController',['$scope', 'ActiveProfileFactory', '$location',
   };
 }]);
 
-app.controller("ProfileController", ["$scope", "$http", "ActiveProfileFactory",
-  function($scope, $http, ActiveProfileFactory){
+app.controller("ProfileController", ["$scope", "$http", "ActiveProfileFactory", "$location",
+  function($scope, $http, ActiveProfileFactory, $location){
     var activeProfileFactory = ActiveProfileFactory;
     $scope.user = {};
     $scope.tempUser = {};
@@ -827,6 +840,12 @@ app.controller("ProfileController", ["$scope", "$http", "ActiveProfileFactory",
         $http.put('/users', someuser).then(function (response) {
             console.log("Output from put /users ", response.data);
         });
+    };
+
+    //change password
+    $scope.changePassword = function() {
+        console.log("clicked the change password");
+        $location.path('/changepassword');
     };
     $scope.getUser(testUser);
 

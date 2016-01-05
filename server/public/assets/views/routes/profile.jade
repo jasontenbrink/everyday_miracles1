@@ -15,14 +15,6 @@
      input(type = "text" ng-model = "user.userName" disabled=(user.role!== "admin"&&user.role!=="student"))
 
    md-input-container
-     label Password
-     input(type = "password" ng-model = "user.password" disabled)
-
-   md-input-container
-     label Confirm Password
-     input(type = "password" ng-model = "user.password" disabled)
-
-   md-input-container
      label Role
      md-select(ng-model = "user.roleId" disabled=user.role!== "admin")
        md-option(ng-repeat="role in roles" value="{{role.role_id}}") {{role.name}}
@@ -66,4 +58,6 @@
 
    .save-button
        md-button(class = "md-raised" ng-click = "saveProfile(user)") Save
+   .change-password-button
+       md-button(class = "md-raised" ng-click = "changePassword()") Change Password
 
