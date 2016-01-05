@@ -1,5 +1,6 @@
-app.controller('LoginController',['$scope', '$http', '$location',
-  function ($scope, $http, $location) {
+app.controller('LoginController',['$scope', '$http', '$location', 'ActiveProfileFactory',
+  function ($scope, $http, $location, ActiveProfileFactory) {
+  var activeProfileFactory = ActiveProfileFactory;
   console.log('hi, from Login Controller');
 
   $scope.user = {};
@@ -11,6 +12,7 @@ app.controller('LoginController',['$scope', '$http', '$location',
         console.log('response is', response);
         //console.log('response status', response.status);
         if (response.status===200){
+          activeProfileFactory.setLoggedInUser(response.data.userId);
           $location.path('/uicalendar');
         }
         else{
