@@ -26,12 +26,16 @@ passport.deserializeUser(function(id, done){
   //a DB call isn't necessary here.  I'm leaving it in in case we want to stick some stuff
   //from the DB onto the req.user.
   pg.connect(connectionString, function (err, client) {
-    client.query("select user_name, role_id from users where user_name = $1", [id],
+    client.query("select user_id, first_name, last_name, users.role_id, \
+                  date_of_birth, phone_number, email_address, contact_type, \
+                  payment_type, everyday_miracles_client_ind, doula_name, \
+                  expected_birth_date as due_date, role.name as role from users join \
+                  role on users.role_id = role.role_id where user_name = $1", [id],
       function (err, response) {
        client.end();
       if (err) done(err);
       //console.log('deserialize error', err);
-        console.log('deserializer, response', response.rows[0]);
+      //console.log('deserializer, response', response.rows[0]);
         var username = {};
         username = response.rows[0];
 
