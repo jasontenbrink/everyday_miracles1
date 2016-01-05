@@ -6,6 +6,8 @@ app.controller("ProfileController", ["$scope", "$http", "ActiveProfileFactory",
 
     var testUser = activeProfileFactory.getActiveProfileData();
 
+    if (testUser.userId == )
+
     //test user data to populate form
     // var testUser = {
     //     userId: 1
