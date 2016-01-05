@@ -1,14 +1,8 @@
 
-//login button
-//-var req = { user: {role: 'admin'}}
 
-if !req.user.role
+if (user === undefined)
   .login-button
     md-button(class = "md-raised" ng-click = "loginUser()") Login
-else
-  .login-message
-    p #{req.user.role}
-
 h1 {{event.title}}
 
 //once the database gets up, filter the display of this date
@@ -16,21 +10,21 @@ h1 {{event.title}}
 
 .class-details {{event.description}}
 
-.register-button
-  md-button(class = "md-raised" ng-click = "registerForClass(event)") Register for Class
+if (user === undefined) || (user.role == 'student')
+  .register-button
+    md-button(class = "md-raised" ng-click = "registerForClass(event)") Register for Class
 
-if (req.user.role == 'teacher') || (req.user.role === 'admin')
-  .attendance-button
-    md-button(class = "md-raised" ng-click = "seeAttendance(event)") Attendance
-
-if (req.user.role === 'admin')
-  .edit-class-button
-    md-button(class = "md-raised" ng-click ="editClass(event)") Edit Class
-
-
-if (req.user.role === 'teacher') || (req.user.role === 'admin')
-  .cancel-class-button
-    md-button(class = "md-raised md-warn" ng-click = "cancelClass(event)") Cancel Class
+if (user === undefined)
+else
+  if (user.role == 'teacher') || (user.role === 'admin')
+    .attendance-button
+      md-button(class = "md-raised" ng-click = "seeAttendance(event)") Attendance
+  if (user.role === 'admin')
+    .edit-class-button
+      md-button(class = "md-raised" ng-click ="editClass(event)") Edit Class
+  if (user.role === 'teacher') || (user.role === 'admin')
+    .cancel-class-button
+      md-button(class = "md-raised md-warn" ng-click = "cancelClass(event)") Cancel Class
 
 .go-back-button
   md-button(class = "md-raised" ng-click = "goBack()") Go Back
