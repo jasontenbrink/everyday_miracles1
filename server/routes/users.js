@@ -19,7 +19,6 @@ router.get('/byUserId', function(req,res){
         var query = client.query("SELECT \
                         user_id, \
                         user_name, \
-                        password, \
                         first_name, \
                         last_name, \
                         users.role_id, \
@@ -134,7 +133,6 @@ router.get('/byUserName', function(req,res){
         var query = client.query("SELECT \
                         user_id, \
                         user_name, \
-                        password, \
                         first_name, \
                         last_name, \
                         users.role_id, \
@@ -227,7 +225,6 @@ router.post('/', function(req,res){
 
     var queryOptions = {
         user_name: req.body.userName,
-        password: req.body.password,
         first_name: req.body.firstName,
         last_name: req.body.lastName,
         role_id : req.body.roleId,
@@ -244,7 +241,6 @@ router.post('/', function(req,res){
     pg.connect(connectionString, function (err, client) {
         client.on('drain', client.end.bind(client));
         client.query("INSERT INTO users (user_name, \
-            password, \
             first_name, \
             last_name, \
             role_id, \
@@ -257,10 +253,9 @@ router.post('/', function(req,res){
             doula_name, \
             expected_birth_date) \
         VALUES \
-        ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) \
+        ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) \
         RETURNING user_id;",
             [queryOptions.user_name,
-            queryOptions.password,
             queryOptions.first_name,
             queryOptions.last_name,
             queryOptions.role_id,
@@ -289,7 +284,6 @@ router.put('/', function(req,res){
     var queryOptions = {
         user_id: req.body.userId,
         user_name: req.body.userName,
-        password: req.body.password,
         first_name: req.body.firstName,
         last_name: req.body.lastName,
         role_id : req.body.roleId,
@@ -307,21 +301,19 @@ router.put('/', function(req,res){
         client.on('drain', client.end.bind(client));
         client.query("UPDATE users \
                     SET user_name = $1, \
-                        password = $2, \
-                        first_name = $3, \
-                        last_name = $4, \
-                        role_id = $5, \
-                        date_of_birth = $6, \
-                        phone_number = $7, \
-                        email_address = $8, \
-                        contact_type = $9, \
-                        payment_type = $10, \
-                        everyday_miracles_client_ind = $11, \
-                        doula_name = $12, \
-                        expected_birth_date = $13 \
-                    WHERE user_id = $14;",
+                        first_name = $2, \
+                        last_name = $3, \
+                        role_id = $4, \
+                        date_of_birth = $5, \
+                        phone_number = $6, \
+                        email_address = $7, \
+                        contact_type = $8, \
+                        payment_type = $9, \
+                        everyday_miracles_client_ind = $10, \
+                        doula_name = $11, \
+                        expected_birth_date = $12 \
+                    WHERE user_id = $13;",
             [queryOptions.user_name,
-            queryOptions.password,
             queryOptions.first_name,
             queryOptions.last_name,
             queryOptions.role_id,
