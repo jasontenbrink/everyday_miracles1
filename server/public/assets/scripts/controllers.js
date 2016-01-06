@@ -343,9 +343,10 @@ app.controller("ChangePasswordController", ["$scope", "$http", "$location", "Act
             console.log("the user and their password to change: ",$scope.user);
             $http.put('/changePassword', {params: $scope.user}).then(function(response){
                 console.log("Response from the change password attempt");
-            })
-        }
+            });
+        };
     }]);
+
 app.controller('ChooseClassDatesController',['$scope', '$http', "RegisterForClassFactory", '$location', "ActiveProfileFactory",
   function ($scope, $http, RegisterForClassFactory, $location, ActiveProfileFactory) {
   console.log('hi, from choose class dates Controller');
