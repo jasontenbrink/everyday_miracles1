@@ -1,17 +1,21 @@
-app.controller("ProfileController", ["$scope", "$http", "ActiveProfileFactory", "$location",
-  function($scope, $http, ActiveProfileFactory, $location){
+app.controller("ProfileController", ["$scope", "$http", "ActiveProfileFactory", "$location", "$localstorage",
+  function($scope, $http, ActiveProfileFactory, $location, $localstorage){
     var activeProfileFactory = ActiveProfileFactory;
     $scope.user = {};
     $scope.tempUser = {};
 
-    var testUser = activeProfileFactory.getActiveProfileData();
-    console.log('testUser.userId', testUser.userId);
-
+    //var testUser = activeProfileFactory.getActiveProfileData();
+    //console.log('testUser.userId', testUser.userId);
+      var testUserId = $localstorage.get("userId");
+      console.log("the user: ", testUserId);
 
     //get profile info for profile page
-    $scope.getUser = function(someuser){
-        console.log("the input of getUser: ",someuser);
-        $http.get('/users/byUserId', {params: someuser}).then(function (response) {
+    $scope.getUser = function(){
+        var user = {
+            userId: testUserId
+        };
+        console.log("the input of getUser: ",user);
+        $http.get('/users/byUserId', {params: user}).then(function (response) {
             console.log("Output from get /users/byUserId ", response.data);
             $scope.tempUser = response.data[0];
 
@@ -40,10 +44,10 @@ app.controller("ProfileController", ["$scope", "$http", "ActiveProfileFactory", 
     });
 
     //save profile
-    $scope.saveProfile = function(someuser) {
-        console.log("Input to put /users ", someuser);
+    $scope.saveProfile = function() {
+        console.log("Input to put /users ", $scope.user);
 
-        $http.put('/users', someuser).then(function (response) {
+        $http.put('/users', $scope.user).then(function (response) {
             console.log("Output from put /users ", response.data);
         });
     };
@@ -53,6 +57,6 @@ app.controller("ProfileController", ["$scope", "$http", "ActiveProfileFactory", 
         console.log("clicked the change password");
         $location.path('/changepassword');
     };
-    $scope.getUser(testUser);
+    $scope.getUser();
 
 }]);

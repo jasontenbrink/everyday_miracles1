@@ -10,11 +10,11 @@ app.controller('ChooseClassDatesController',['$scope', '$http', "$localstorage",
   //$scope.user.userId = 1;
 
 
-  var user = ActiveProfileFactory.getLoggedInUser();
-  if (user.userId) {
-    $localstorage.set("userId", user.userId);
-  }
-  console.log("the user from ActiveProfile: ",user);
+  //var user = ActiveProfileFactory.getLoggedInUser();
+  //if (user.userId) {
+  //  $localstorage.set("userId", user.userId);
+  //}
+  //console.log("the user from ActiveProfile: ",user);
   $scope.userId = $localstorage.get("userId");
 
   $scope.event = [];
