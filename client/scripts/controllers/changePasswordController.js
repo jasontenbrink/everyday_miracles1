@@ -10,6 +10,6 @@ app.controller("ChangePasswordController", ["$scope", "$http", "$location", "Act
             console.log("the user and their password to change: ",$scope.user);
             $http.put('/changePassword', {params: $scope.user}).then(function(response){
                 console.log("Response from the change password attempt");
-            })
-        }
+            });
+        };
     }]);
