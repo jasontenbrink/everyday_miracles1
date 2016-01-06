@@ -1,10 +1,18 @@
-app.controller('ChooseClassDatesController',['$scope', '$http', "RegisterForClassFactory", '$location', function ($scope, $http, RegisterForClassFactory, $location) {
+app.controller('ChooseClassDatesController',['$scope', '$http', "RegisterForClassFactory", '$location', "ActiveProfileFactory",
+  function ($scope, $http, RegisterForClassFactory, $location, ActiveProfileFactory) {
   console.log('hi, from choose class dates Controller');
 
-  $scope.user = {};
+
   $scope.today = new Date();
   //test user info
-  $scope.user.userId = 1;
+  //$scope.user = {};
+  //$scope.user.userId = 1;
+  var activeProfileFactory = ActiveProfileFactory;
+
+
+  var user = activeProfileFactory.getLoggedInUser();
+  console.log("the user from ActiveProfile: ",user);
+  $scope.user = activeProfileFactory.getLoggedInUser();
 
   $scope.event = [];
   $scope.registeredEvents = [];

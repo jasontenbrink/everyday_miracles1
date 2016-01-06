@@ -1,15 +1,21 @@
 
 
-app.controller('ConfirmClassSignupController',['$scope', '$http', "RegisterForClassFactory", '$location', function ($scope, $http, RegisterForClassFactory, $location) {
+app.controller('ConfirmClassSignupController',['$scope', '$http', "RegisterForClassFactory", '$location', "ActiveProfileFactory",
+  function ($scope, $http, RegisterForClassFactory, $location, ActiveProfileFactory) {
 
   console.log('hi, from confirm class signup Controller');
-  $scope.user = {};
+  var activeProfileFactory = ActiveProfileFactory;
+
+  var user = activeProfileFactory.getLoggedInUser();
+  console.log("the user from ActiveProfile: ",user);
+  $scope.user = activeProfileFactory.getLoggedInUser();
+  //$scope.user = {};
   $scope.event = {};
   $scope.registeredEvents = [];
   $scope.registerForClassFactory = RegisterForClassFactory;
 
-  $scope.user.name = "Jane Doe";
-  $scope.user.userId = 1;
+  //$scope.user.name = "Jane Doe";
+  //$scope.user.userId = 1;
 
   $scope.studentEvents = $scope.registerForClassFactory.getStudentEvents();
   console.log("$scope.eventFromFactory: ",$scope.studentEvents);
@@ -30,7 +36,7 @@ app.controller('ConfirmClassSignupController',['$scope', '$http', "RegisterForCl
     });
   };
 
-  $scope.confirmClass = function(userEvents, comments, registeredClasses) {
+  $scope.confirmClass = function(userEvents, comments, registeredClasses, someuser) {
 
     console.log("this is the class registered for: ", userEvents);
     console.log("these are the comments: ", comments);
@@ -55,7 +61,7 @@ app.controller('ConfirmClassSignupController',['$scope', '$http', "RegisterForCl
         console.log("the event has been registered");
       } else {
         var userEvent = {
-          userId: 1,
+          userId: someuser.userId,
           eventScheduleId: userEvents[i].event_schedule_id,
           status: "Registered",
           comments: userEvents[i].comments
