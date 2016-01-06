@@ -129,7 +129,9 @@ router.get('/byEventScheduleId', function(req,res){
             users.first_name, \
             users.last_name, \
             users.phone_number, \
-            users.payment_type \
+            users.payment_type, \
+            users.contact_type, \
+            users.email_address \
         FROM \
         event \
         JOIN event_schedule on event.event_id = event_schedule.event_id \
@@ -285,6 +287,23 @@ router.get('/delete', function(req,res){
         client.on('drain', client.end.bind(client));
         client.query("DELETE FROM users_event_schedule WHERE user_id = $1 and event_schedule_id = $2",
             [queryOptions.user_id, queryOptions.event_schedule_id],
+            function (err, result) {
+                if (err) {
+                    console.log("Error deleting data: ", err);
+                    res.send(false);
+                }
+
+                res.send(true);
+            });
+    });
+
+});
+
+// Delete
+router.delete('/deleteByEventScheduleId:id', function(req,res){
+    pg.connect(connectionString, function (err, client) {
+        client.on('drain', client.end.bind(client));
+        client.query("DELETE FROM users_event_schedule WHERE event_schedule_id = $1", [req.params.id],
             function (err, result) {
                 if (err) {
                     console.log("Error deleting data: ", err);

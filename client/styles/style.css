@@ -1,27 +1,126 @@
-body{
-  background-color: #526c84;
-  /*padding: 10px;*/
-  /*margin: 10px;*/
-  /*text-align: center;*/
-  /*padding: 10px;*/
-  /*margin: 10px;*/
+.ng-scope {
+  font-family: Arial, Helvetica, Sans-Serif;
+  font-weight: bold;
 }
 
+body, html {
+  background-color: whitesmoke;
+  font-family: Arial, Helvetica, Sans-Serif;
+  font-weight: bold;
+  border-radius: 10px;
+}
 
-/*button{*/
-  /*padding: 10px;*/
-  /*margin: 10px;*/
-/*}*/
+#calendar {
+  height: 100%;
+}
+
+p.ng-scope {
+  padding: 5px;
+}
+
+md-menu-content {
+  padding: 0;
+  width: 100px;
+  border-radius: 10px;
+  margin-right: 20px;
+  background-color: #006B76;
+  color: whitesmoke;
+  font-weight: bold;
+}
+
+.md-open-menu-container {
+  max-width: 200px;
+  background-color: #006B76;
+  color: whitesmoke;
+  font-weight: bold;
+  border-radius: 10px;
+}
+
+.md-menu-content.md-default-theme {
+  padding: 0;
+  width: 100px;
+  background-color: #006B76;
+  margin-right: 20px;
+  color: whitesmoke;
+  font-weight: bold;
+}
+
+.md-menu-item {
+  padding: 0;
+  width: 100px;
+  background-color: #006B76;
+  color: whitesmoke;
+  font-weight: bold;
+}
+
+.md-toolbar-tools {
+  background-color: whitesmoke;
+}
+
+.a.md-button {
+  background-color: #006B76;
+  color: whitesmoke;
+  font-weight: bold;
+  border-radius: 10px;
+}
+
+.button.md-button.md-ink-ripple {
+  background-color: whitesmoke;
+  color: #006B76;
+  font-weight: bold;
+  border-radius: 10px;
+}
+
+.md-button {
+  background-color: #006B76;
+  color: whitesmoke;
+  font-weight: bold;
+  border-radius: 10px;
+}
+
+.fc-event-container {
+  background-color: #006B76;
+  color: whitesmoke;
+}
 
 p.class-dates {
   display: inline;
 }
 
 .calendar {
-  background-color: white;
+  background-color: whitesmoke;
+  border-radius: 10px;
 }
 
-.my-grid{
-  width: 400px;
-  height: 400px;
+a.ng-binding.ng-scope {
+  padding: 10px;
+}
+
+span {
+  padding: 2px;
+}
+
+.ui-grid-cell-contents {
+  padding: 10px;
+}
+
+md-content.layout-padding.ng-scope {
+  background-color: whitesmoke;
+}
+
+.fc-week {
+  height: 75px;
+}
+
+.fc-event {
+  background-color: #006B76;
+}
+
+.image-content {
+  background-color: whitesmoke;
+  border-radius: 10px;
+  padding: 5px;
+  width: auto;
+  height: 64px;
+  float: left;
 }

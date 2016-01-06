@@ -331,6 +331,21 @@ app.controller('CalendarController',['$scope', function ($scope) {
 }]);
 
 
+app.controller("ChangePasswordController", ["$scope", "$http", "$location", "ActiveProfileFactory",
+    function($scope, $http, $location, ActiveProfileFactory){
+        //console.log("hi from changepasswordcontroller");
+        //$scope.hi = "hi from controller"
+        $scope.user = {};
+        var activeProfileFactory = ActiveProfileFactory;
+
+        $scope.user = activeProfileFactory.getActiveProfileData();
+        $scope.confirmPassword = function(someuser){
+            console.log("the user and their password to change: ",$scope.user);
+            $http.put('/changePassword', {params: $scope.user}).then(function(response){
+                console.log("Response from the change password attempt");
+            })
+        }
+    }]);
 app.controller('ChooseClassDatesController',['$scope', '$http', "RegisterForClassFactory", '$location', function ($scope, $http, RegisterForClassFactory, $location) {
   console.log('hi, from choose class dates Controller');
 
@@ -579,8 +594,7 @@ app.controller('EditEventController',['$scope', '$http', function ($scope, $http
 app.controller('EventDetailsController',['$scope', '$http', "RegisterForClassFactory", "$location", "$localstorage",
   function ($scope, $http, RegisterForClassFactory, $location, $localstorage) {
 
-  console.log('hi, from event details controller');
-
+  $scope.usersEventSchedule = [];
 
   $scope.registerForClassFactory = RegisterForClassFactory;
 
@@ -619,8 +633,86 @@ app.controller('EventDetailsController',['$scope', '$http', "RegisterForClassFac
     $location.path('/attendance');
   };
   $scope.cancelClass = function(someevent) {
-    console.log("cancel class button clicked");
-    //$window.alert message
+
+    var answer = confirm("Are you sure you want to cancel class " + $scope.event.title + " " +
+        $scope.event.schedule_date + " " + $scope.event.start_datetime + " - " + $scope.event.end_datetime + "?");
+    if (answer){
+      //notify students
+      // get student list for the class
+      var eventSchedule = {eventScheduleId: $scope.eventFromFactory.eventScheduleId};
+      console.log("Input to get /usersEventSchedule/byEventScheduleId ", eventSchedule);
+      $http.get('/usersEventSchedule/byEventScheduleId', {params: eventSchedule}).then(function(response){
+        //console.log("Output from get /usersEventSchedule/byEventScheduleId ", response.data);
+        $scope.usersEventSchedule = response.data;
+        console.log("userseventschedule ", $scope.usersEventSchedule);
+
+        var phoneNumberArray = [];
+        var emailArray = [];
+
+        // loop through the students and populate email or phone number array
+        for (var i = 0; i < $scope.usersEventSchedule.length; i++) {
+          var obj = $scope.usersEventSchedule[i];
+          if (obj.contact_type=="email" && obj.email_address != null){
+            emailArray.push(obj.email_address);
+          }else if (obj.contact_type=="text" && obj.phone_number != null){
+            phoneNumberArray.push(obj.phone_number);
+          }
+        }
+
+        console.log("phone array ", phoneNumberArray);
+        console.log("email array ", emailArray);
+
+        var subject = "Everyday Miracles Class Cancellation Notice";
+        var message = "Everyday Miracles Class " + $scope.event.title + " " +
+          moment($scope.event.schedule_date).format("MM-DD-YYYY") + " " + moment($scope.event.start_datetime).format("h:mm a") +
+            " - " + moment($scope.event.end_datetime).format("h:mm a") + " has been cancelled.";
+        console.log("message ", message);
+        if (phoneNumberArray.length > 0) {
+          var textMessage = {
+            "phoneNumber[]": phoneNumberArray,
+            message: message.substring(0, 159)
+          };
+
+          console.log(textMessage);
+          $http.get('/notifications/text', {params: textMessage}).then(function (response) {
+            console.log("output from /notifications/text ", response.data);
+          });
+        }
+
+        if (emailArray.length > 0) {
+          var emailMessage = {
+            "sendTo[]": emailArray,
+            subject: subject,
+            message: message
+          };
+
+          console.log(emailMessage);
+          $http.get('/notifications/email', {params: emailMessage}).then(function (response) {
+            console.log("output from /notifications/email ", response.data);
+          });
+        }
+
+      });
+
+      //delete the users from the class then delete the class
+      $http.delete('/usersEventSchedule/deleteByEventScheduleId'+ $scope.eventFromFactory.eventScheduleId).then(function(response){
+        console.log("output from delete users eventSchedule by Event Schedule Id ", response.data);
+        //delete the class
+        if (response.data==true){
+          $http.delete('/eventSchedule/delete'+ $scope.eventFromFactory.eventScheduleId).then(function(response){
+            console.log("output from delete eventSchedule ", response.data);
+            if (response.data==true){
+              //return to calendar
+              $location.path('/uicalendar');
+            }
+          });
+        }
+      });
+
+    }
+    else {
+      // do nothing
+    }
 
   };
   $scope.editClass = function(someevent) {
@@ -779,20 +871,15 @@ app.controller('NavController',['$scope', 'ActiveProfileFactory', '$location',
   };
 }]);
 
-app.controller("ProfileController", ["$scope", "$http", "ActiveProfileFactory",
-  function($scope, $http, ActiveProfileFactory){
+app.controller("ProfileController", ["$scope", "$http", "ActiveProfileFactory", "$location",
+  function($scope, $http, ActiveProfileFactory, $location){
     var activeProfileFactory = ActiveProfileFactory;
     $scope.user = {};
     $scope.tempUser = {};
 
     var testUser = activeProfileFactory.getActiveProfileData();
     console.log('testUser.userId', testUser.userId);
-    
 
-    //test user data to populate form
-    // var testUser = {
-    //     userId: 1
-    // };
 
     //get profile info for profile page
     $scope.getUser = function(someuser){
@@ -806,28 +893,38 @@ app.controller("ProfileController", ["$scope", "$http", "ActiveProfileFactory",
             $scope.user.lastName = $scope.tempUser.last_name;
             $scope.user.userId = $scope.tempUser.user_id;
             $scope.user.userName = $scope.tempUser.user_name;
-            $scope.user.password = $scope.tempUser.password;
             $scope.user.roleName = $scope.tempUser.role_name;
             $scope.user.roleId = $scope.tempUser.role_id;
-            $scope.user.dateOfBirth = $scope.tempUser.date_of_birth;
+            $scope.user.dateOfBirth = new Date($scope.tempUser.date_of_birth);
             $scope.user.phoneNumber = $scope.tempUser.phone_number;
             $scope.user.emailAdress = $scope.tempUser.email_address;
             $scope.user.contactType = $scope.tempUser.contact_type;
             $scope.user.paymentType = $scope.tempUser.payment_type;
             $scope.user.everydayMiraclesClientInd = $scope.tempUser.everyday_miracles_client_ind;
             $scope.user.doulaName = $scope.tempUser.doula_name;
-            $scope.user.expectedBirthDate = $scope.tempUser.expected_birth_date;
+            $scope.user.expectedBirthDate = new Date($scope.tempUser.expected_birth_date);
 
             console.log("the #scope.user: ", $scope.user);
         });
     };
 
-    $scope.saveProfile = function(someuser) {
+    $http.get('/users/roles').then(function (response) {
+        $scope.roles = response.data;
+    });
 
+    //save profile
+    $scope.saveProfile = function(someuser) {
         console.log("Input to put /users ", someuser);
+
         $http.put('/users', someuser).then(function (response) {
             console.log("Output from put /users ", response.data);
         });
+    };
+
+    //change password
+    $scope.changePassword = function() {
+        console.log("clicked the change password");
+        $location.path('/changepassword');
     };
     $scope.getUser(testUser);
 
@@ -1327,7 +1424,6 @@ app.controller('UiCalendarController', ["$scope", "$http", "RegisterForClassFact
             //uiConfigurations for experimentation
             $scope.uiConfig = {
                 calendar:{
-                    height: 450,
                     editable: true,
                     header:{
                         left: 'month basicWeek basicDay',
