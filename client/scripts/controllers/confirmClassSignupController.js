@@ -1,14 +1,12 @@
 
 
-app.controller('ConfirmClassSignupController',['$scope', '$http', "RegisterForClassFactory", '$location', "ActiveProfileFactory",
-  function ($scope, $http, RegisterForClassFactory, $location, ActiveProfileFactory) {
+app.controller('ConfirmClassSignupController',['$scope', '$http', "RegisterForClassFactory", '$location', "$localstorage",
+  function ($scope, $http, RegisterForClassFactory, $location, $localstorage) {
 
-  console.log('hi, from confirm class signup Controller');
-  var activeProfileFactory = ActiveProfileFactory;
 
-  var user = activeProfileFactory.getLoggedInUser();
-  console.log("the user from ActiveProfile: ",user);
-  $scope.user = activeProfileFactory.getLoggedInUser();
+
+  $scope.userId = $localstorage.get("userId");
+  $scope.eventId = $localstorage.get("eventId");
   //$scope.user = {};
   $scope.event = {};
   $scope.registeredEvents = [];
@@ -18,15 +16,14 @@ app.controller('ConfirmClassSignupController',['$scope', '$http', "RegisterForCl
   //$scope.user.userId = 1;
 
   $scope.studentEvents = $scope.registerForClassFactory.getStudentEvents();
-  console.log("$scope.eventFromFactory: ",$scope.studentEvents);
-  $scope.event = $scope.registerForClassFactory.getEvent();
+  console.log("$scope.studentEvents: ",$scope.studentEvents);
 
 
-  $scope.getRegisteredClasses = function(event, someuser) {
+  $scope.getRegisteredClasses = function() {
 
     var eventSchedule = {
-      userId: someuser.userId,
-      eventId: event.eventId
+      userId: $scope.userId,
+      eventId: $scope.eventId
     };
 
     console.log("in registered classes(). the event :",eventSchedule);
@@ -36,7 +33,7 @@ app.controller('ConfirmClassSignupController',['$scope', '$http', "RegisterForCl
     });
   };
 
-  $scope.confirmClass = function(userEvents, comments, registeredClasses, someuser) {
+  $scope.confirmClass = function(userEvents, comments, registeredClasses) {
 
     console.log("this is the class registered for: ", userEvents);
     console.log("these are the comments: ", comments);
@@ -61,7 +58,7 @@ app.controller('ConfirmClassSignupController',['$scope', '$http', "RegisterForCl
         console.log("the event has been registered");
       } else {
         var userEvent = {
-          userId: someuser.userId,
+          userId: $scope.userId,
           eventScheduleId: userEvents[i].event_schedule_id,
           status: "Registered",
           comments: userEvents[i].comments
@@ -81,6 +78,6 @@ app.controller('ConfirmClassSignupController',['$scope', '$http', "RegisterForCl
     console.log("I hit the go back button: ");
   };
 
-  $scope.getRegisteredClasses($scope.event, $scope.user);
+  $scope.getRegisteredClasses();
 
 }]);

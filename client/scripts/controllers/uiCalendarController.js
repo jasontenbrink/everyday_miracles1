@@ -81,21 +81,23 @@ app.controller('UiCalendarController', ["$scope", "$http", "RegisterForClassFact
         $scope.eventClick = function(event, jsEvent, view){
 
             console.log("this is event: ",event);
-            $scope.registerForClassFactory.setEvent(event);
+            //$scope.registerForClassFactory.setEvent(event);
+            $localstorage.set("eventId", event.eventId);
+            $localstorage.set("eventScheduleId", event.eventScheduleId);
             console.log("factory test: ", $scope.registerForClassFactory.getEvent());
 
             $location.path("/eventdetails");
 
         };
-        $scope.alertEventOnClick = function(date, jsEvent, view) {
-            console.log("this is the date: ",date);
-            console.log("this is the jsEvent: ", jsEvent);
-
-            $localstorage.set('eventId', null);
-            $localstorage.set('eventDate', date.format());
-            $localstorage.set('eventInsertBoolean', true);
-            $location.path('/addevent');
-        };
+        //$scope.alertEventOnClick = function(date, jsEvent, view) {
+        //    console.log("this is the date: ",date);
+        //    console.log("this is the jsEvent: ", jsEvent);
+        //
+        //    $localstorage.set('eventId', null);
+        //    $localstorage.set('eventDate', date.format());
+        //    $localstorage.set('eventInsertBoolean', true);
+        //    $location.path('/addevent');
+        //};
     };
 
 $scope.loadCalendar();

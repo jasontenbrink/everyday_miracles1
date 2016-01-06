@@ -1,5 +1,6 @@
-app.controller('ChooseClassDatesController',['$scope', '$http', "RegisterForClassFactory", '$location', "ActiveProfileFactory",
-  function ($scope, $http, RegisterForClassFactory, $location, ActiveProfileFactory) {
+app.controller('ChooseClassDatesController',['$scope', '$http', "$localstorage", '$location', "ActiveProfileFactory",
+  "RegisterForClassFactory",
+  function ($scope, $http, $localstorage, $location, ActiveProfileFactory, RegisterForClassFactory) {
   console.log('hi, from choose class dates Controller');
 
 
@@ -7,30 +8,35 @@ app.controller('ChooseClassDatesController',['$scope', '$http', "RegisterForClas
   //test user info
   //$scope.user = {};
   //$scope.user.userId = 1;
-  var activeProfileFactory = ActiveProfileFactory;
 
 
-  var user = activeProfileFactory.getLoggedInUser();
+  var user = ActiveProfileFactory.getLoggedInUser();
+  if (user.userId) {
+    $localstorage.set("userId", user.userId);
+  }
   console.log("the user from ActiveProfile: ",user);
-  $scope.user = activeProfileFactory.getLoggedInUser();
+  $scope.userId = $localstorage.get("userId");
 
   $scope.event = [];
   $scope.registeredEvents = [];
   $scope.studentEvents = [];
   $scope.allUserEvents = [];
 
+  $scope.eventId = $localstorage.get("eventId");
+  $scope.eventScheduleId = $localstorage.get("eventScheduleId");
+
   //get factory
   $scope.registerForClassFactory = RegisterForClassFactory;
 
   //get eventId from factory
-  $scope.eventFromFactory = $scope.registerForClassFactory.getEvent();
+  //$scope.eventFromFactory = $scope.registerForClassFactory.getEvent();
 
   //get classes user has already registered for
-  $scope.getRegisteredClasses = function(event, someuser) {
+  $scope.getRegisteredClasses = function() {
 
     var eventSchedule = {
-      userId: someuser.userId,
-      eventId: event.eventId
+      userId: $scope.userId,
+      eventId: $scope.eventId
     };
 
     //console.log("in registered classes(). the event :",eventSchedule);
@@ -42,10 +48,10 @@ app.controller('ChooseClassDatesController',['$scope', '$http', "RegisterForClas
   };
 
   //get all class instances for this particular class
-  $scope.loadEventData =  function(event) {
-    console.log("the event from factory: ", event);
+  $scope.loadEventData =  function() {
+
     var eventId = {
-      eventId: event.eventId
+      eventId: $scope.eventId
     };
     console.log("Input to get /eventSchedule/byEventId ", eventId);
 
@@ -53,7 +59,7 @@ app.controller('ChooseClassDatesController',['$scope', '$http', "RegisterForClas
         .then(function(response){
             console.log("Output from get /eventSchedule/byEventId ", response.data);
             $scope.event = response.data;
-            $scope.getRegisteredClasses(event, $scope.user)
+            $scope.getRegisteredClasses($scope.user);
         });
   };
 
@@ -66,7 +72,7 @@ app.controller('ChooseClassDatesController',['$scope', '$http', "RegisterForClas
             $scope.event[j].addCheckbox = true;
             //console.log("true");
         }
-        if ($scope.event[j].event_schedule_id == $scope.eventFromFactory.eventScheduleId) {
+        if ($scope.event[j].event_schedule_id == $scope.eventScheduleId) {
           console.log("making sure the event clicked on is checked");
           $scope.event[j].addCheckbox = true;
         }
@@ -75,18 +81,21 @@ app.controller('ChooseClassDatesController',['$scope', '$http', "RegisterForClas
     console.log("$scope.event after for loops :",$scope.event);
   };
 
-  $scope.loadEventData($scope.eventFromFactory);
+  $scope.loadEventData();
 
 
-  $scope.signUp = function(event) {
+  $scope.signUp = function() {
 
-    for (var i = 0; i < event.length; i++) {
-      if (event[i].addCheckbox == true) {
+    for (var i = 0; i < $scope.event.length; i++) {
+      if ($scope.event[i].addCheckbox == true) {
         $scope.studentEvents.push($scope.event[i]);
 
       }
     }
+    console.log("studentEvents loop ", $scope.studentEvents);
+    $scope.registerForClassFactory.setStudentEvents({});
     $scope.registerForClassFactory.setStudentEvents($scope.studentEvents);
+    console.log("registerForClassFactory ", $scope.registerForClassFactory.getStudentEvents());
 
     $location.path('/confirmclasssignup');
   };

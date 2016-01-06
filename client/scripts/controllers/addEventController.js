@@ -64,8 +64,8 @@ app.controller('AddEventController',['$scope', '$http', '$localstorage', functio
       $scope.event.description = response.data[0].description;
       $scope.event.eventCategoryId = response.data[0].event_category_id;
       $scope.event.repeatType = response.data[0].repeat_type;
-      $scope.event.repeatFromDate = new Date(response.data[0].repeat_from_date);
-      $scope.event.repeatToDate = new Date(response.data[0].repeat_to_date);
+      $scope.event.repeatFromDate = response.data[0].repeat_from_date;
+      $scope.event.repeatToDate = response.data[0].repeat_to_date;
       $scope.event.repeatSundayInd = response.data[0].repeat_sunday_ind;
       $scope.event.repeatMondayInd = response.data[0].repeat_monday_ind;
       $scope.event.repeatTuesdayInd = response.data[0].repeat_tuesday_ind;
@@ -73,6 +73,13 @@ app.controller('AddEventController',['$scope', '$http', '$localstorage', functio
       $scope.event.repeatThursdayInd = response.data[0].repeat_thursday_ind;
       $scope.event.repeatFridayInd = response.data[0].repeat_friday_ind;
       $scope.event.repeatSaturdayInd = response.data[0].repeat_saturday_ind;
+
+      if ($scope.event.repeatFromDate !== null) {
+        $scope.event.repeatFromDate = new Date($scope.event.repeatFromDate);
+      }
+      if ($scope.event.repeatToDate !== null) {
+        $scope.event.repeatToDate = new Date($scope.event.repeatToDate);
+      }
 
       $scope.loadEventScheduleData();
     });
