@@ -1,21 +1,9 @@
 0 info it worked if it ends with ok
-<<<<<<< HEAD
-<<<<<<< HEAD
-1 verbose cli [ 'node', '/usr/local/bin/npm', 'start' ]
-2 info using npm@2.11.2
-3 info using node@v0.12.5
-=======
 1 verbose cli [ '/usr/local/Cellar/node/4.2.1/bin/node',
 1 verbose cli   '/usr/local/bin/npm',
 1 verbose cli   'start' ]
 2 info using npm@2.14.7
 3 info using node@v4.2.1
->>>>>>> bcdd4dc1ecb5dc0d650d08795c31ad0b60ea85f0
-=======
-1 verbose cli [ 'node', '/usr/local/bin/npm', 'start' ]
-2 info using npm@2.11.2
-3 info using node@v0.12.5
->>>>>>> feature_profile
 4 verbose run-script [ 'prestart', 'start', 'poststart' ]
 5 info prestart server@1.0.0
 6 info start server@1.0.0
@@ -23,47 +11,20 @@
 8 info server@1.0.0 Failed to exec start script
 9 verbose stack Error: server@1.0.0 start: `node server/app.js`
 9 verbose stack Exit status 1
-<<<<<<< HEAD
-<<<<<<< HEAD
-9 verbose stack     at EventEmitter.<anonymous> (/usr/local/lib/node_modules/npm/lib/utils/lifecycle.js:213:16)
-9 verbose stack     at EventEmitter.emit (events.js:110:17)
-9 verbose stack     at ChildProcess.<anonymous> (/usr/local/lib/node_modules/npm/lib/utils/spawn.js:24:14)
-9 verbose stack     at ChildProcess.emit (events.js:110:17)
-9 verbose stack     at maybeClose (child_process.js:1015:16)
-9 verbose stack     at Process.ChildProcess._handle.onexit (child_process.js:1087:5)
-10 verbose pkgid server@1.0.0
-11 verbose cwd /Users/PaulZimmel/Desktop/Project/Everyday Miracles/everyday_miracles1
-12 error Darwin 14.5.0
-13 error argv "node" "/usr/local/bin/npm" "start"
-14 error node v0.12.5
-15 error npm  v2.11.2
-=======
 9 verbose stack     at EventEmitter.<anonymous> (/usr/local/lib/node_modules/npm/lib/utils/lifecycle.js:214:16)
 9 verbose stack     at emitTwo (events.js:87:13)
 9 verbose stack     at EventEmitter.emit (events.js:172:7)
-=======
-9 verbose stack     at EventEmitter.<anonymous> (/usr/local/lib/node_modules/npm/lib/utils/lifecycle.js:213:16)
-9 verbose stack     at EventEmitter.emit (events.js:110:17)
->>>>>>> feature_profile
 9 verbose stack     at ChildProcess.<anonymous> (/usr/local/lib/node_modules/npm/lib/utils/spawn.js:24:14)
-9 verbose stack     at ChildProcess.emit (events.js:110:17)
-9 verbose stack     at maybeClose (child_process.js:1015:16)
-9 verbose stack     at Process.ChildProcess._handle.onexit (child_process.js:1087:5)
+9 verbose stack     at emitTwo (events.js:87:13)
+9 verbose stack     at ChildProcess.emit (events.js:172:7)
+9 verbose stack     at maybeClose (internal/child_process.js:818:16)
+9 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:211:5)
 10 verbose pkgid server@1.0.0
-<<<<<<< HEAD
-11 verbose cwd /Users/johndrew/WebstormProjects/everyday_miracles1
-12 error Darwin 14.3.0
+11 verbose cwd /Users/Dana/Desktop/Everyday Miracles/everyday_miracles1
+12 error Darwin 14.5.0
 13 error argv "/usr/local/Cellar/node/4.2.1/bin/node" "/usr/local/bin/npm" "start"
 14 error node v4.2.1
 15 error npm  v2.14.7
->>>>>>> bcdd4dc1ecb5dc0d650d08795c31ad0b60ea85f0
-=======
-11 verbose cwd /Users/PaulZimmel/Desktop/Project/Everyday Miracles/everyday_miracles1
-12 error Darwin 14.5.0
-13 error argv "node" "/usr/local/bin/npm" "start"
-14 error node v0.12.5
-15 error npm  v2.11.2
->>>>>>> feature_profile
 16 error code ELIFECYCLE
 17 error server@1.0.0 start: `node server/app.js`
 17 error Exit status 1
