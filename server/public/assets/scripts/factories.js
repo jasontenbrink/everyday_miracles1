@@ -116,7 +116,7 @@ app.factory('$localstorage', ['$window', function($window) {
     };
 }]);
 
-app.factory("RegisterForClassFactory", ["$http", function($http){
+app.factory("RegisterForClassFactory", ["$http", "$localstorage", function($http, $localstorage){
   var event = {};
   var studentEvents = [];
 
@@ -126,6 +126,7 @@ app.factory("RegisterForClassFactory", ["$http", function($http){
   };
 
   var inputStudentEvents = function(someevents){
+    $localstorage.setObject("studentEvents", someevents);
     studentEvents = someevents;
     return studentEvents;
   };
@@ -141,7 +142,8 @@ app.factory("RegisterForClassFactory", ["$http", function($http){
       return inputStudentEvents(someevents);
     },
     getStudentEvents: function(){
-      return studentEvents;
+      return $localstorage.getObject("studentEvents");
+      //return studentEvents;
     }
   };
 

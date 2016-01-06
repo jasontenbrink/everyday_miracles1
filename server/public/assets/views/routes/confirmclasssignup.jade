@@ -2,10 +2,10 @@
   //includes Home MyClasses Profile
 
 .class-register-info
-  h2 #{user.first_name} #{user.last_name}
-
-  h2 Registering for:
-  h2 {{event.title}}
+  //h2 #{user.first_name} #{user.last_name}
+  //
+  //h2 Registering for:
+  //h2 {{event.title}}
 
   h2 Dates:
   .class-dates(ng-repeat="event in studentEvents")
@@ -17,7 +17,7 @@
       textarea(ng-model = "event.comments")
 
 .confirm-class-button
-  md-button(class = "md-raised" ng-click = "confirmClass(studentEvents, event.comments, registeredEvents, user)") Confirm Class
+  md-button(class = "md-raised" ng-click = "confirmClass(studentEvents, event.comments, registeredEvents)") Confirm Class
 
 .go-back
   md-button(class = "md-raised" ng-click = "goBack()") Go Back
