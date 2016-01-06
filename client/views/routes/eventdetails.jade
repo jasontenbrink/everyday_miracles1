@@ -12,19 +12,19 @@ h1 {{event.title}}
 
 if (user === undefined) || (user.role == 'student')
   .register-button
-    md-button(class = "md-raised" ng-click = "registerForClass(event)") Register for Class
+    md-button(class = "md-raised" ng-click = "registerForClass()") Register for Class
 
 if (user === undefined)
 else
   if (user.role == 'teacher') || (user.role === 'admin')
     .attendance-button
-      md-button(class = "md-raised" ng-click = "seeAttendance(event)") Attendance
+      md-button(class = "md-raised" ng-click = "seeAttendance()") Attendance
   if (user.role === 'admin')
     .edit-class-button
-      md-button(class = "md-raised" ng-click ="editClass(event)") Edit Class
+      md-button(class = "md-raised" ng-click ="editClass()") Edit Class
   if (user.role === 'teacher') || (user.role === 'admin')
     .cancel-class-button
-      md-button(class = "md-raised md-warn" ng-click = "cancelClass(event)") Cancel Class
+      md-button(class = "md-raised md-warn" ng-click = "cancelClass()") Cancel Class
 
 .go-back-button
   md-button(class = "md-raised" ng-click = "goBack()") Go Back

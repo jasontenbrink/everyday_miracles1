@@ -49,6 +49,48 @@ router.get('/byEventId', function(req,res){
     });
 });
 
+// Select
+router.get('/currentByEventId', function(req,res){
+    var queryOptions = {
+        event_id: req.query.eventId
+    };
+
+    var results = [];
+
+    //below line will tell a linter to ignore W043 warnging about using \
+    /*jshint multistr: true */
+    //SQL Query > SELECT data from table
+    pg.connect(connectionString, function (err, client, done) {
+        var query = client.query("SELECT \
+            event_schedule_id, \
+            event_id, \
+            schedule_date, \
+            start_datetime, \
+            end_datetime, \
+            teacher_user_id, \
+            concat(first_name,' ',last_name) as teacher_name \
+        FROM event_schedule \
+        LEFT JOIN users on event_schedule.teacher_user_id = users.user_id \
+        WHERE schedule_date >= now() and event_id = $1;", [queryOptions.event_id]);
+        //console.log(query);
+        // Stream results back one row at a time, push into results arrayd
+        query.on('row', function (row) {
+            results.push(row);
+        });
+
+        // After all data is returned, close connection and return results
+        query.on('end', function () {
+            client.end();
+            return res.json(results);
+        });
+
+        // Handle Errors
+        if (err) {
+            console.log(err);
+        }
+    });
+});
+
 // Insert
 router.post('/', function(req,res){
 
