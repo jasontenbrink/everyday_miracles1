@@ -354,14 +354,9 @@ app.controller("ChangePasswordController", ["$scope", "$http", "$location", "Act
         };
     }]);
 
-<<<<<<< HEAD
-app.controller('ChooseClassDatesController',['$scope', '$http', "RegisterForClassFactory", '$location', "ActiveProfileFactory",
-  function ($scope, $http, RegisterForClassFactory, $location, ActiveProfileFactory) {
-=======
 app.controller('ChooseClassDatesController',['$scope', '$http', "$localstorage", '$location', "ActiveProfileFactory",
   "RegisterForClassFactory",
   function ($scope, $http, $localstorage, $location, ActiveProfileFactory, RegisterForClassFactory) {
->>>>>>> bcdd4dc1ecb5dc0d650d08795c31ad0b60ea85f0
   console.log('hi, from choose class dates Controller');
 
 
