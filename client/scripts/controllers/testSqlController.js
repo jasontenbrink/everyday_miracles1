@@ -190,6 +190,13 @@ app.controller('TestSqlController',['$scope', '$http', function ($scope, $http) 
             console.log("Output from get /eventSchedule/byEventId ", response.data);
         });
 
+        var event2 = {eventId: 1};
+
+        console.log("Input to get /eventSchedule/currentByEventId ", event2);
+        $http.get('/eventSchedule/currentByEventId', {params: event2}).then(function(response){
+            console.log("Output from get /eventSchedule/currentByEventId ", response.data);
+        });
+
     };
 
     $scope.insertEventSchedule = function() {
