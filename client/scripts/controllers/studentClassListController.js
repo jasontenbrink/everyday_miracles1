@@ -1,14 +1,9 @@
-app.controller('StudentClassListController', ["$scope", "$http", "ActiveProfileFactory",
-    function($scope, $http, ActiveProfileFactory){
-    console.log("student class controller says hi");
-    var activeProfileFactory = ActiveProfileFactory;
+app.controller('StudentClassListController', ["$scope", "$http", "$localstorage",
+    function($scope, $http, $localstorage){
 
+    $scope.userId = $localstorage.get("userId");
 
-    var user = activeProfileFactory.getLoggedInUser();
-    console.log("the user from ActiveProfile: ",user);
-    $scope.user = activeProfileFactory.getLoggedInUser();
-
-    //$scope.user = {};
+    $scope.user = {};
     $scope.allClasses = [];
     $scope.gridOptions1 = {};
     $scope.gridOptions1.data = [];
@@ -44,17 +39,21 @@ app.controller('StudentClassListController', ["$scope", "$http", "ActiveProfileF
     //$scope.user.userId = 1;
 
     //get user info
-    $scope.getUserInfo = function(someuser) {
-        $http.get('/users/byUserId', {params: someuser}).then(function (response) {
+    $scope.getUserInfo = function() {
+        var user = {
+            userId: $scope.userId
+        };
+        $http.get('/users/byUserId', {params: user}).then(function (response) {
             console.log("Output from get /users/byUserId ", response.data);
-            $scope.user.firstName = response.data[0].first_name;
-            $scope.user.lastName = response.data[0].last_name;
+            $scope.user = response.data;
         });
     };
 
-    $scope.getClasses = function(someuser) {
-
-        $http.get('/usersEventSchedule/byUserId', {params: someuser}).then(function(response){
+    $scope.getClasses = function() {
+        var userObject = {
+            userId: $scope.userId
+        };
+        $http.get('/usersEventSchedule/byUserId', {params: userObject}).then(function(response){
             console.log("Output from get /usersEventSchedule/byUserId ", response.data);
             $scope.allClasses = response.data;
             for (var i = 0; i < $scope.allClasses.length; i++) {
@@ -78,12 +77,12 @@ app.controller('StudentClassListController', ["$scope", "$http", "ActiveProfileF
             $http.get('/usersEventSchedule/delete', {params: event}).then(function(response){
                 console.log("output from delete userseventSchedule ", response.data);
                 $scope.clearVariables();
-                $scope.getClasses($scope.user);
+                $scope.getClasses();
             });
         //};
     };
 
-    $scope.getUserInfo($scope.user);
-    $scope.getClasses($scope.user);
+    $scope.getUserInfo();
+    $scope.getClasses();
 
 }]);

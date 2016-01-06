@@ -2,26 +2,28 @@ app.controller('EventDetailsController',['$scope', '$http', "RegisterForClassFac
   function ($scope, $http, RegisterForClassFactory, $location, $localstorage) {
 
   $scope.usersEventSchedule = [];
+  $scope.eventId = $localstorage.get("eventId");
+  $scope.eventScheduleId = $localstorage.get("eventScheduleId");
 
-  $scope.registerForClassFactory = RegisterForClassFactory;
+  //$scope.registerForClassFactory = RegisterForClassFactory;
 
   //get event info from the registerForClassFactory
   //should be event info corresponding to event clicked on in calendar view
-  $scope.eventFromFactory = $scope.registerForClassFactory.getEvent();
+  //$scope.eventFromFactory = $scope.registerForClassFactory.getEvent();
 
-  console.log("scope.eventFromFactory: ",$scope.eventFromFactory);
+  //console.log("scope.eventFromFactory: ",$scope.eventFromFactory);
 
   // set values in local storage
-  $localstorage.set('eventId', $scope.eventFromFactory.eventId);
-  $localstorage.set('eventScheduleId', $scope.eventFromFactory.eventScheduleId);
+  //$localstorage.set('eventId', $scope.eventFromFactory.eventId);
+  //$localstorage.set('eventScheduleId', $scope.eventFromFactory.eventScheduleId);
   $localstorage.set('eventInsertBoolean', false);
 
-  $scope.getEventDetails = function(event){
+  $scope.getEventDetails = function(){
     console.log("in getEventDetails");
     //set params for get call to database
     var eventIds = {
-      eventId: event.eventId,
-      eventScheduleId: event.eventScheduleId
+      eventId: $scope.eventId,
+      eventScheduleId: $scope.eventScheduleId
     };
     //get call to database to get event info
     //use eventId in event object as the parameter
@@ -32,21 +34,22 @@ app.controller('EventDetailsController',['$scope', '$http', "RegisterForClassFac
     });
   };
 
-  $scope.registerForClass = function(someevent){
+  $scope.registerForClass = function(){
     $location.path('/chooseclassdates');
   };
-  $scope.seeAttendance = function(someevent){
+  $scope.seeAttendance = function(){
     // attendance uses values from localstorage set above
     $location.path('/attendance');
   };
-  $scope.cancelClass = function(someevent) {
+  $scope.cancelClass = function() {
 
     var answer = confirm("Are you sure you want to cancel class " + $scope.event.title + " " +
-        $scope.event.schedule_date + " " + $scope.event.start_datetime + " - " + $scope.event.end_datetime + "?");
+        moment($scope.event.schedule_date).format("MM-DD-YYYY") + " " + moment($scope.event.start_datetime).format("h:mm a") +
+        " - " + moment($scope.event.end_datetime).format("h:mm a") + "?");
     if (answer){
       //notify students
       // get student list for the class
-      var eventSchedule = {eventScheduleId: $scope.eventFromFactory.eventScheduleId};
+      var eventSchedule = {eventScheduleId: $scope.eventScheduleId};
       console.log("Input to get /usersEventSchedule/byEventScheduleId ", eventSchedule);
       $http.get('/usersEventSchedule/byEventScheduleId', {params: eventSchedule}).then(function(response){
         //console.log("Output from get /usersEventSchedule/byEventScheduleId ", response.data);
@@ -102,11 +105,11 @@ app.controller('EventDetailsController',['$scope', '$http', "RegisterForClassFac
       });
 
       //delete the users from the class then delete the class
-      $http.delete('/usersEventSchedule/deleteByEventScheduleId'+ $scope.eventFromFactory.eventScheduleId).then(function(response){
+      $http.delete('/usersEventSchedule/deleteByEventScheduleId'+ $scope.eventScheduleId).then(function(response){
         console.log("output from delete users eventSchedule by Event Schedule Id ", response.data);
         //delete the class
         if (response.data==true){
-          $http.delete('/eventSchedule/delete'+ $scope.eventFromFactory.eventScheduleId).then(function(response){
+          $http.delete('/eventSchedule/delete'+ $scope.eventScheduleId).then(function(response){
             console.log("output from delete eventSchedule ", response.data);
             if (response.data==true){
               //return to calendar
@@ -122,7 +125,7 @@ app.controller('EventDetailsController',['$scope', '$http', "RegisterForClassFac
     }
 
   };
-  $scope.editClass = function(someevent) {
+  $scope.editClass = function() {
     // add event uses values from localstorage set above
     $location.path('/addevent');
   };
@@ -133,7 +136,7 @@ app.controller('EventDetailsController',['$scope', '$http', "RegisterForClassFac
     $location.path('/login');
   };
 
-  $scope.getEventDetails($scope.eventFromFactory);
+  $scope.getEventDetails();
 
 
 }]);
