@@ -411,9 +411,9 @@ app.controller('ChooseClassDatesController',['$scope', '$http', "$localstorage",
     };
     console.log("Input to get /eventSchedule/byEventId ", eventId);
 
-    $http.get('/eventSchedule/byEventId', {params: eventId})
+    $http.get('/eventSchedule/currentByEventId', {params: eventId})
         .then(function(response){
-            console.log("Output from get /eventSchedule/byEventId ", response.data);
+            console.log("Output from get /eventSchedule/currentByEventId ", response.data);
             $scope.event = response.data;
             $scope.getRegisteredClasses($scope.user);
         });
