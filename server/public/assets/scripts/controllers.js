@@ -318,7 +318,7 @@ app.controller('AttendanceController',['$scope', '$http', '$localstorage', '$loc
                 $scope.usersEventSchedule[i].changed = false;
             }
         }
-    };
+    }
 
     $scope.findWalkin = function() {
         $location.path('/findwalkin');
@@ -354,8 +354,8 @@ app.controller("ChangePasswordController", ["$scope", "$http", "$location", "Act
         };
     }]);
 
-
-app.controller('ChooseClassDatesController',['$scope', '$http', "$localstorage", '$location', "ActiveProfileFactory", "RegisterForClassFactory",
+app.controller('ChooseClassDatesController',['$scope', '$http', "$localstorage", '$location', "ActiveProfileFactory",
+  "RegisterForClassFactory",
   function ($scope, $http, $localstorage, $location, ActiveProfileFactory, RegisterForClassFactory) {
   console.log('hi, from choose class dates Controller');
 
