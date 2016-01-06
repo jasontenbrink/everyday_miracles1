@@ -354,13 +354,21 @@ app.controller("ChangePasswordController", ["$scope", "$http", "$location", "Act
         };
     }]);
 
-app.controller('ChooseClassDatesController',['$scope', '$http', "RegisterForClassFactory", '$location', function ($scope, $http, RegisterForClassFactory, $location) {
+app.controller('ChooseClassDatesController',['$scope', '$http', "RegisterForClassFactory", '$location', "ActiveProfileFactory",
+  function ($scope, $http, RegisterForClassFactory, $location, ActiveProfileFactory) {
   console.log('hi, from choose class dates Controller');
 
-  $scope.user = {};
+
   $scope.today = new Date();
   //test user info
-  $scope.user.userId = 1;
+  //$scope.user = {};
+  //$scope.user.userId = 1;
+  var activeProfileFactory = ActiveProfileFactory;
+
+
+  var user = activeProfileFactory.getLoggedInUser();
+  console.log("the user from ActiveProfile: ",user);
+  $scope.user = activeProfileFactory.getLoggedInUser();
 
   $scope.event = [];
   $scope.registeredEvents = [];
@@ -447,16 +455,22 @@ app.controller('ChooseClassDatesController',['$scope', '$http', "RegisterForClas
 
 
 
-app.controller('ConfirmClassSignupController',['$scope', '$http', "RegisterForClassFactory", '$location', function ($scope, $http, RegisterForClassFactory, $location) {
+app.controller('ConfirmClassSignupController',['$scope', '$http', "RegisterForClassFactory", '$location', "ActiveProfileFactory",
+  function ($scope, $http, RegisterForClassFactory, $location, ActiveProfileFactory) {
 
   console.log('hi, from confirm class signup Controller');
-  $scope.user = {};
+  var activeProfileFactory = ActiveProfileFactory;
+
+  var user = activeProfileFactory.getLoggedInUser();
+  console.log("the user from ActiveProfile: ",user);
+  $scope.user = activeProfileFactory.getLoggedInUser();
+  //$scope.user = {};
   $scope.event = {};
   $scope.registeredEvents = [];
   $scope.registerForClassFactory = RegisterForClassFactory;
 
-  $scope.user.name = "Jane Doe";
-  $scope.user.userId = 1;
+  //$scope.user.name = "Jane Doe";
+  //$scope.user.userId = 1;
 
   $scope.studentEvents = $scope.registerForClassFactory.getStudentEvents();
   console.log("$scope.eventFromFactory: ",$scope.studentEvents);
@@ -477,7 +491,7 @@ app.controller('ConfirmClassSignupController',['$scope', '$http', "RegisterForCl
     });
   };
 
-  $scope.confirmClass = function(userEvents, comments, registeredClasses) {
+  $scope.confirmClass = function(userEvents, comments, registeredClasses, someuser) {
 
     console.log("this is the class registered for: ", userEvents);
     console.log("these are the comments: ", comments);
@@ -502,7 +516,7 @@ app.controller('ConfirmClassSignupController',['$scope', '$http', "RegisterForCl
         console.log("the event has been registered");
       } else {
         var userEvent = {
-          userId: 1,
+          userId: someuser.userId,
           eventScheduleId: userEvents[i].event_schedule_id,
           status: "Registered",
           comments: userEvents[i].comments
@@ -938,9 +952,17 @@ app.controller("ProfileController", ["$scope", "$http", "ActiveProfileFactory", 
 
 }]);
 
-app.controller('StudentClassListController', ["$scope", "$http", function($scope,$http){
+app.controller('StudentClassListController', ["$scope", "$http", "ActiveProfileFactory",
+    function($scope, $http, ActiveProfileFactory){
     console.log("student class controller says hi");
-    $scope.user = {};
+    var activeProfileFactory = ActiveProfileFactory;
+
+
+    var user = activeProfileFactory.getLoggedInUser();
+    console.log("the user from ActiveProfile: ",user);
+    $scope.user = activeProfileFactory.getLoggedInUser();
+
+    //$scope.user = {};
     $scope.allClasses = [];
     $scope.gridOptions1 = {};
     $scope.gridOptions1.data = [];
@@ -973,7 +995,7 @@ app.controller('StudentClassListController', ["$scope", "$http", function($scope
     };
 
     //test user info
-    $scope.user.userId = 1;
+    //$scope.user.userId = 1;
 
     //get user info
     $scope.getUserInfo = function(someuser) {
