@@ -343,9 +343,10 @@ app.controller("ChangePasswordController", ["$scope", "$http", "$location", "Act
             console.log("the user and their password to change: ",$scope.user);
             $http.put('/changePassword', {params: $scope.user}).then(function(response){
                 console.log("Response from the change password attempt");
-            })
-        }
+            });
+        };
     }]);
+
 app.controller('ChooseClassDatesController',['$scope', '$http', "RegisterForClassFactory", '$location', "ActiveProfileFactory",
   function ($scope, $http, RegisterForClassFactory, $location, ActiveProfileFactory) {
   console.log('hi, from choose class dates Controller');
@@ -847,8 +848,8 @@ app.controller('JadeController',['$scope', '$http', function ($scope, $http) {
 
 }]);
 
-app.controller('LoginController',['$scope', '$http', '$location', 'ActiveProfileFactory',
-  function ($scope, $http, $location, ActiveProfileFactory) {
+app.controller('LoginController',['$scope', '$http', '$location', 'ActiveProfileFactory', '$route', '$window',
+  function ($scope, $http, $location, ActiveProfileFactory, $route, $window) {
   var activeProfileFactory = ActiveProfileFactory;
   console.log('hi, from Login Controller');
 
@@ -862,6 +863,7 @@ app.controller('LoginController',['$scope', '$http', '$location', 'ActiveProfile
         //console.log('response status', response.status);
         if (response.status===200){
           activeProfileFactory.setLoggedInUser(response.data.userId);
+          //$window.location.reload();
           $location.path('/uicalendar');
         }
         else{

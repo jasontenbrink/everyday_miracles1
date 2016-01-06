@@ -1,4 +1,5 @@
 md-content
+  p!= user
   md-toolbar
     div(class="md-toolbar-tools" ng-controller="NavController")
       img(src='assets/images/everyday_miracles_logo.png', title='Everyday Miracles Logo', class="image-content")
@@ -13,35 +14,3 @@ md-content
             md-button(href="#/login") login
           md-menu-item
             md-button(href="#/directory") directory
-
-//- 
-//- <md-button aria-label="menu" class="md-fab md-primary">
-//-        <md-icon md-svg-src="img/icons/menu.svg"></md-icon>
-//-      </md-button>
-//- 
-//- <md-menu>
-//-       <md-button aria-label="Open phone interactions menu" class="md-icon-button" ng-click="ctrl.openMenu($mdOpenMenu, $event)">
-//-         <md-icon md-menu-origin md-svg-icon="call:phone"></md-icon>
-//-       </md-button>
-//-       <md-menu-content width="4">
-//-         <md-menu-item>
-//-           <md-button ng-click="ctrl.redial($event)">
-//-             <md-icon md-svg-icon="call:dialpad" md-menu-align-target></md-icon>
-//-             Redial
-//-           </md-button>
-//-         </md-menu-item>
-//-         <md-menu-item>
-//-           <md-button disabled="disabled" ng-click="ctrl.checkVoicemail()">
-//-             <md-icon md-svg-icon="call:voicemail"></md-icon>
-//-             Check voicemail
-//-           </md-button>
-//-         </md-menu-item>
-//-         <md-menu-divider></md-menu-divider>
-//-         <md-menu-item>
-//-           <md-button ng-click="ctrl.toggleNotifications()">
-//-             <md-icon md-svg-icon="social:notifications-{{ctrl.notificationsEnabled ? 'off' : 'on'}}"></md-icon>
-//-             {{ctrl.notificationsEnabled ? 'Disable' : 'Enable' }} notifications
-//-           </md-button>
-//-         </md-menu-item>
-//-       </md-menu-content>
-//-     </md-menu>
