@@ -18,6 +18,7 @@ var userRegistration = require('./routes/userRegistration');
 var authenticate = require('./routes/authenticate.js');
 var secureTemplates = require('./routes/secureTemplates');
 var notifications = require('./routes/notifications');
+var changePassword = require('./routes/changePassword.js');
 
 //for Jade rendering
 app.set('views', path.join(__dirname,'./public/assets/views/'));
@@ -53,6 +54,7 @@ app.use('/templates/', jadeTest);
 //login stuff
 app.use('/login', login);
 app.use('/userregistration', userRegistration);
+app.use('/changePassword', changePassword);
 
 //data routes
 app.use('/users', users);

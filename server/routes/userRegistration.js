@@ -8,7 +8,6 @@ var Promise = require('bluebird');
 var bcrypt = Promise.promisifyAll(require('bcrypt'));
 var SALT_WORK_FACTOR = 10;
 
-
 var connectionString = process.env.DATABASE_URL   || 'postgres://localhost:5432/everyday_miracles';
 
 // router.get('/', function (req, res, next){
