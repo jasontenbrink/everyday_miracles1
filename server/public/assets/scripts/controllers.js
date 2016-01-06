@@ -664,13 +664,13 @@ app.controller('EventDetailsController',['$scope', '$http', "RegisterForClassFac
 
         var subject = "Everyday Miracles Class Cancellation Notice";
         var message = "Everyday Miracles Class " + $scope.event.title + " " +
-          $scope.event.schedule_date + " " + $scope.event.start_datetime + " - " + $scope.event.end_datetime +
-                " has been cancelled.";
-
+          moment($scope.event.schedule_date).format("MM-DD-YYYY") + " " + moment($scope.event.start_datetime).format("h:mm a") +
+            " - " + moment($scope.event.end_datetime).format("h:mm a") + " has been cancelled.";
+        console.log("message ", message);
         if (phoneNumberArray.length > 0) {
           var textMessage = {
             "phoneNumber[]": phoneNumberArray,
-            message: message
+            message: message.substring(0, 159)
           };
 
           console.log(textMessage);
@@ -695,7 +695,6 @@ app.controller('EventDetailsController',['$scope', '$http', "RegisterForClassFac
       });
 
       //delete the users from the class then delete the class
-
       $http.delete('/usersEventSchedule/deleteByEventScheduleId'+ $scope.eventFromFactory.eventScheduleId).then(function(response){
         console.log("output from delete users eventSchedule by Event Schedule Id ", response.data);
         //delete the class
