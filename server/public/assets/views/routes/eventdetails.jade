@@ -6,7 +6,7 @@ if (user === undefined)
 h1 {{event.title}}
 
 //once the database gets up, filter the display of this date
-.class-date {{event.start_datetime|date:'shortTime':'+12:00'}}
+.class-date {{event.start_datetime|date:'shortTime'}}
 
 .class-details {{event.description}}
 

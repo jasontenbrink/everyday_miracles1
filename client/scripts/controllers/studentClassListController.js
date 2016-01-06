@@ -1,6 +1,14 @@
-app.controller('StudentClassListController', ["$scope", "$http", function($scope,$http){
+app.controller('StudentClassListController', ["$scope", "$http", "ActiveProfileFactory",
+    function($scope, $http, ActiveProfileFactory){
     console.log("student class controller says hi");
-    $scope.user = {};
+    var activeProfileFactory = ActiveProfileFactory;
+
+
+    var user = activeProfileFactory.getLoggedInUser();
+    console.log("the user from ActiveProfile: ",user);
+    $scope.user = activeProfileFactory.getLoggedInUser();
+
+    //$scope.user = {};
     $scope.allClasses = [];
     $scope.gridOptions1 = {};
     $scope.gridOptions1.data = [];
@@ -33,7 +41,7 @@ app.controller('StudentClassListController', ["$scope", "$http", function($scope
     };
 
     //test user info
-    $scope.user.userId = 1;
+    //$scope.user.userId = 1;
 
     //get user info
     $scope.getUserInfo = function(someuser) {
