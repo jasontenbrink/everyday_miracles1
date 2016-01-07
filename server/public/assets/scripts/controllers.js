@@ -326,18 +326,6 @@ app.controller('AttendanceController',['$scope', '$http', '$localstorage', '$loc
 
 }]);
 
-app.controller('CalendarController',['$scope', function ($scope) {
-  console.log('hi, from calendarController');
-  $scope.x = 'hi';
-  $scope.y = 'bye';
-  $scope.gridOptions={};
-  $scope.gridOptions.data = [
-    {"firstName": "Jason", "lastName": "Tenbrink"},
-    {"firstName": "Paul", "lastName": "Zimmel"}
-  ];
-}]);
-
-
 app.controller("ChangePasswordController", ["$scope", "$http", "$location", "ActiveProfileFactory",
     function($scope, $http, $location, ActiveProfileFactory){
         //console.log("hi from changepasswordcontroller");
@@ -600,10 +588,6 @@ function SearchObject() {
           this.phoneNumber='';
         }
 
-app.controller('EditEventController',['$scope', '$http', function ($scope, $http) {
-  console.log('hi, from edit event Controller');
-}]);
-
 app.controller('EventDetailsController',['$scope', '$http', "RegisterForClassFactory", "$location", "$localstorage",
   function ($scope, $http, RegisterForClassFactory, $location, $localstorage) {
 
@@ -834,18 +818,6 @@ app.controller('FindWalkinController',['$scope', '$http', '$localstorage', '$loc
             $location.path('/addwalkin');
         };
 
-
-}]);
-
-app.controller('JadeController',['$scope', '$http', function ($scope, $http) {
-  console.log('hi, from jade Controller');
-  $scope.x = 'angular';
-  $scope.y = 'bye';
-  // $http.get('/jade')
-  //   .then(function (response) {
-  //     console.log(response.data);
-  //     $scope.y = response.data;
-  //   });
 
 }]);
 

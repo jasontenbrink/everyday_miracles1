@@ -1,27 +1,27 @@
 md-content
   md-toolbar
-    div(class="md-toolbar-tools" ng-controller="NavController")
-      img(src='assets/images/everyday_miracles_logo.png', title='Everyday Miracles Logo', class="image-content")
+    div(aria-label="Nav" class="md-toolbar-tools" ng-controller="NavController")
+      img(aria-label="Everyday Miracles Logo" src='assets/images/everyday_miracles_logo.png', title='Everyday Miracles Logo', class="image-content")
       md-menu
         md-button(aria-label="menu" ng-click="$mdOpenMenu($event)") nav
         md-menu-content(width="4")
           //md-menu-item
           //  md-button(href="#uicalendar") calendar
           md-menu-item
-            md-button(ng-click="go('/uicalendar')") calendar
+            md-button(aria-label="Calendar" ng-click="go('/uicalendar')") calendar
           if(!user)
             md-menu-item
-              md-button(ng-click="go('/login')") login
+              md-button(aria-label="Login" ng-click="go('/login')") login
             md-menu-item
-              md-button(ng-click="go('/userregistration')") register     
+              md-button(aria-label="Register" ng-click="go('/userregistration')") register
           else
             md-menu-item
-              md-button(ng-click="logout()") logout
+              md-button(aria-label="Logout" ng-click="logout()") logout
             md-menu-item
-              md-button(ng-click="goToProfile()") profile
+              md-button(aria-label="Profile" ng-click="goToProfile()") profile
             if(user.role !== 'student')  
               md-menu-item
-                md-button(ng-click="go('/directory')") directory
+                md-button(aria-label="Directory" ng-click="go('/directory')") directory
               if(user.role ==='admin')
                 md-menu-item
-                  md-button(ng-click="go('/addevent')") add event
+                  md-button(aria-label="Add Event" ng-click="go('/addevent')") add event

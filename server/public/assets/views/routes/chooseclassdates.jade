@@ -1,12 +1,12 @@
 md-content(layout-padding)
-  h2 Class Dates
-  h3 {{registeredEvents[0].title}}
-  h4 Please choose the date(s) that you would like to attend.
+  h2(aria-label="Class Dates") Class Dates
+  h3(aria-label="Event Title") {{registeredEvents[0].title}}
+  h4(aria-label="Please choose the dates that you would like to attend") Please choose the date(s) that you would like to attend.
 
-  md-checkbox(ng-repeat="date in event | limitTo:6" ng-model="date.addCheckbox" md-no-ink aria-label="Class Picker Checkbox") {{date.start_datetime|date:'EEE MMM d, y h:mm a'}}
+  md-checkbox(ng-repeat="date in event | limitTo:6" ng-model="date.addCheckbox" md-no-ink aria-label="Class Picker Checkboxes") {{date.start_datetime|date:'EEE MMM d, y h:mm a'}}
 
   .sign-up-button
-    md-button(class="md-raised" ng-click="signUp()") Sign Up
+    md-button(aria-label="Sign Up" class="md-raised" ng-click="signUp()") Sign Up
 
   .go-back-button
-    md-button(class="md-raised" ng-click="goBack()") Go Back
+    md-button(aria-label="Go Back" class="md-raised" ng-click="goBack()") Go Back

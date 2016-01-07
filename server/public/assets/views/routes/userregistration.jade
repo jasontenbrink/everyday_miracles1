@@ -1,20 +1,20 @@
 md-content(layout-padding)
   h1 Register
   md-input-container
-    input(ng-model="user.firstName")
+    input(aria-label="First Name" ng-model="user.firstName")
     label firstName
   md-input-container
-    input(type="text" ng-model="user.lastName")
+    input(aria-label="Last Name" type="text" ng-model="user.lastName")
     label lastName
   md-input-container
-    input(ng-model="user.username" type="text" value="jason")
+    input(aria-label="Username" ng-model="user.username" type="text" value="jason")
     label username
   md-input-container
-    input(type="password" ng-model="user.password" value="1234")
+    input(aria-label="Password" type="password" ng-model="user.password" value="1234")
     label password
   //- md-input-container
   //-   input(type="password" ng-model="user.password")
   //-   label confirm password
   md-input-container
-    md-button(ng-click="submitRegistration()") submit
+    md-button(aria-label="Submit" ng-click="submitRegistration()") submit
   
