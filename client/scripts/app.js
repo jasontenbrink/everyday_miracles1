@@ -81,6 +81,10 @@ app.config(['$routeProvider', '$httpProvider', function($routeProvider, $httpPro
                   .when('/directory', {
                       templateUrl: '/templates/directory.jade',
                       controller: "DirectoryController"
+                  })
+                  .otherwise({
+                    templateUrl: '/templates/uicalendar.jade',
+                    controller: "UiCalendarController"
                   });
 
 

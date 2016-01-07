@@ -5,43 +5,21 @@ md-content
       md-menu
         md-button(aria-label="menu" ng-click="$mdOpenMenu($event)") nav
         md-menu-content(width="4")
+          //md-menu-item
+          //  md-button(href="#uicalendar") calendar
           md-menu-item
-            md-button(href="#uicalendar") calendar
-          md-menu-item
-            md-button(ng-click="goToProfile()") profile
-          md-menu-item
-            md-button(href="#/login") login
-          md-menu-item
-            md-button(href="#/directory") directory
-
-//- 
-//- <md-button aria-label="menu" class="md-fab md-primary">
-//-        <md-icon md-svg-src="img/icons/menu.svg"></md-icon>
-//-      </md-button>
-//- 
-//- <md-menu>
-//-       <md-button aria-label="Open phone interactions menu" class="md-icon-button" ng-click="ctrl.openMenu($mdOpenMenu, $event)">
-//-         <md-icon md-menu-origin md-svg-icon="call:phone"></md-icon>
-//-       </md-button>
-//-       <md-menu-content width="4">
-//-         <md-menu-item>
-//-           <md-button ng-click="ctrl.redial($event)">
-//-             <md-icon md-svg-icon="call:dialpad" md-menu-align-target></md-icon>
-//-             Redial
-//-           </md-button>
-//-         </md-menu-item>
-//-         <md-menu-item>
-//-           <md-button disabled="disabled" ng-click="ctrl.checkVoicemail()">
-//-             <md-icon md-svg-icon="call:voicemail"></md-icon>
-//-             Check voicemail
-//-           </md-button>
-//-         </md-menu-item>
-//-         <md-menu-divider></md-menu-divider>
-//-         <md-menu-item>
-//-           <md-button ng-click="ctrl.toggleNotifications()">
-//-             <md-icon md-svg-icon="social:notifications-{{ctrl.notificationsEnabled ? 'off' : 'on'}}"></md-icon>
-//-             {{ctrl.notificationsEnabled ? 'Disable' : 'Enable' }} notifications
-//-           </md-button>
-//-         </md-menu-item>
-//-       </md-menu-content>
-//-     </md-menu>
+            md-button(ng-click="go('/uicalendar')") calendar
+          if(!user)
+            md-menu-item
+              md-button(ng-click="go('/login')") login
+          else
+            md-menu-item
+              md-button(ng-click="logout()") logout
+            md-menu-item
+              md-button(ng-click="goToProfile()") profile
+            if(user.role !== 'student')  
+              md-menu-item
+                md-button(ng-click="go('/directory')") directory
+              if(user.role ==='admin')
+                md-menu-item
+                  md-button(ng-click="go('/addevent')") add event

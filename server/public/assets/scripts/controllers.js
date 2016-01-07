@@ -847,8 +847,9 @@ app.controller('JadeController',['$scope', '$http', function ($scope, $http) {
 
 }]);
 
-app.controller('LoginController',['$scope', '$http', '$location', 'ActiveProfileFactory', "$localstorage",
-  function ($scope, $http, $location, ActiveProfileFactory, $localstorage) {
+app.controller('LoginController',['$scope', '$http', '$location', 'ActiveProfileFactory', "$localstorage", '$window',
+  function ($scope, $http, $location, ActiveProfileFactory, $localstorage, $window) {
+
   var activeProfileFactory = ActiveProfileFactory;
   console.log('hi, from Login Controller');
 
@@ -862,6 +863,7 @@ app.controller('LoginController',['$scope', '$http', '$location', 'ActiveProfile
         //console.log('response status', response.status);
         if (response.status===200){
           activeProfileFactory.setLoggedInUser(response.data.userId);
+
           var user = ActiveProfileFactory.getLoggedInUser();
           console.log("the user from ActiveProfile: ",user);
           if (user.userId) {
@@ -869,6 +871,7 @@ app.controller('LoginController',['$scope', '$http', '$location', 'ActiveProfile
           }
           $scope.userId = $localstorage.get("userId");
           console.log("the user: ", $scope.userId);
+          $window.location.reload();
           $location.path('/uicalendar');
         }
         else{
@@ -881,14 +884,25 @@ app.controller('LoginController',['$scope', '$http', '$location', 'ActiveProfile
 
 }]);
 
-app.controller('NavController',['$scope', 'ActiveProfileFactory', '$location',
-  function ($scope, ActiveProfileFactory, $location) {
+app.controller('NavController',['$scope', 'ActiveProfileFactory', '$location', '$localstorage', '$http','$window',
+  function ($scope, ActiveProfileFactory, $location, $localstorage, $http, $window) {
 
   var activeProfileFactory = ActiveProfileFactory;
 
   $scope.goToProfile = function () {
     activeProfileFactory.setLoggedInUserToActiveProfile();
     $location.path('/profile');
+  };
+
+  $scope.go = function (path) {
+    $location.path(path);
+  }; 
+  $scope.logout = function () {
+    $http.get('/logout')
+    .then(function (response) {
+      $window.location.reload();
+      $location.path('/uicalendar');
+    });
   };
 }]);
 
@@ -978,8 +992,8 @@ app.controller('StudentClassListController', ["$scope", "$http", "$localstorage"
     $scope.gridOptions1 = {
         columnDefs: [
             {field: "title", name: "Class"},
-            {field: "start_datetime", name: "Date"},
-            {field: "status", name: "Status"},
+            {field: "start_datetime", cellFilter: "date: 'M/d h:mm'", name: "Date"},
+            {field: "status", name: "Status", visible:false},
             {name: "action", displayName: "Action", cellTemplate: '<md-button class = "md-raised md-warn"' +
             'ng-click="grid.appScope.deleteClass(row.entity)">delete</md-button>'}
         ]
@@ -987,7 +1001,7 @@ app.controller('StudentClassListController', ["$scope", "$http", "$localstorage"
     $scope.gridOptions2 = {
         columnDefs: [
             {field: "title", name: "Class"},
-            {field: "start_datetime", name: "Date"},
+            {field: "start_datetime", cellFilter: "date: 'M/d h:mm'", name: "Date"},
             {field: "status", name: "Status"}
         ]
     };
