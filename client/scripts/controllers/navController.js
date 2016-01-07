@@ -5,6 +5,9 @@ app.controller('NavController',['$scope', 'ActiveProfileFactory', '$location', '
 
   $scope.goToProfile = function () {
     activeProfileFactory.setLoggedInUserToActiveProfile();
+    var userId = $localstorage.get("userId");
+    $localstorage.set("searchUserId", userId);
+    console.log("the new searchUserId: ", $localstorage.get('searchUserId'));
     $location.path('/profile');
   };
 

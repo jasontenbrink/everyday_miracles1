@@ -1,43 +1,43 @@
 md-content(layout-padding)
-    h2 Find Walk-in
-    h3 {{event.title}}
-    h4 {{event.schedule_date|date:'fullDate'}} {{event.start_datetime|date:'shortTime'}} {{event.end_datetime|date:'shortTime'}}
+    h2(aria-label="Find Walk In")  Find Walk-in
+    h3(aria-label="Event Title")  {{event.title}}
+    h4(aria-label="Event Day Date Start Time End Time")  {{event.schedule_date|date:'fullDate'}} {{event.start_datetime|date:'shortTime'}} {{event.end_datetime|date:'shortTime'}}
 
-    form(name='findWalkinForm')
+    form(aria-label="Find Walk In Form" name='findWalkinForm')
         md-input-container(class='md-block')
             label Enter Phone Number
-            input(type="text" ng-model="user.phoneNumber")
-        //input(type="text" ng-model="user.firstName")
-        //input(type="text" ng-model="user.lastName")
+            input(aria-label="Enter Phone number" type="text" ng-model="user.phoneNumber")
+        //input(aria-label="Enter First Name" type="text" ng-model="user.firstName")
+        //input(aria-label="Enter Last Name" type="text" ng-model="user.lastName")
 
-        md-button(ng-click="findWalkin()" class="md-primary md-raised") Search
+        md-button(aria-label="Search Button" ng-click="findWalkin()" class="md-primary md-raised") Search
 
-        div(class="found-user" ng-if="foundUser.user_id")
-          h4 Name: {{foundUser.first_name}} {{foundUser.last_name}}
-          div Date of Birth: {{foundUser.date_of_birth|date:'longDate'}}
-          div Phone Number: {{foundUser.phone_number}}
+        div(aria-label="Found User" class="found-user" ng-if="foundUser.user_id")
+          h4(aria-label="User First Last Name")  Name: {{foundUser.first_name}} {{foundUser.last_name}}
+          div(aria-label="User Date of Birth")  Date of Birth: {{foundUser.date_of_birth|date:'longDate'}}
+          div(aria-label="User Phone Number")  Phone Number: {{foundUser.phone_number}}
           md-input-container(class='md-block')
               label Contact Type
-              select(class="" name="contacttype" ng-model="foundUser.contact_type" required)
-                  option(value="email") Email
-                  option(value="text") Text
+              select(aria-label="Contact Type menu" class="" name="contacttype" ng-model="foundUser.contact_type" required)
+                  option(aria-label="Email" value="email") Email
+                  option(aria-label="Text" value="text") Text
           md-input-container(class='md-block')
-              md-radio-group(ng-model = "foundUser.payment_type" required)
+              md-radio-group(aria-label="Payment Type" ng-model = "foundUser.payment_type" required)
                   label Payment Type
-                  md-radio-button(value = "insurance") Insurance (I have state-funded insurance)
-                  md-radio-button(value = "cash") Out of pocket (check or cash in-person)
+                  md-radio-button(aria-label="Insurance Radio Button" value = "insurance") Insurance (I have state-funded insurance)
+                  md-radio-button(aria-label="Cash Radio Button" value = "cash") Out of pocket (check or cash in-person)
           md-input-container(class='md-block')
-              md-radio-group(ng-model = "foundUser.everyday_miracles_client_ind" required)
-                  label Are you an Everyday Miracles Client?
-                  md-radio-button(ng-value = "true" ) Yes
-                  md-radio-button(ng-value = "false" ) No
+              md-radio-group(aria-label="Found User list" ng-model = "foundUser.everyday_miracles_client_ind" required)
+                  label(aria-label="Are you an Everyday Miracles Client") Are you an Everyday Miracles Client?
+                  md-radio-button(aria-label="True radio button" ng-value = "true" ) Yes
+                  md-radio-button(aria-label="False radio button" ng-value = "false" ) No
           md-input-container(class='md-block')
               label Doula Name
-              input(ng-model="foundUser.doula_name" type="text")
+              input(aria-label="Doula Name" ng-model="foundUser.doula_name" type="text")
           md-input-container(class='md-block')
               label Expected Birth Date
-              input(ng-model="foundUser.expected_birth_date" type="date")
+              input(aria-label="Birth Date" ng-model="foundUser.expected_birth_date" type="date")
 
-        md-button(ng-click="submitUser()" class="md-primary md-raised" ng-disabled="findWalkinForm.$invalid") Submit
+        md-button(aria-label="Submit Button" ng-click="submitUser()" class="md-primary md-raised" ng-disabled="findWalkinForm.$invalid") Submit
 
-        md-button(ng-click="newUser()" class="md-primary md-raised") New User
+        md-button(aria-label="New User Button" ng-click="newUser()" class="md-primary md-raised") New User

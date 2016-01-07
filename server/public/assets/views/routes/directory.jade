@@ -1,7 +1,21 @@
-p directory page
-md-input-container
-  input(type="text" ng-model="searchObject.firstName")
-  label name
-  
-md-button(ng-click="getResults()") submit
+h1(aria-label="Directory") Directory
+
+div(class="search-directory" layout="row")
+  md-input-container
+    input(aria-label="First Name" type="text" ng-model="searchObject.firstName")
+    label First Name
+
+  md-input-container
+    input(aria-label="Last Name" type="text" ng-model="searchObject.lastName")
+    label Last Name
+
+  md-input-container
+    input(aria-label="Phone Number" type="text" ng-model="searchObject.phoneNumber")
+    label Phone Number
+
+md-button(aria-label = "Search Button" ng-click="getResults()") Search
+
+md-button(aria-label = "Add Button" ng-click="addNewStudent()") Add New Student
+
 div(ui-grid="gridOptions" class="my-grid")
+

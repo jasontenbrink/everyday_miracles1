@@ -6,13 +6,16 @@ app.controller("ProfileController", ["$scope", "$http", "ActiveProfileFactory", 
 
     //var testUser = activeProfileFactory.getActiveProfileData();
     //console.log('testUser.userId', testUser.userId);
-      var testUserId = $localstorage.get("userId");
-      console.log("the user: ", testUserId);
+
+    var userId = $localstorage.get("userId");
+    console.log("the user: ", userId);
+    var searchUserId = $localstorage.get("searchUserId");
+    console.log("the searchUserId: ", searchUserId);
 
     //get profile info for profile page
     $scope.getUser = function(){
         var user = {
-            userId: testUserId
+            userId: searchUserId
         };
         console.log("the input of getUser: ",user);
         $http.get('/users/byUserId', {params: user}).then(function (response) {

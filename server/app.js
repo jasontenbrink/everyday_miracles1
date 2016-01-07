@@ -1,5 +1,5 @@
 //github test by john
-require('dotenv').load().config({silent: true});
+require('dotenv').load({silent: true});
 
 var express = require("express");
 var app = express();
