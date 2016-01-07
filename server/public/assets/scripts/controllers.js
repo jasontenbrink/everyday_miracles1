@@ -884,6 +884,10 @@ app.controller('LoginController',['$scope', '$http', '$location', 'ActiveProfile
       });
   };
 
+  $scope.go = function (path) {
+    $location.path(path);
+  };
+
 }]);
 
 app.controller('NavController',['$scope', 'ActiveProfileFactory', '$location', '$localstorage', '$http','$window',
