@@ -359,18 +359,8 @@ app.controller('ChooseClassDatesController',['$scope', '$http', "$localstorage",
   function ($scope, $http, $localstorage, $location, ActiveProfileFactory, RegisterForClassFactory) {
   console.log('hi, from choose class dates Controller');
 
-
   $scope.today = new Date();
-  //test user info
-  //$scope.user = {};
-  //$scope.user.userId = 1;
 
-
-  //var user = ActiveProfileFactory.getLoggedInUser();
-  //if (user.userId) {
-  //  $localstorage.set("userId", user.userId);
-  //}
-  //console.log("the user from ActiveProfile: ",user);
   $scope.userId = $localstorage.get("userId");
 
   $scope.event = [];
@@ -383,9 +373,6 @@ app.controller('ChooseClassDatesController',['$scope', '$http', "$localstorage",
 
   //get factory
   $scope.registerForClassFactory = RegisterForClassFactory;
-
-  //get eventId from factory
-  //$scope.eventFromFactory = $scope.registerForClassFactory.getEvent();
 
   //get classes user has already registered for
   $scope.getRegisteredClasses = function() {
@@ -462,12 +449,8 @@ app.controller('ChooseClassDatesController',['$scope', '$http', "$localstorage",
   };
 }]);
 
-
-
 app.controller('ConfirmClassSignupController',['$scope', '$http', "RegisterForClassFactory", '$location', "$localstorage",
   function ($scope, $http, RegisterForClassFactory, $location, $localstorage) {
-
-
 
   $scope.userId = $localstorage.get("userId");
   $scope.eventId = $localstorage.get("eventId");
@@ -1009,8 +992,8 @@ app.controller('StudentClassListController', ["$scope", "$http", "$localstorage"
     $scope.gridOptions1 = {
         columnDefs: [
             {field: "title", name: "Class"},
-            {field: "start_datetime", name: "Date"},
-            {field: "status", name: "Status"},
+            {field: "start_datetime", cellFilter: "date: 'M/d h:mm'", name: "Date"},
+            {field: "status", name: "Status", visible:false},
             {name: "action", displayName: "Action", cellTemplate: '<md-button class = "md-raised md-warn"' +
             'ng-click="grid.appScope.deleteClass(row.entity)">delete</md-button>'}
         ]
@@ -1018,7 +1001,7 @@ app.controller('StudentClassListController', ["$scope", "$http", "$localstorage"
     $scope.gridOptions2 = {
         columnDefs: [
             {field: "title", name: "Class"},
-            {field: "start_datetime", name: "Date"},
+            {field: "start_datetime", cellFilter: "date: 'M/d h:mm'", name: "Date"},
             {field: "status", name: "Status"}
         ]
     };
@@ -1475,8 +1458,8 @@ app.controller('UiCalendarController', ["$scope", "$http", "RegisterForClassFact
                 $scope.eventSources.events[i].allDay = false;
                 $scope.eventSources.events[i].title = $scope.tempEvents[i].title;
 
-                $scope.eventSources.events[i].start = $scope.tempEvents[i].start_datetime;
-                $scope.eventSources.events[i].end = $scope.tempEvents[i].end_datetime;
+                $scope.eventSources.events[i].start = new Date($scope.tempEvents[i].start_datetime);
+                $scope.eventSources.events[i].end = new Date($scope.tempEvents[i].end_datetime);
 
                 //$scope.eventSources.events[i].description = $scope.tempEvents[i].description;
 

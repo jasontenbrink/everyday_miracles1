@@ -3,18 +3,8 @@ app.controller('ChooseClassDatesController',['$scope', '$http', "$localstorage",
   function ($scope, $http, $localstorage, $location, ActiveProfileFactory, RegisterForClassFactory) {
   console.log('hi, from choose class dates Controller');
 
-
   $scope.today = new Date();
-  //test user info
-  //$scope.user = {};
-  //$scope.user.userId = 1;
 
-
-  //var user = ActiveProfileFactory.getLoggedInUser();
-  //if (user.userId) {
-  //  $localstorage.set("userId", user.userId);
-  //}
-  //console.log("the user from ActiveProfile: ",user);
   $scope.userId = $localstorage.get("userId");
 
   $scope.event = [];
@@ -27,9 +17,6 @@ app.controller('ChooseClassDatesController',['$scope', '$http', "$localstorage",
 
   //get factory
   $scope.registerForClassFactory = RegisterForClassFactory;
-
-  //get eventId from factory
-  //$scope.eventFromFactory = $scope.registerForClassFactory.getEvent();
 
   //get classes user has already registered for
   $scope.getRegisteredClasses = function() {

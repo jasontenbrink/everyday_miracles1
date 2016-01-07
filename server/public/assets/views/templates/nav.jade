@@ -5,6 +5,8 @@ md-content
       md-menu
         md-button(aria-label="menu" ng-click="$mdOpenMenu($event)") nav
         md-menu-content(width="4")
+          //md-menu-item
+          //  md-button(href="#uicalendar") calendar
           md-menu-item
             md-button(ng-click="go('/uicalendar')") calendar
           if(!user)
