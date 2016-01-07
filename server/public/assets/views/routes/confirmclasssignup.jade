@@ -1,7 +1,7 @@
 md-content(layout-padding)
 
   .class-register-info
-    //h2(aria-label="Name") #{user.first_name} #{user.last_name}
+    //h2(aria-label="First Last Name") #{user.first_name} #{user.last_name}
     //
     h2(aria-label="Registering For") Registering for:
     h3(aria-label="Event Title") {{registeredEvents[0].title}}
@@ -16,7 +16,7 @@ md-content(layout-padding)
         textarea(aria-label="Additional Comments" ng-model = "event.comments")
 
   .confirm-class-button
-    md-button(aria-label="Confirm Class" class = "md-raised" ng-click = "confirmClass(studentEvents, event.comments, registeredEvents)") Confirm Class
+    md-button(aria-label="Confirm Class Button" class = "md-raised" ng-click = "confirmClass(studentEvents, event.comments, registeredEvents)") Confirm Class
 
   .go-back
-    md-button(aria-label="Go Back" class = "md-raised" ng-click = "goBack()") Go Back
+    md-button(aria-label="Go Back Button" class = "md-raised" ng-click = "goBack()") Go Back

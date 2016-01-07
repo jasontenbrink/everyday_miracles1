@@ -2,28 +2,28 @@ md-content(layout-padding)
 
   if (user === undefined)
     .login-button
-      md-button(aria-label="Login" class = "md-raised" ng-click = "loginUser()") Login
+      md-button(aria-label="Login Button" class = "md-raised" ng-click = "loginUser()") Login
   h3(aria-label="Event Title") {{event.title}}
-  h4(aria-label="Event Date Start Time End Time") {{event.schedule_date|date:'fullDate'}} {{event.start_datetime|date:'shortTime'}} {{event.end_datetime|date:'shortTime'}}
+  h4(aria-label="Event Day Date Start Time End Time") {{event.schedule_date|date:'fullDate'}} {{event.start_datetime|date:'shortTime'}} {{event.end_datetime|date:'shortTime'}}
 
 
   .class-details(aria-label="Event Description") {{event.description}}
 
   if (user === undefined) || (user.role == 'student')
     .register-button
-      md-button(aria-label="Register for Class" class = "md-raised" ng-click = "registerForClass()") Register for Class
+      md-button(aria-label="Register for Class Button" class = "md-raised" ng-click = "registerForClass()") Register for Class
 
   if (user === undefined)
   else
     if (user.role == 'teacher') || (user.role === 'admin')
       .attendance-button
-        md-button(aria-label="Attendance" class = "md-raised" ng-click = "seeAttendance()") Attendance
+        md-button(aria-label="Attendance Button" class = "md-raised" ng-click = "seeAttendance()") Attendance
     if (user.role === 'admin')
       .edit-class-button
-        md-button(aria-label="Edit Class" class = "md-raised" ng-click ="editClass()") Edit Class
+        md-button(aria-label="Edit Class Button" class = "md-raised" ng-click ="editClass()") Edit Class
     if (user.role === 'teacher') || (user.role === 'admin')
       .cancel-class-button
-        md-button(aria-label="Cancel Class" class = "md-raised md-warn" ng-click = "cancelClass()") Cancel Class
+        md-button(aria-label="Cancel Class Button" class = "md-raised md-warn" ng-click = "cancelClass()") Cancel Class
 
   .go-back-button
-    md-button(aria-label="Go Back" class = "md-raised" ng-click = "goBack()") Go Back
+    md-button(aria-label="Go Back Button" class = "md-raised" ng-click = "goBack()") Go Back

@@ -1,12 +1,12 @@
 md-content(layout-padding)
-  h1 Log In
+  h1(aria-label="Log In") Log In
   md-input-container
     input(ng-model="user.username" aria-label="username")
     label username
   md-input-container
     input(type="password" ng-model="user.password" aria-label="password")
     label password
-  md-button(aria-label="submit" ng-click="submitCredentials()") submit
+  md-button(aria-label="submit button" ng-click="submitCredentials()") submit
   p or:  
-  md-button(aria-label="register" ng-click="go('/userregistration')") register
+  md-button(aria-label="register button" ng-click="go('/userregistration')") register
   

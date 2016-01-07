@@ -1,7 +1,7 @@
 md-content(layout-padding)
     h2(aria-label="Add New Walk In") Add New Walk-in
     h3(aria-label="Event Title") {{event.title}}
-    h4(aria-label="Event Date Start Time End Time") {{event.schedule_date|date:'fullDate'}} {{event.start_datetime|date:'shortTime'}} {{event.end_datetime|date:'shortTime'}}
+    h4(aria-label="Event Day Date Start Time End Time") {{event.schedule_date|date:'fullDate'}} {{event.start_datetime|date:'shortTime'}} {{event.end_datetime|date:'shortTime'}}
 
 
     form(aria-label="Add Walk In Form"  name='addWalkinForm')
@@ -20,8 +20,8 @@ md-content(layout-padding)
         md-input-container(class='md-block')
             md-radio-group(aria-label="Payment Type" ng-model = "user.paymentType" required)
                 label Payment Type
-                md-radio-button(aria-label="insurance" value = "insurance") Insurance (I have state-funded insurance)
-                md-radio-button(aria-label="cash" value = "cash") Out of pocket (check or cash in-person)
+                md-radio-button(aria-label="insurance radio button" value = "insurance") Insurance (I have state-funded insurance)
+                md-radio-button(aria-label="cash radio button" value = "cash") Out of pocket (check or cash in-person)
 
-        md-button(aria-label="Submit" ng-click="addWalkin()" class="md-primary md-raised" ng-disabled="addWalkinForm.$invalid") Submit
+        md-button(aria-label="Submit Button" ng-click="addWalkin()" class="md-primary md-raised" ng-disabled="addWalkinForm.$invalid") Submit
 

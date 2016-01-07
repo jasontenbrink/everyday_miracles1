@@ -1,7 +1,7 @@
 md-content(layout-padding)
     h2(aria-label="Take Attendance") Take Attendance
     h3(aria-label="Event Title") {{event.title}}
-    h4(aria-label="Event Date Start Time End Time") {{event.schedule_date|date:'fullDate'}} {{event.start_datetime|date:'shortTime'}} {{event.end_datetime|date:'shortTime'}}
+    h4(aria-label="Event Day Date Start Time End Time") {{event.schedule_date|date:'fullDate'}} {{event.start_datetime|date:'shortTime'}} {{event.end_datetime|date:'shortTime'}}
 
     ng-form(aria-label="Attendance Form" name='attendanceForm')
 
@@ -14,7 +14,7 @@ md-content(layout-padding)
             div(layout="column" ng-repeat="users in usersEventSchedule")
                 div(layout="row" ng-click="users.status='Attended'; users.changed=true")
                     div(flex="25")
-                        select(aria-label="status" class="" name="status" ng-model="users.status" ng-change="users.changed=true")
+                        select(aria-label="status menu" class="" name="status" ng-model="users.status" ng-change="users.changed=true")
                             option(aria-label="Registered" value="Registered") Registered
                             option(aria-label="Attended" value="Attended") Attended
                             option(aria-label="Not Attended" value="Not attended") Not attended
@@ -22,6 +22,6 @@ md-content(layout-padding)
                     div(aria-label="Phone Number" flex="25") {{users.phone_number}}
                     div(aria-label="Payment Type" flex="25") {{users.payment_type}}
 
-        md-button(aria-label="Submit Attendance" ng-click="submitAttendance()" class="md-primary md-raised") Submit Attendance
+        md-button(aria-label="Submit Attendance Button" ng-click="submitAttendance()" class="md-primary md-raised") Submit Attendance
 
-        md-button(aria-label="Add Walk In" ng-click="findWalkin()" class="md-primary md-raised") Add Walk-in
+        md-button(aria-label="Add Walk In Button" ng-click="findWalkin()" class="md-primary md-raised") Add Walk-in

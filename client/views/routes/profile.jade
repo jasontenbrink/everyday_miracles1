@@ -16,12 +16,12 @@
 
    md-input-container
      label Role
-     md-select(aria-label="Role" ng-model = "user.roleId" disabled=user.role!== "admin")
+     md-select(aria-label="Role menu" ng-model = "user.roleId" disabled=user.role!== "admin")
        md-option(ng-repeat="role in roles" value="{{role.role_id}}") {{role.name}}
 
    md-input-container
      label Date of Birth
-     input(aria-label="Date of Birth" type = "date" ng-model = "user.dateOfBirth" disabled=(user.role!== "admin"&&user.role!=="student"))
+     input(aria-label="Date of Birth calendar" type = "date" ng-model = "user.dateOfBirth" disabled=(user.role!== "admin"&&user.role!=="student"))
 
    md-input-container
      label Phone Number
@@ -39,14 +39,14 @@
    md-input-container
      md-radio-group(aria-label="Payment Type" ng-model = "user.paymentType" disabled=(user.role!== "admin"&&user.role!=="student"))
        label Payment Type
-       md-radio-button(aria-label="Insurance" value = "insurance") Insurance (I have state-funded insurance)
-       md-radio-button(aria-label="Cash" value = "cash") Out of pocket (check or cash in-person)
+       md-radio-button(aria-label="Insurance Radio Button" value = "insurance") Insurance (I have state-funded insurance)
+       md-radio-button(aria-label="Cash Radio Butotn" value = "cash") Out of pocket (check or cash in-person)
 
    md-input-container
      md-radio-group(aria-label="Everyday Miracles Client?" ng-model = "user.everydayMiraclesClientInd" disabled=(user.role!== "admin"&&user.role!=="student"))
        label Are you an Everyday Miracles Client?
-       md-radio-button(aria-label="Yes" ng-value = "true" ) Yes
-       md-radio-button(aria-label="No" ng-value = "false" ) No
+       md-radio-button(aria-label="Yes Radio Button" ng-value = "true" ) Yes
+       md-radio-button(aria-label="No Radio Button" ng-value = "false" ) No
 
 
    md-input-container
@@ -55,10 +55,10 @@
 
    md-input-container
      label Expected Birth Date
-     input(aria-label="Expected Birth Date" type = "date" ng-model = "user.expectedBirthDate" disabled=(user.role!== "admin"&&user.role!=="student"))
+     input(aria-label="Expected Birth Date calendar" type = "date" ng-model = "user.expectedBirthDate" disabled=(user.role!== "admin"&&user.role!=="student"))
 
    .save-button
-       md-button(aria-label="Save" class = "md-raised" ng-click = "saveProfile()") Save
+       md-button(aria-label="Save Button" class = "md-raised" ng-click = "saveProfile()") Save
    .change-password-button
-       md-button(aria-label="Change Password" class = "md-raised" ng-click = "changePassword()") Change Password
+       md-button(aria-label="Change Password Button" class = "md-raised" ng-click = "changePassword()") Change Password
 
