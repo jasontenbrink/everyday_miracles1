@@ -100,6 +100,7 @@ app.controller('AddEventController',['$scope', '$http', '$localstorage', functio
     $http.get('/eventSchedule/byEventId', {params: passingEvent}).then(function(response){
       console.log("Output from get /eventSchedule/byEventId ", response.data);
       $scope.eventSchedule = response.data;
+      $scope.eventSchedule.schedule_date = new Date($scope.eventSchedule.schedule_date);
 
       $scope.gridOptions = {
         columnDefs : [
@@ -154,7 +155,7 @@ app.controller('AddEventController',['$scope', '$http', '$localstorage', functio
 
       addEventScheduleArray.push({
         eventId: $scope.event.eventId,
-        scheduleDate: insertDate,
+        scheduleDate: new Date(insertDate),
         startDateTime: startDateTime,
         endDateTime: endDateTime,
         teacherUserId: $scope.eventScheduleAdd.teacherUserId
