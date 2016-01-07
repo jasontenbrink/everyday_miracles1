@@ -154,7 +154,7 @@ app.controller('AddEventController',['$scope', '$http', '$localstorage', functio
 
       addEventScheduleArray.push({
         eventId: $scope.event.eventId,
-        scheduleDate: insertDate,
+        scheduleDate: new Date(insertDate),
         startDateTime: startDateTime,
         endDateTime: endDateTime,
         teacherUserId: $scope.eventScheduleAdd.teacherUserId
