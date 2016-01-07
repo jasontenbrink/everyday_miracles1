@@ -109,7 +109,7 @@ app.controller('AddEventController',['$scope', '$http', '$localstorage', functio
         columnDefs : [
           { name: 'event_schedule_id', displayName: 'Event Schedule ID', width:"10%"},
           { name: 'event_id', displayName: 'Event ID', width:"10%"},
-          { name: 'schedule_date', cellFilter:"date: 'fullDate'", displayName: 'Schedule Date', width:"20%"},
+          { name: 'schedule_date', cellFilter:"date: 'EEEE, MMMM d, y'", displayName: 'Schedule Date', width:"20%"},
           { name: 'teacher_name', displayName: 'Teacher Name', width:"20%"},
           { name: 'start_datetime', cellFilter:"date: 'shortTime'", displayName: 'Start Time', width:"10%"},
           { name: 'end_datetime', cellFilter:"date: 'shortTime'", displayName: 'End Time', width:"10%"},
