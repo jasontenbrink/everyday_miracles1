@@ -1444,8 +1444,8 @@ app.controller('UiCalendarController', ["$scope", "$http", "RegisterForClassFact
                 $scope.eventSources.events[i].allDay = false;
                 $scope.eventSources.events[i].title = $scope.tempEvents[i].title;
 
-                $scope.eventSources.events[i].start = $scope.tempEvents[i].start_datetime;
-                $scope.eventSources.events[i].end = $scope.tempEvents[i].end_datetime;
+                $scope.eventSources.events[i].start = new Date($scope.tempEvents[i].start_datetime);
+                $scope.eventSources.events[i].end = new Date($scope.tempEvents[i].end_datetime);
 
                 //$scope.eventSources.events[i].description = $scope.tempEvents[i].description;
 
