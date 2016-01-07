@@ -22,6 +22,8 @@ md-content
             if(user.role !== 'student')  
               md-menu-item
                 md-button(ng-click="go('/directory')") directory
+              md-menu-item
+                md-button(ng-click="go('/userregistration')") register new student
               if(user.role ==='admin')
                 md-menu-item
                   md-button(ng-click="go('/addevent')") add event
