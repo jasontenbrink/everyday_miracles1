@@ -822,6 +822,18 @@ app.controller('FindWalkinController',['$scope', '$http', '$localstorage', '$loc
 
 }]);
 
+app.controller('JadeController',['$scope', '$http', function ($scope, $http) {
+  console.log('hi, from jade Controller');
+  $scope.x = 'angular';
+  $scope.y = 'bye';
+  // $http.get('/jade')
+  //   .then(function (response) {
+  //     console.log(response.data);
+  //     $scope.y = response.data;
+  //   });
+
+}]);
+
 app.controller('LoginController',['$scope', '$http', '$location', 'ActiveProfileFactory', "$localstorage", '$window',
   function ($scope, $http, $location, ActiveProfileFactory, $localstorage, $window) {
 
