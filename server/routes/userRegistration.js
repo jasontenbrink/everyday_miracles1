@@ -34,8 +34,8 @@ router.post('/', function(req,res,next){
             pg.connect(connectionString, function (err, client, done) {
               if (err) console.log(err);
               console.log('pwd from just before DB write req', req.body.password);
-              client.query('insert into users (user_name, password) VALUES ($1, $2)',
-                  [req.body.username, req.body.password],
+              client.query('insert into users (user_name, password, first_name, last_name, role_id) VALUES ($1, $2, $3, $4, 1)',
+                  [req.body.username, req.body.password, req.body.firstName, req.body.lastName],
                   function (err, res) {
                     if (err) console.log(err);
 
