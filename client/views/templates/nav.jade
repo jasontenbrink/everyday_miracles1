@@ -12,6 +12,8 @@ md-content
           if(!user)
             md-menu-item
               md-button(ng-click="go('/login')") login
+            md-menu-item
+              md-button(ng-click="go('/userregistration')") register     
           else
             md-menu-item
               md-button(ng-click="logout()") logout

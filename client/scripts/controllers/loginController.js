@@ -33,4 +33,8 @@ app.controller('LoginController',['$scope', '$http', '$location', 'ActiveProfile
       });
   };
 
+  $scope.go = function (path) {
+    $location.path(path);
+  };
+
 }]);
