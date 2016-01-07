@@ -529,8 +529,9 @@ app.controller('ConfirmClassSignupController',['$scope', '$http', "RegisterForCl
 
 }]);
 
-app.controller('DirectoryController',['$scope', '$http', 'ActiveProfileFactory', 'uiGridConstants',
-  function ($scope, $http, ActiveProfileFactory, uiGridConstants) {
+app.controller('DirectoryController',['$scope', '$http', 'ActiveProfileFactory',
+'uiGridConstants', '$localstorage',
+  function ($scope, $http, ActiveProfileFactory, uiGridConstants, $localstorage) {
 
   var activeProfileFactory = ActiveProfileFactory;
   console.log('hi, from Directory Controller');
@@ -540,7 +541,8 @@ app.controller('DirectoryController',['$scope', '$http', 'ActiveProfileFactory',
 //sets user on activeProfile Factory
   $scope.sendSelectedMemberInfo = function(id) {
     console.log('this is the user id', id);
-    activeProfileFactory.setActiveProfileData(id);
+    //activeProfileFactory.setActiveProfileData(id);
+    $localstorage.set("userId", id);
   };
 
   $scope.gridOptions = {
