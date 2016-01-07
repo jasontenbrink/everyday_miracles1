@@ -366,11 +366,11 @@ app.controller('ChooseClassDatesController',['$scope', '$http', "$localstorage",
   //$scope.user.userId = 1;
 
 
-  var user = ActiveProfileFactory.getLoggedInUser();
-  if (user.userId) {
-    $localstorage.set("userId", user.userId);
-  }
-  console.log("the user from ActiveProfile: ",user);
+  //var user = ActiveProfileFactory.getLoggedInUser();
+  //if (user.userId) {
+  //  $localstorage.set("userId", user.userId);
+  //}
+  //console.log("the user from ActiveProfile: ",user);
   $scope.userId = $localstorage.get("userId");
 
   $scope.event = [];
@@ -411,9 +411,9 @@ app.controller('ChooseClassDatesController',['$scope', '$http', "$localstorage",
     };
     console.log("Input to get /eventSchedule/byEventId ", eventId);
 
-    $http.get('/eventSchedule/byEventId', {params: eventId})
+    $http.get('/eventSchedule/currentByEventId', {params: eventId})
         .then(function(response){
-            console.log("Output from get /eventSchedule/byEventId ", response.data);
+            console.log("Output from get /eventSchedule/currentByEventId ", response.data);
             $scope.event = response.data;
             $scope.getRegisteredClasses($scope.user);
         });
@@ -864,8 +864,9 @@ app.controller('JadeController',['$scope', '$http', function ($scope, $http) {
 
 }]);
 
-app.controller('LoginController',['$scope', '$http', '$location', 'ActiveProfileFactory', '$route', '$window',
-  function ($scope, $http, $location, ActiveProfileFactory, $route, $window) {
+app.controller('LoginController',['$scope', '$http', '$location', 'ActiveProfileFactory', "$localstorage", '$window',
+  function ($scope, $http, $location, ActiveProfileFactory, $localstorage, $window) {
+
   var activeProfileFactory = ActiveProfileFactory;
   console.log('hi, from Login Controller');
 
@@ -879,7 +880,15 @@ app.controller('LoginController',['$scope', '$http', '$location', 'ActiveProfile
         //console.log('response status', response.status);
         if (response.status===200){
           activeProfileFactory.setLoggedInUser(response.data.userId);
-          //$window.location.reload();
+
+          var user = ActiveProfileFactory.getLoggedInUser();
+          console.log("the user from ActiveProfile: ",user);
+          if (user.userId) {
+            $localstorage.set("userId", user.userId);
+          }
+          $scope.userId = $localstorage.get("userId");
+          console.log("the user: ", $scope.userId);
+          $window.location.reload();
           $location.path('/uicalendar');
         }
         else{
@@ -892,8 +901,8 @@ app.controller('LoginController',['$scope', '$http', '$location', 'ActiveProfile
 
 }]);
 
-app.controller('NavController',['$scope', 'ActiveProfileFactory', '$location',
-  function ($scope, ActiveProfileFactory, $location) {
+app.controller('NavController',['$scope', 'ActiveProfileFactory', '$location', '$localstorage', '$http','$window',
+  function ($scope, ActiveProfileFactory, $location, $localstorage, $http, $window) {
 
   var activeProfileFactory = ActiveProfileFactory;
 
@@ -901,22 +910,37 @@ app.controller('NavController',['$scope', 'ActiveProfileFactory', '$location',
     activeProfileFactory.setLoggedInUserToActiveProfile();
     $location.path('/profile');
   };
+
+  $scope.go = function (path) {
+    $location.path(path);
+  }; 
+  $scope.logout = function () {
+    $http.get('/logout')
+    .then(function (response) {
+      $window.location.reload();
+      $location.path('/uicalendar');
+    });
+  };
 }]);
 
-app.controller("ProfileController", ["$scope", "$http", "ActiveProfileFactory", "$location",
-  function($scope, $http, ActiveProfileFactory, $location){
+app.controller("ProfileController", ["$scope", "$http", "ActiveProfileFactory", "$location", "$localstorage",
+  function($scope, $http, ActiveProfileFactory, $location, $localstorage){
     var activeProfileFactory = ActiveProfileFactory;
     $scope.user = {};
     $scope.tempUser = {};
 
-    var testUser = activeProfileFactory.getActiveProfileData();
-    console.log('testUser.userId', testUser.userId);
-
+    //var testUser = activeProfileFactory.getActiveProfileData();
+    //console.log('testUser.userId', testUser.userId);
+      var testUserId = $localstorage.get("userId");
+      console.log("the user: ", testUserId);
 
     //get profile info for profile page
-    $scope.getUser = function(someuser){
-        console.log("the input of getUser: ",someuser);
-        $http.get('/users/byUserId', {params: someuser}).then(function (response) {
+    $scope.getUser = function(){
+        var user = {
+            userId: testUserId
+        };
+        console.log("the input of getUser: ",user);
+        $http.get('/users/byUserId', {params: user}).then(function (response) {
             console.log("Output from get /users/byUserId ", response.data);
             $scope.tempUser = response.data[0];
 
@@ -945,10 +969,10 @@ app.controller("ProfileController", ["$scope", "$http", "ActiveProfileFactory", 
     });
 
     //save profile
-    $scope.saveProfile = function(someuser) {
-        console.log("Input to put /users ", someuser);
+    $scope.saveProfile = function() {
+        console.log("Input to put /users ", $scope.user);
 
-        $http.put('/users', someuser).then(function (response) {
+        $http.put('/users', $scope.user).then(function (response) {
             console.log("Output from put /users ", response.data);
         });
     };
@@ -958,7 +982,7 @@ app.controller("ProfileController", ["$scope", "$http", "ActiveProfileFactory", 
         console.log("clicked the change password");
         $location.path('/changepassword');
     };
-    $scope.getUser(testUser);
+    $scope.getUser();
 
 }]);
 

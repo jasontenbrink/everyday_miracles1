@@ -8,7 +8,7 @@ router.get('/:name?', function (req, res) {
   console.log('on the jade route. ', name);
 
   if (name === 'nav.jade'){
-    res.render('templates/' + name, {message: 'Hello there!'});
+    res.render('templates/' + name, {user: req.user});
   }
   else{
     //console.log("req.user: ", req.user);
