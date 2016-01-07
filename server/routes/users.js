@@ -199,7 +199,7 @@ router.get('/byNameOrPhone', function(req,res){
                         role.name as role_name \
                     FROM \
                         users JOIN role on users.role_id = role.role_id \
-                    WHERE first_name like $1 or last_name like $2 or phone_number like $3 \
+                    WHERE first_name like $1 and last_name like $2 and phone_number like $3 \
                     ORDER BY user_name;", [queryOptions.first_name, queryOptions.last_name, queryOptions.phone_number]);
         //console.log(query);
         // Stream results back one row at a time, push into results array
