@@ -940,14 +940,20 @@ app.controller("ProfileController", ["$scope", "$http", "ActiveProfileFactory", 
             $scope.user.userName = $scope.tempUser.user_name;
             $scope.user.roleName = $scope.tempUser.role_name;
             $scope.user.roleId = $scope.tempUser.role_id;
-            $scope.user.dateOfBirth = new Date($scope.tempUser.date_of_birth);
+            $scope.user.dateOfBirth = $scope.tempUser.date_of_birth;
+            if ($scope.user.dateOfBirth !== null) {
+                $scope.user.dateOfBirth = new Date($scope.user.dateOfBirth);
+            }
             $scope.user.phoneNumber = $scope.tempUser.phone_number;
             $scope.user.emailAdress = $scope.tempUser.email_address;
             $scope.user.contactType = $scope.tempUser.contact_type;
             $scope.user.paymentType = $scope.tempUser.payment_type;
             $scope.user.everydayMiraclesClientInd = $scope.tempUser.everyday_miracles_client_ind;
             $scope.user.doulaName = $scope.tempUser.doula_name;
-            $scope.user.expectedBirthDate = new Date($scope.tempUser.expected_birth_date);
+            $scope.user.expectedBirthDate = $scope.tempUser.expected_birth_date;
+            if ($scope.user.expectedBirthDate !==null){
+                $scope.user.expectedBirthDate = new Date($scope.user.expectedBirthDate);
+            }
 
             console.log("the #scope.user: ", $scope.user);
         });
