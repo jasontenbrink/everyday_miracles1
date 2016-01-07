@@ -100,7 +100,10 @@ app.controller('AddEventController',['$scope', '$http', '$localstorage', functio
     $http.get('/eventSchedule/byEventId', {params: passingEvent}).then(function(response){
       console.log("Output from get /eventSchedule/byEventId ", response.data);
       $scope.eventSchedule = response.data;
-      $scope.eventSchedule.schedule_date = new Date($scope.eventSchedule.schedule_date);
+
+      for (var i = 0; i < $scope.eventSchedule.length; i++) {
+        $scope.eventSchedule[i].schedule_date = new Date($scope.eventSchedule[i].schedule_date);
+      }
 
       $scope.gridOptions = {
         columnDefs : [
