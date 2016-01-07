@@ -19,6 +19,7 @@ app.controller('LoginController',['$scope', '$http', '$location', 'ActiveProfile
           console.log("the user from ActiveProfile: ",user);
           if (user.userId) {
             $localstorage.set("userId", user.userId);
+            $localstorage.set("searchUserId", user.userId);
           }
           $scope.userId = $localstorage.get("userId");
           console.log("the user: ", $scope.userId);

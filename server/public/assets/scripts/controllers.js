@@ -519,8 +519,8 @@ app.controller('ConfirmClassSignupController',['$scope', '$http', "RegisterForCl
 }]);
 
 app.controller('DirectoryController',['$scope', '$http', 'ActiveProfileFactory',
-'uiGridConstants', '$localstorage',
-  function ($scope, $http, ActiveProfileFactory, uiGridConstants, $localstorage) {
+'uiGridConstants', '$localstorage', "$location",
+  function ($scope, $http, ActiveProfileFactory, uiGridConstants, $localstorage, $location) {
 
   var activeProfileFactory = ActiveProfileFactory;
   console.log('hi, from Directory Controller');
@@ -529,9 +529,11 @@ app.controller('DirectoryController',['$scope', '$http', 'ActiveProfileFactory',
 
 //sets user on activeProfile Factory
   $scope.sendSelectedMemberInfo = function(id) {
-    console.log('this is the user id', id);
+    console.log('this is the searchUser id', id);
     //activeProfileFactory.setActiveProfileData(id);
-    $localstorage.set("userId", id);
+    $localstorage.set("searchUserId", id);
+      console.log("the searchUserId: ",$localstorage.get("searchUserId"));
+    $location.path('/profile');
   };
 
   $scope.gridOptions = {
@@ -557,6 +559,7 @@ app.controller('DirectoryController',['$scope', '$http', 'ActiveProfileFactory',
   };
 
   $scope.getResults = function () {
+
     console.log("search object, ", $scope.searchObject);
     $http.get('/users/byNameOrPhone',
         {params: $scope.searchObject}
@@ -580,6 +583,11 @@ app.controller('DirectoryController',['$scope', '$http', 'ActiveProfileFactory',
       }
     );
     return promise;
+  };
+  $scope.addNewStudent = function(){
+      //talk with Jason about this
+      //var path = "directory";
+      //$location.path('/profile');
   };
 }]);
 
@@ -855,6 +863,7 @@ app.controller('LoginController',['$scope', '$http', '$location', 'ActiveProfile
           console.log("the user from ActiveProfile: ",user);
           if (user.userId) {
             $localstorage.set("userId", user.userId);
+            $localstorage.set("searchUserId", user.userId);
           }
           $scope.userId = $localstorage.get("userId");
           console.log("the user: ", $scope.userId);
@@ -882,6 +891,9 @@ app.controller('NavController',['$scope', 'ActiveProfileFactory', '$location', '
 
   $scope.goToProfile = function () {
     activeProfileFactory.setLoggedInUserToActiveProfile();
+    var userId = $localstorage.get("userId");
+    $localstorage.set("searchUserId", userId);
+    console.log("the new searchUserId: ", $localstorage.get('searchUserId'));
     $location.path('/profile');
   };
 
@@ -905,13 +917,16 @@ app.controller("ProfileController", ["$scope", "$http", "ActiveProfileFactory", 
 
     //var testUser = activeProfileFactory.getActiveProfileData();
     //console.log('testUser.userId', testUser.userId);
-      var testUserId = $localstorage.get("userId");
-      console.log("the user: ", testUserId);
+
+    var userId = $localstorage.get("userId");
+    console.log("the user: ", userId);
+    var searchUserId = $localstorage.get("searchUserId");
+    console.log("the searchUserId: ", searchUserId);
 
     //get profile info for profile page
     $scope.getUser = function(){
         var user = {
-            userId: testUserId
+            userId: searchUserId
         };
         console.log("the input of getUser: ",user);
         $http.get('/users/byUserId', {params: user}).then(function (response) {
