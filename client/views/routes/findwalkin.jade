@@ -12,30 +12,31 @@ md-content(layout-padding)
 
         md-button(ng-click="findWalkin()" class="md-primary md-raised") Search
 
-        h4 Name: {{foundUser.first_name}} {{foundUser.last_name}}
-        div Date of Birth: {{foundUser.date_of_birth|date:'longDate'}}
-        div Phone Number: {{foundUser.phone_number}}
-        md-input-container(class='md-block')
-            label Contact Type
-            select(class="" name="contacttype" ng-model="foundUser.contact_type" required)
-                option(value="email") Email
-                option(value="text") Text
-        md-input-container(class='md-block')
-            md-radio-group(ng-model = "foundUser.payment_type" required)
-                label Payment Type
-                md-radio-button(value = "insurance") Insurance (I have state-funded insurance)
-                md-radio-button(value = "cash") Out of pocket (check or cash in-person)
-        md-input-container(class='md-block')
-            md-radio-group(ng-model = "foundUser.everyday_miracles_client_ind" required)
-                label Are you an Everyday Miracles Client?
-                md-radio-button(ng-value = "true" ) Yes
-                md-radio-button(ng-value = "false" ) No
-        md-input-container(class='md-block')
-            label Doula Name
-            input(ng-model="foundUser.doula_name" type="text")
-        md-input-container(class='md-block')
-            label Expected Birth Date
-            input(ng-model="foundUser.expected_birth_date" type="date")
+        div(class="found-user" ng-if="foundUser.user_id")
+          h4 Name: {{foundUser.first_name}} {{foundUser.last_name}}
+          div Date of Birth: {{foundUser.date_of_birth|date:'longDate'}}
+          div Phone Number: {{foundUser.phone_number}}
+          md-input-container(class='md-block')
+              label Contact Type
+              select(class="" name="contacttype" ng-model="foundUser.contact_type" required)
+                  option(value="email") Email
+                  option(value="text") Text
+          md-input-container(class='md-block')
+              md-radio-group(ng-model = "foundUser.payment_type" required)
+                  label Payment Type
+                  md-radio-button(value = "insurance") Insurance (I have state-funded insurance)
+                  md-radio-button(value = "cash") Out of pocket (check or cash in-person)
+          md-input-container(class='md-block')
+              md-radio-group(ng-model = "foundUser.everyday_miracles_client_ind" required)
+                  label Are you an Everyday Miracles Client?
+                  md-radio-button(ng-value = "true" ) Yes
+                  md-radio-button(ng-value = "false" ) No
+          md-input-container(class='md-block')
+              label Doula Name
+              input(ng-model="foundUser.doula_name" type="text")
+          md-input-container(class='md-block')
+              label Expected Birth Date
+              input(ng-model="foundUser.expected_birth_date" type="date")
 
         md-button(ng-click="submitUser()" class="md-primary md-raised" ng-disabled="findWalkinForm.$invalid") Submit
 

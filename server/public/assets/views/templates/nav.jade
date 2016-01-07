@@ -5,8 +5,10 @@ md-content
       md-menu
         md-button(aria-label="menu" ng-click="$mdOpenMenu($event)") nav
         md-menu-content(width="4")
+          //md-menu-item
+          //  md-button(href="#uicalendar") calendar
           md-menu-item
-            md-button(href="#uicalendar") calendar
+            md-button(ng-click="goToCalendar()") calendar
           md-menu-item
             md-button(ng-click="goToProfile()") profile
           md-menu-item
