@@ -1,9 +1,5 @@
-
-
 app.controller('ConfirmClassSignupController',['$scope', '$http', "RegisterForClassFactory", '$location', "$localstorage",
   function ($scope, $http, RegisterForClassFactory, $location, $localstorage) {
-
-
 
   $scope.userId = $localstorage.get("userId");
   $scope.eventId = $localstorage.get("eventId");
