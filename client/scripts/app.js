@@ -46,6 +46,10 @@ app.config(['$routeProvider', '$httpProvider', function($routeProvider, $httpPro
         templateUrl: '/templates/findwalkin.jade',
         controller: "FindWalkinController"
       })
+      .when('/jade', {
+        templateUrl: '/secure/templates/test.jade',
+        controller: "JadeController"
+      })
       .when('/login', {
         templateUrl: '/templates/login.jade',
         controller: "LoginController"
