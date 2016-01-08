@@ -1,3 +1,23 @@
+@media only screen and (max-width: 767px) and (min-width: 480px) {
+  img {
+    /*max-width: 80%;*/
+    height: 48px;
+    border-radius: 10px;
+    padding: 3px;
+    float: left;
+  }
+}
+
+@media only screen and (max-width: 479px) {
+  img{
+    /*max-width: 70%;*/
+    height: 55px;
+    border-radius: 10px;
+    padding: 3px;
+    float: left;
+  }
+}
+
 .ng-scope {
   font-family: Arial, Helvetica, Sans-Serif;
   font-weight: bold;
@@ -20,16 +40,14 @@ p.ng-scope {
 
 md-menu-content {
   padding: 0;
-  width: 100px;
+  width: 150px;
   border-radius: 10px;
-  margin-right: 20px;
   background-color: #006B76;
   color: whitesmoke;
   font-weight: bold;
 }
 
 .md-open-menu-container {
-  max-width: 200px;
   background-color: #006B76;
   color: whitesmoke;
   font-weight: bold;
@@ -38,16 +56,13 @@ md-menu-content {
 
 .md-menu-content.md-default-theme {
   padding: 0;
-  width: 100px;
   background-color: #006B76;
-  margin-right: 20px;
   color: whitesmoke;
   font-weight: bold;
 }
 
 .md-menu-item {
   padding: 0;
-  width: 100px;
   background-color: #006B76;
   color: whitesmoke;
   font-weight: bold;
@@ -108,10 +123,6 @@ md-content.layout-padding.ng-scope {
   background-color: whitesmoke;
 }
 
-.fc-week {
-  height: 75px;
-}
-
 .fc-event {
   background-color: #006B76;
 }
@@ -119,8 +130,31 @@ md-content.layout-padding.ng-scope {
 .image-content {
   background-color: whitesmoke;
   border-radius: 10px;
-  padding: 5px;
+  padding: 3px;
   width: auto;
-  height: 64px;
+  max-height: 64px;
   float: left;
 }
+
+
+/*@media only screen and (max-width: 768px) {*/
+  /*img {*/
+    /*max-width: 80%;*/
+    /*border-radius: 10px;*/
+    /*padding: 3px;*/
+    /*width: auto;*/
+    /*height: 55px;*/
+    /*float: left;*/
+  /*}*/
+/*}*/
+
+/*@media only screen and (max-width: 480px) {*/
+  /*img {*/
+    /*max-width: 40%;*/
+    /*border-radius: 10px;*/
+    /*padding: 3px;*/
+    /*width: auto;*/
+    /*height: 45px;*/
+    /*float: left;*/
+  /*}*/
+/*}*/
