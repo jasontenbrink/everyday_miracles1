@@ -9,9 +9,9 @@ app.controller('UserRegistrationController',['$scope', '$http', '$location', '$l
     $http.post('/userregistration', $scope.user)
       .then(function (response) {
         //console.log('is this html?', response.data);
-        console.log('response is', response);
+        console.log('response userIdis', response);
         if (response.status===200 && userId){
-          $localstorage.set('searchUser', response.data.userId);
+          $localstorage.set('searchUserId', response.data.userId);
           $location.path('/profile');
         }
         else{
