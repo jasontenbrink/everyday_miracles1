@@ -51,7 +51,9 @@ app.controller("ProfileController", ["$scope", "$http", "ActiveProfileFactory", 
     $http.get('/users/roles').then(function (response) {
         $scope.roles = response.data;
     });
-
+    $scope.goToStudentClassList = function(){
+        $location.path('/studentclasslist');
+    };
     //save profile
     $scope.saveProfile = function() {
         console.log("Input to put /users ", $scope.user);
