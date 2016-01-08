@@ -21,7 +21,10 @@ md-content
               md-button(aria-label="profile" ng-click="goToProfile()") profile
             if(user.role !== 'student')  
               md-menu-item
+
                 md-button(aria-label="directory" ng-click="go('/directory')") directory
+              md-menu-item
+                md-button(aria-label="studentregistration" ng-click="go('/userregistration')") register new student
               if(user.role ==='admin')
                 md-menu-item
                   md-button(aria-label="add event" ng-click="go('/addevent')") add event
