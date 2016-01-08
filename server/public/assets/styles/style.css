@@ -1,20 +1,24 @@
 @media only screen and (max-width: 767px) and (min-width: 480px) {
   img {
-    /*max-width: 80%;*/
-    height: 48px;
+    background-color: whitesmoke;
     border-radius: 10px;
     padding: 3px;
+    width: auto;
+    max-height: 64px;
     float: left;
+    height: 48px;
   }
 }
 
 @media only screen and (max-width: 479px) {
   img{
-    /*max-width: 70%;*/
-    height: 55px;
+    background-color: whitesmoke;
     border-radius: 10px;
     padding: 3px;
+    width: auto;
+    max-height: 64px;
     float: left;
+    height: 55px;
   }
 }
 
@@ -79,13 +83,6 @@ md-menu-content {
   border-radius: 10px;
 }
 
-.button.md-button.md-ink-ripple {
-  background-color: whitesmoke;
-  color: #006B76;
-  font-weight: bold;
-  border-radius: 10px;
-}
-
 .md-button {
   background-color: #006B76;
   color: whitesmoke;
@@ -135,26 +132,3 @@ md-content.layout-padding.ng-scope {
   max-height: 64px;
   float: left;
 }
-
-
-/*@media only screen and (max-width: 768px) {*/
-  /*img {*/
-    /*max-width: 80%;*/
-    /*border-radius: 10px;*/
-    /*padding: 3px;*/
-    /*width: auto;*/
-    /*height: 55px;*/
-    /*float: left;*/
-  /*}*/
-/*}*/
-
-/*@media only screen and (max-width: 480px) {*/
-  /*img {*/
-    /*max-width: 40%;*/
-    /*border-radius: 10px;*/
-    /*padding: 3px;*/
-    /*width: auto;*/
-    /*height: 45px;*/
-    /*float: left;*/
-  /*}*/
-/*}*/
