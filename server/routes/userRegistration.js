@@ -19,10 +19,10 @@ var connectionString = process.env.DATABASE_URL   || 'postgres://localhost:5432/
 router.post('/', function(req,res,next){
   var user = req.body;
   var roleId = 1;
-  if (req.body !== ""){
+  if (req.body.roleId !== undefined){
     roleId = req.body.roleId;
   }
-  console.log('req.body in post', req.body);
+  console.log('req.body.roleId in post', req.body.roleId);
 
 //  if(!user.isModified('password')) return next;
 
@@ -73,11 +73,14 @@ router.post('/', function(req,res,next){
                   req.body.expectedBirthDate],
 
 
-                  function (err, res) {
+                  function (err, response) {
+                    client.end();
                     if (err) console.log(err);
-
+                    console.log('response from DB on inserting a new user', response.rows[0].user_id);
+                  //res.json(1);
+                    res.json({"userId":response.rows[0].user_id});
                   });
-                  res.redirect('/');  //this redirect should probably go away
+                  //res.redirect('/');  //this redirect should probably go away
                   // probably just send a 200 status or something
             });
       });
