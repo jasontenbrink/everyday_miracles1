@@ -7,14 +7,42 @@ md-content(layout-padding)
     input(aria-label="Last Name" type="text" ng-model="user.lastName")
     label last name
   md-input-container
-    input(aria-label="Username" ng-model="user.username" type="text" value="jason")
+    input(aria-label="Username" ng-model="user.username" type="text")
     label username
   md-input-container
-    input(aria-label="Password" type="password" ng-model="user.password" value="1234")
+    input(aria-label="Password" type="password" ng-model="user.password")
     label password
   //- md-input-container
   //-   input(aria-label="Confirm Password" type="password" ng-model="user.password")
   //-   label confirm password
+  md-input-container
+    input(aria-label="dateOfBirth " type="date" ng-model="user.dateOfBirth")
+    label date of birth
+  md-input-container
+    input(aria-label="phoneNumber" type="text" ng-model="user.phoneNumber")
+    label phone number
+  md-input-container
+    input(aria-label="emailAddress" type="text" ng-model="user.emailAddress")
+    label email address
+  md-input-container
+    input(aria-label="contactType" type="text" ng-model="user.contactType")
+    label contact type 
+  md-input-container
+    input(aria-label="paymentType" type="text" ng-model="user.paymentType")
+    label payment type
+  md-input-container
+    input(aria-label="everydayMiraclesClientInd" type="checkbox" ng-model="user.everydayMiraclesClientInd")
+    label everyday miracles client indicator
+  md-input-container
+    input(aria-label="doulaName" type="text" ng-model="user.doulaName")
+    label doula name 
+  md-input-container
+    input(aria-label="expectedBirthDate" type="date" ng-model="user.expectedBirthDate")
+    label expected birth date
+  if(user !== underfined && user.role === 'admin')
+    md-input-container
+      input(aria-label="roleId" type="text" ng-model="user.roleId")
+      label role 
   md-input-container
     md-button(aria-label="Submit Button" ng-click="submitRegistration()") submit
   
