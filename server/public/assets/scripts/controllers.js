@@ -100,13 +100,16 @@ app.controller('AddEventController',['$scope', '$http', '$localstorage', functio
     $http.get('/eventSchedule/byEventId', {params: passingEvent}).then(function(response){
       console.log("Output from get /eventSchedule/byEventId ", response.data);
       $scope.eventSchedule = response.data;
-      $scope.eventSchedule.schedule_date = new Date($scope.eventSchedule.schedule_date);
+
+      for (var i = 0; i < $scope.eventSchedule.length; i++) {
+        $scope.eventSchedule[i].schedule_date = new Date($scope.eventSchedule[i].schedule_date);
+      }
 
       $scope.gridOptions = {
         columnDefs : [
           { name: 'event_schedule_id', displayName: 'Event Schedule ID', width:"10%"},
           { name: 'event_id', displayName: 'Event ID', width:"10%"},
-          { name: 'schedule_date', cellFilter:"date: 'fullDate'", displayName: 'Schedule Date', width:"20%"},
+          { name: 'schedule_date', cellFilter:"date: 'EEEE, MMMM d, y'", displayName: 'Schedule Date', width:"20%"},
           { name: 'teacher_name', displayName: 'Teacher Name', width:"20%"},
           { name: 'start_datetime', cellFilter:"date: 'shortTime'", displayName: 'Start Time', width:"10%"},
           { name: 'end_datetime', cellFilter:"date: 'shortTime'", displayName: 'End Time', width:"10%"},
