@@ -21,9 +21,8 @@ app.controller('AttendanceController',['$scope', '$http', '$localstorage', '$loc
 
     console.log("Input to get /usersEventSchedule/byEventScheduleId ", eventSchedule);
     $http.get('/usersEventSchedule/byEventScheduleId', {params: eventSchedule}).then(function(response){
-        //console.log("Output from get /usersEventSchedule/byEventScheduleId ", response.data);
+        console.log("Output from get /usersEventSchedule/byEventScheduleId ", response.data);
         $scope.usersEventSchedule = response.data;
-        console.log("userseventschedule ", $scope.usersEventSchedule);
     });
 
     $scope.submitAttendance = function() {

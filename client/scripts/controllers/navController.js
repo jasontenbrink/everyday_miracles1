@@ -21,4 +21,8 @@ app.controller('NavController',['$scope', 'ActiveProfileFactory', '$location', '
       $location.path('/uicalendar');
     });
   };
+  $scope.goToAddEvent = function(){
+    $localstorage.set('eventInsertBoolean', true);
+    $location.path('/addevent');
+  };
 }]);

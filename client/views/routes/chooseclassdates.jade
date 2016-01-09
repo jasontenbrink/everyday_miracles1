@@ -6,7 +6,7 @@ md-content(layout-padding)
   md-checkbox(ng-repeat="date in event | limitTo:6" ng-model="date.addCheckbox" md-no-ink aria-label="Class Picker Checkboxes") {{date.start_datetime|date:'EEE MMM d, y h:mm a'}}
 
   .sign-up-button
-    md-button(aria-label="Sign Up Button" class="md-raised" ng-click="signUp()") Sign Up
+    md-button(aria-label="Sign Up Button" class="" ng-click="signUp()") Sign Up
 
   .go-back-button
-    md-button(aria-label="Go Back Button" class="md-raised" ng-click="goBack()") Go Back
+    md-button(aria-label="Go Back Button" class="" ng-click="goBack()") Go Back

@@ -3,7 +3,9 @@ md-content
     div(aria-label="nav" class="md-toolbar-tools" ng-controller="NavController")
       img(aria-label="Everyday Miracles Logo" src='/assets/images/everyday_miracles_logo.png', title='Everyday Miracles Logo', class="image-content")
       md-menu
-        md-button(aria-label="menu" ng-click="$mdOpenMenu($event)") nav
+        //md-button(aria-label="menu" ng-click="$mdOpenMenu($event)")
+        md-button(class="md-icon-button" ng-click="$mdOpenMenu($event)")
+          md-icon(md-svg-icon="/assets/images/ic_menu_white_36px.svg")
         md-menu-content(width="4")
           //md-menu-item
           //  md-button(href="#uicalendar") calendar
@@ -27,4 +29,4 @@ md-content
                 md-button(aria-label="studentregistration" ng-click="go('/userregistration')") register new student
               if(user.role ==='admin')
                 md-menu-item
-                  md-button(aria-label="add event" ng-click="go('/addevent')") add event
+                  md-button(aria-label="add event" ng-click="goToAddEvent()") add event

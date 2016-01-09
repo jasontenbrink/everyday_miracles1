@@ -43,8 +43,8 @@ md-content(layout-padding)
         label Repeat To Date
         input(aria-label="Repeat to Date Calendar" type='date' name='title' ng-model="event.repeatToDate" ng-required="event.repeatType")
 
-    md-button(aria-label="Save Event Button" ng-click="submitEvent()" class="md-raised" ng-disabled="addEventForm.$invalid") Save Event
-    md-button(aria-label="Schedule Event Button" ng-click="submitEventSchedule()" class="md-raised"
+    md-button(aria-label="Save Event Button" ng-click="submitEvent()" class="" ng-disabled="addEventForm.$invalid") Save Event
+    md-button(aria-label="Schedule Event Button" ng-click="submitEventSchedule()" class=""
     ng-disabled="addEventScheduleForm.$invalid || addEventForm.$invalid") Schedule Event
 
     <div aria-label="Event Schedule Grid"  ui-grid="gridOptions" class="eventScheduleGrid"></div>

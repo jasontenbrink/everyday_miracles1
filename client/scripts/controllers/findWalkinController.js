@@ -6,6 +6,9 @@ app.controller('FindWalkinController',['$scope', '$http', '$localstorage', '$loc
         $scope.user = {};
         $scope.foundUser = [];
 
+        $scope.user.firstName = "";
+        $scope.user.lastName = "";
+
         $scope.eventId = $localstorage.get('eventId');
         $scope.eventScheduleId = $localstorage.get('eventScheduleId');
 
@@ -24,7 +27,9 @@ app.controller('FindWalkinController',['$scope', '$http', '$localstorage', '$loc
             $http.get('/users/byNameOrPhone', {params: $scope.user}).then(function (response) {
                 console.log("Output from get /users/byNameOrPhone ", response.data);
                 $scope.foundUser = response.data[0];
-                $scope.foundUser.expected_birth_date = new Date($scope.foundUser.expected_birth_date);
+                if ($scope.foundUser.expected_birth_date != null) {
+                    $scope.foundUser.expected_birth_date = new Date($scope.foundUser.expected_birth_date);
+                }
             });
         };
 
@@ -65,10 +70,11 @@ app.controller('FindWalkinController',['$scope', '$http', '$localstorage', '$loc
             // see if the user is already in the class
             $http.get('/usersEventSchedule/byUserIdEventScheduleId', {params: userEvent}).then(function(response){
                 console.log("Output from get /usersEventSchedule/byUserIdEventScheduleId ", response.data);
-                if(userEvent.userId == response.data[0].user_id) {
+                if(response.data.length > 0) {
                     alert("Student already in the class.");
                 } else {
                     // insert into user event schedule table
+                    console.log("input to userseventschedule post ", userEvent);
                     $http.post('/usersEventSchedule', userEvent).then(function (response) {
                         console.log("Output from post /usersEventSchedule ", response.data);
                         // go back to attendance page
