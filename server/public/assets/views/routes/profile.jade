@@ -25,7 +25,7 @@ md-content(layout-padding)
        md-input-container
          label Phone Number
          //input(type = "text" ng-model = "user.phoneNumber" ng-pattern="/^([0-9]{3}) [0-9]{3}-[0-9]{4}$/" disabled=(user.role!== "admin"&&user.role!=="student"))
-         input(aria-label="Phone Number" type = "text" ng-model = "user.phoneNumber" ng-pattern="/^[0-9]{3}-[0-9]{3}-[0-9]{4}$/" disabled=(user.role !== "admin" && user.role !== "student"))
+         input(aria-label="Phone Number" type = "text" ng-model = "user.phoneNumber" disabled=(user.role !== "admin" && user.role !== "student"))
 
         md-input-container
          label Email Address

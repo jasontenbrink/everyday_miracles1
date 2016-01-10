@@ -107,8 +107,8 @@ app.controller('AddEventController',['$scope', '$http', '$localstorage', functio
 
       $scope.gridOptions = {
         columnDefs : [
-          { name: 'event_schedule_id', displayName: 'Event Schedule ID', width:"10%"},
-          { name: 'event_id', displayName: 'Event ID', width:"10%"},
+          { name: 'event_schedule_id', displayName: 'Event Schedule ID', width:"10%", visible:false},
+          { name: 'event_id', displayName: 'Event ID', width:"10%", visible:false},
           { name: 'schedule_date', cellFilter:"date: 'EEEE, MMMM d, y'", displayName: 'Schedule Date', width:"20%"},
           { name: 'teacher_name', displayName: 'Teacher Name', width:"20%"},
           { name: 'start_datetime', cellFilter:"date: 'shortTime'", displayName: 'Start Time', width:"10%"},

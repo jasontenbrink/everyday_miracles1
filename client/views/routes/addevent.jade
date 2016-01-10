@@ -3,34 +3,21 @@ md-content(layout-padding)
   h2(aria-label="Add Event" ng-show="{{eventInsertBoolean}}") Add Event
   h2(aria-label="Edit Event" ng-hide="{{eventInsertBoolean}}") Edit Event
 
-  form(aria-label="Add Event Form" name='addEventForm')
-    md-input-container(class='md-block')
-      label Title
-      input(aria-label="Title" type='text' name='title' ng-model="event.title" required)
-    md-input-container(class='md-block')
-      label Description
-      input(aria-label="Description" type='text' name='description' ng-model="event.description" required)
-    md-input-container(flex)
-      label  Category
-      md-select(aria-label="Category Pulldown" name="categorySelect" ng-model="event.eventCategoryId")
-        md-option(ng-repeat="category in categories" value="{{category.event_category_id}}") {{category.name}}
-
-  form(aria-label="Add Event Schedule Form" name='addEventScheduleForm')
-    .layout-row
-      md-input-container(flex)
-        label Schedule Date
-        input(aria-label="Schedule Date" type='date' name='scheduledate' ng-model="eventScheduleAdd.scheduleDate" required)
-      md-input-container(flex)
-        label Start Time
-        input(aria-label="Start Time" type='time' name='startdatetime' ng-model="eventScheduleAdd.startDateTime" required)
-      md-input-container(flex)
-        label End Time
-        input(aria-label="End Time" type='time' name='enddatetime' ng-model="eventScheduleAdd.endDateTime" required)
-      md-input-container(flex)
-        label Teacher
-        md-select(aria-label="Teacher" name="teacherSelect" ng-model="eventScheduleAdd.teacherUserId")
-          md-option(ng-repeat="teacher in teachers" value="{{teacher.user_id}}") {{teacher.first_name}} {{teacher.last_name}}
-
+  form(aria-label="Add Event Form" name='addEventForm' id='addEventForm')
+    .layout-column
+      .layout-row
+        md-input-container(class='md-block')
+          label Title
+          input(aria-label="Title" type='text' name='title' ng-model="event.title" required)
+        md-input-container()
+          label  Category
+          md-select(aria-label="Category Pulldown" name="categorySelect" ng-model="event.eventCategoryId")
+            md-option(ng-repeat="category in categories" value="{{category.event_category_id}}") {{category.name}}
+    .layout-column
+      md-input-container(class='md-block')
+        label Description
+        textarea(textarea rows="3" cols="50" form="addEventForm" aria-label="Description" type='text' name='description' ng-model="event.description" required)
+    md-button(aria-label="Save Event Button" ng-click="submitEvent()" class="" ng-disabled="addEventForm.$invalid") Save Event
     .layout-row
       md-input-container(flex)
         label Repeat Type
@@ -43,7 +30,22 @@ md-content(layout-padding)
         label Repeat To Date
         input(aria-label="Repeat to Date Calendar" type='date' name='title' ng-model="event.repeatToDate" ng-required="event.repeatType")
 
-    md-button(aria-label="Save Event Button" ng-click="submitEvent()" class="" ng-disabled="addEventForm.$invalid") Save Event
+  form(aria-label="Add Event Schedule Form" name='addEventScheduleForm')
+    .layout-column
+      md-input-container(flex)
+        label Schedule Date
+        input(aria-label="Schedule Date" type='date' name='scheduledate' ng-model="eventScheduleAdd.scheduleDate" required)
+      .layout-row
+        md-input-container(flex)
+          label Start Time
+          input(aria-label="Start Time" type='time' name='startdatetime' ng-model="eventScheduleAdd.startDateTime" required)
+        md-input-container(flex)
+          label End Time
+          input(aria-label="End Time" type='time' name='enddatetime' ng-model="eventScheduleAdd.endDateTime" required)
+        md-input-container(flex)
+          label Teacher
+          md-select(aria-label="Teacher" name="teacherSelect" ng-model="eventScheduleAdd.teacherUserId")
+            md-option(ng-repeat="teacher in teachers" value="{{teacher.user_id}}") {{teacher.first_name}} {{teacher.last_name}}
     md-button(aria-label="Schedule Event Button" ng-click="submitEventSchedule()" class=""
     ng-disabled="addEventScheduleForm.$invalid || addEventForm.$invalid") Schedule Event
 
