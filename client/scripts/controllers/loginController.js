@@ -12,7 +12,11 @@ app.controller('LoginController',['$scope', '$http', '$location', 'ActiveProfile
         //console.log('is this html?', response.data);
         console.log('response is', response);
         //console.log('response status', response.status);
-        if (response.status===200){
+        if (response === undefined){
+          console.log('incorrect username or password');
+          $window.alert('incorrect username or password');
+        }
+        else if (response.status===200){
           activeProfileFactory.setLoggedInUser(response.data.userId);
 
           var user = ActiveProfileFactory.getLoggedInUser();

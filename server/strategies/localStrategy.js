@@ -78,6 +78,9 @@ passport.use('local', new localStrategy({
       //get hashed password to compare
       client.query("select password, user_id from users where user_name = $1", [req.body.username],
       function (err, response) {
+        if (response.rows[0]===undefined){
+          return done(null, false, {message:'failed'});
+        }
         var dbPassword = response.rows[0].password;
         var user_id = response.rows[0].user_id;
         client.end();
