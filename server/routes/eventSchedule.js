@@ -71,7 +71,8 @@ router.get('/currentByEventId', function(req,res){
             concat(first_name,' ',last_name) as teacher_name \
         FROM event_schedule \
         LEFT JOIN users on event_schedule.teacher_user_id = users.user_id \
-        WHERE schedule_date >= now() and event_id = $1;", [queryOptions.event_id]);
+        WHERE schedule_date >= now() and event_id = $1 \
+        ORDER BY start_datetime;", [queryOptions.event_id]);
         //console.log(query);
         // Stream results back one row at a time, push into results arrayd
         query.on('row', function (row) {

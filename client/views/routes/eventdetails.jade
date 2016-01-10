@@ -4,7 +4,8 @@ md-content(layout-padding)
     .login-button
       md-button(aria-label="Login Button" class = "" ng-click = "loginUser()") Login
   h3(aria-label="Event Title") {{event.title}}
-  h4(aria-label="Event Day Date Start Time End Time") {{event.schedule_date|date:'fullDate'}} {{event.start_datetime|date:'shortTime'}} {{event.end_datetime|date:'shortTime'}}
+  h4(aria-label="Event Day Date Start Time End Time") {{event.schedule_date|date:'fullDate'}}
+  h4(aria-label="Event Times") {{event.start_datetime|date:'shortTime'}} - {{event.end_datetime|date:'shortTime'}}
 
 
   .class-details(aria-label="Event Description") {{event.description}}

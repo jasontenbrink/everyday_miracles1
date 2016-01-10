@@ -1,7 +1,8 @@
 md-content(layout-padding)
     h2(aria-label="Add New Walk In") Add New Walk-in
     h3(aria-label="Event Title") {{event.title}}
-    h4(aria-label="Event Day Date Start Time End Time") {{event.schedule_date|date:'fullDate'}} {{event.start_datetime|date:'shortTime'}} {{event.end_datetime|date:'shortTime'}}
+    h4(aria-label="Event Day Date Start Time End Time") {{event.schedule_date|date:'fullDate'}}
+    h4(aria-label="Event Times") {{event.start_datetime|date:'shortTime'}} - {{event.end_datetime|date:'shortTime'}}
 
 
     form(aria-label="Add Walk In Form"  name='addWalkinForm')

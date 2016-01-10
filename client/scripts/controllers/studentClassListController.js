@@ -23,8 +23,8 @@ app.controller('StudentClassListController', ["$scope", "$http", "$localstorage"
             {field: "title", name: "Class"},
             {field: "start_datetime", cellFilter: "date: 'M/d h:mm'", name: "Date"},
             {field: "status", name: "Status", visible:false},
-            {name: "action", displayName: "Action", cellTemplate: '<md-button class = "md-raised md-warn"' +
-            'ng-click="grid.appScope.deleteClass(row.entity)">delete</md-button>'}
+            {name: "action", displayName: "Action", cellTemplate: '<button class = "ui-grid-button"' +
+            'ng-click="grid.appScope.deleteClass(row.entity)">Delete</md-button>'}
         ]
     };
     $scope.gridOptions2 = {

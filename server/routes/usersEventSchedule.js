@@ -34,7 +34,8 @@ router.get('/byUserId', function(req,res){
         JOIN event_category on event.event_category_id = event_category.event_category_id \
         JOIN users_event_schedule on event_schedule.event_schedule_id = users_event_schedule.event_schedule_id \
         WHERE \
-        users_event_schedule.user_id = $1;", [queryOptions.user_id]);
+        users_event_schedule.user_id = $1 \
+        ORDER BY event_schedule.start_datetime;", [queryOptions.user_id]);
         //console.log(query);
         // Stream results back one row at a time, push into results array
         query.on('row', function (row) {
