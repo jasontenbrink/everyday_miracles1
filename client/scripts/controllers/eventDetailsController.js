@@ -101,23 +101,23 @@ app.controller('EventDetailsController',['$scope', '$http', "RegisterForClassFac
             console.log("output from /notifications/email ", response.data);
           });
         }
-
+        $http.delete('/usersEventSchedule/deleteByEventScheduleId'+ $scope.eventScheduleId).then(function(response){
+          console.log("output from delete users eventSchedule by Event Schedule Id ", response.data);
+          //delete the class
+          if (response.data==true){
+            $http.delete('/eventSchedule/delete'+ $scope.eventScheduleId).then(function(response){
+              console.log("output from delete eventSchedule ", response.data);
+              if (response.data==true){
+                //return to calendar
+                $location.path('/uicalendar');
+              }
+            });
+          }
+        });
       });
 
       //delete the users from the class then delete the class
-      $http.delete('/usersEventSchedule/deleteByEventScheduleId'+ $scope.eventScheduleId).then(function(response){
-        console.log("output from delete users eventSchedule by Event Schedule Id ", response.data);
-        //delete the class
-        if (response.data==true){
-          $http.delete('/eventSchedule/delete'+ $scope.eventScheduleId).then(function(response){
-            console.log("output from delete eventSchedule ", response.data);
-            if (response.data==true){
-              //return to calendar
-              $location.path('/uicalendar');
-            }
-          });
-        }
-      });
+
 
     }
     else {

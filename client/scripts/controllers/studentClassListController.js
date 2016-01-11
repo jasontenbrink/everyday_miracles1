@@ -1,9 +1,9 @@
 app.controller('StudentClassListController', ["$scope", "$http", "$localstorage",
     function($scope, $http, $localstorage){
+    $scope.x = 'hi';
+    $scope.user1Id = $localstorage.get("searchUserId");
 
-    $scope.userId = $localstorage.get("userId");
-
-    $scope.user = {};
+    $scope.user1 = {};
     $scope.allClasses = [];
     $scope.gridOptions1 = {};
     $scope.gridOptions1.data = [];
@@ -36,22 +36,22 @@ app.controller('StudentClassListController', ["$scope", "$http", "$localstorage"
     };
 
     //test user info
-    //$scope.user.userId = 1;
+    //$scope.user1.userId = 1;
 
     //get user info
     $scope.getUserInfo = function() {
         var user = {
-            userId: $scope.userId
+            userId: $scope.user1Id
         };
         $http.get('/users/byUserId', {params: user}).then(function (response) {
             console.log("Output from get /users/byUserId ", response.data);
-            $scope.user = response.data;
+            $scope.user1 = response.data[0];
         });
     };
 
     $scope.getClasses = function() {
         var userObject = {
-            userId: $scope.userId
+            userId: $scope.user1Id
         };
         $http.get('/usersEventSchedule/byUserId', {params: userObject}).then(function(response){
             console.log("Output from get /usersEventSchedule/byUserId ", response.data);

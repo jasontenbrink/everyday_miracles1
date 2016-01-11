@@ -1,10 +1,8 @@
 md-content(layout-padding)
   .user-name-info
-    h2(aria-label="First Last Name") Name: #{user.first_name} #{user.last_name}
-
+    h2(aria-label="First Last Name") Name: {{user1.first_name}} {{user1.last_name}}
   .classes-grids
     h2 Registered Classes:
     div(aria-label="Registered Classes Grid" ui-grid="gridOptions1" class = "my-grid")
     h2 Attended Classes:
     div(aria-label="Attended Classes Grid" ui-grid="gridOptions2" class = "my-grid")
-

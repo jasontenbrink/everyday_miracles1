@@ -444,6 +444,7 @@ app.controller('ConfirmClassSignupController',['$scope', '$http', "RegisterForCl
   function ($scope, $http, RegisterForClassFactory, $location, $localstorage) {
 
   $scope.userId = $localstorage.get("userId");
+  $localstorage.set("searchUserId", $scope.userId);
   $scope.eventId = $localstorage.get("eventId");
   //$scope.user = {};
   $scope.event = {};
@@ -702,23 +703,23 @@ app.controller('EventDetailsController',['$scope', '$http', "RegisterForClassFac
             console.log("output from /notifications/email ", response.data);
           });
         }
-
+        $http.delete('/usersEventSchedule/deleteByEventScheduleId'+ $scope.eventScheduleId).then(function(response){
+          console.log("output from delete users eventSchedule by Event Schedule Id ", response.data);
+          //delete the class
+          if (response.data==true){
+            $http.delete('/eventSchedule/delete'+ $scope.eventScheduleId).then(function(response){
+              console.log("output from delete eventSchedule ", response.data);
+              if (response.data==true){
+                //return to calendar
+                $location.path('/uicalendar');
+              }
+            });
+          }
+        });
       });
 
       //delete the users from the class then delete the class
-      $http.delete('/usersEventSchedule/deleteByEventScheduleId'+ $scope.eventScheduleId).then(function(response){
-        console.log("output from delete users eventSchedule by Event Schedule Id ", response.data);
-        //delete the class
-        if (response.data==true){
-          $http.delete('/eventSchedule/delete'+ $scope.eventScheduleId).then(function(response){
-            console.log("output from delete eventSchedule ", response.data);
-            if (response.data==true){
-              //return to calendar
-              $location.path('/uicalendar');
-            }
-          });
-        }
-      });
+
 
     }
     else {
@@ -1001,10 +1002,10 @@ app.controller("ProfileController", ["$scope", "$http", "ActiveProfileFactory", 
 
 app.controller('StudentClassListController', ["$scope", "$http", "$localstorage",
     function($scope, $http, $localstorage){
+    $scope.x = 'hi';
+    $scope.user1Id = $localstorage.get("searchUserId");
 
-    $scope.userId = $localstorage.get("userId");
-
-    $scope.user = {};
+    $scope.user1 = {};
     $scope.allClasses = [];
     $scope.gridOptions1 = {};
     $scope.gridOptions1.data = [];
@@ -1037,22 +1038,22 @@ app.controller('StudentClassListController', ["$scope", "$http", "$localstorage"
     };
 
     //test user info
-    //$scope.user.userId = 1;
+    //$scope.user1.userId = 1;
 
     //get user info
     $scope.getUserInfo = function() {
         var user = {
-            userId: $scope.userId
+            userId: $scope.user1Id
         };
         $http.get('/users/byUserId', {params: user}).then(function (response) {
             console.log("Output from get /users/byUserId ", response.data);
-            $scope.user = response.data;
+            $scope.user1 = response.data[0];
         });
     };
 
     $scope.getClasses = function() {
         var userObject = {
-            userId: $scope.userId
+            userId: $scope.user1Id
         };
         $http.get('/usersEventSchedule/byUserId', {params: userObject}).then(function(response){
             console.log("Output from get /usersEventSchedule/byUserId ", response.data);
@@ -1087,6 +1088,7 @@ app.controller('StudentClassListController', ["$scope", "$http", "$localstorage"
     $scope.getClasses();
 
 }]);
+
 app.controller('TestSqlController',['$scope', '$http', function ($scope, $http) {
 
     $scope.selectUsers = function() {
