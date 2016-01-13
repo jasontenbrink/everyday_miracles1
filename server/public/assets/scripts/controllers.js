@@ -1565,6 +1565,9 @@ app.controller('UiCalendarController', ["$scope", "$http", "RegisterForClassFact
                 $scope.eventSources.events[i].start = new Date($scope.tempEvents[i].start_datetime);
                 $scope.eventSources.events[i].end = new Date($scope.tempEvents[i].end_datetime);
 
+                // set class name to modify color in css calendarColor1, calendarColor2, etc
+                $scope.eventSources.events[i].className = 'calendarColor' + $scope.tempEvents[i].event_category_id;
+
                 //$scope.eventSources.events[i].description = $scope.tempEvents[i].description;
 
                 //unique id for a event
