@@ -39,6 +39,6 @@ md-content(layout-padding)
               label Expected Birth Date
               input(aria-label="Birth Date" ng-model="foundUser.expected_birth_date" type="date")
 
-        md-button(aria-label="Submit Button" ng-click="submitUser()" class="" ng-disabled="findWalkinForm.$invalid") Submit
+        md-button(aria-label="Submit Button" ng-click="submitUser()" class="" ng-disabled="findWalkinForm.$invalid || !foundUser.phone_number") Submit
 
         md-button(aria-label="New User Button" ng-click="newUser()" class="") New User

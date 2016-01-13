@@ -1,10 +1,10 @@
 md-content(layout-padding)
   h1 Register
   md-input-container
-    input(aria-label="First Name" ng-model="user.firstName")
+    input(aria-label="First Name" required ng-model="user.firstName")
     label first name
   md-input-container
-    input(aria-label="Last Name" type="text" ng-model="user.lastName")
+    input(aria-label="Last Name" type="text" required ng-model="user.lastName")
     label last name
   md-input-container
     input(aria-label="Username" ng-model="user.username" type="text")
@@ -19,7 +19,7 @@ md-content(layout-padding)
     input(aria-label="dateOfBirth " type="date" ng-model="user.dateOfBirth")
     label date of birth
   md-input-container
-    input(aria-label="phoneNumber" type="text" ng-model="user.phoneNumber")
+    input(aria-label="phoneNumber" type="text" required ng-model="user.phoneNumber")
     label phone number
   md-input-container
     input(aria-label="emailAddress" type="text" ng-model="user.emailAddress")

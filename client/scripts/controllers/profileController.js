@@ -1,5 +1,5 @@
-app.controller("ProfileController", ["$scope", "$http", "ActiveProfileFactory", "$location", "$localstorage",
-  function($scope, $http, ActiveProfileFactory, $location, $localstorage){
+app.controller("ProfileController", ["$scope", "$http", "ActiveProfileFactory", "$location", "$localstorage","$window",
+  function($scope, $http, ActiveProfileFactory, $location, $localstorage, $window){
     var activeProfileFactory = ActiveProfileFactory;
     $scope.user = {};
     $scope.tempUser = {};
@@ -60,6 +60,7 @@ app.controller("ProfileController", ["$scope", "$http", "ActiveProfileFactory", 
 
         $http.put('/users', $scope.user).then(function (response) {
             console.log("Output from put /users ", response.data);
+            if (response.data) $window.alert('Profile Saved');
         });
     };
 

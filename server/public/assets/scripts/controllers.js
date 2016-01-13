@@ -274,8 +274,8 @@ app.controller('AddWalkinController',['$scope', '$http', '$localstorage', '$loca
 
     }]);
 
-app.controller('AttendanceController',['$scope', '$http', '$localstorage', '$location',
-    function ($scope, $http, $localstorage, $location) {
+app.controller('AttendanceController',['$scope', '$http', '$localstorage', '$location', '$window',
+    function ($scope, $http, $localstorage, $location, $window) {
 
     $scope.usersEventSchedule = [];
     $scope.event = {};
@@ -317,6 +317,9 @@ app.controller('AttendanceController',['$scope', '$http', '$localstorage', '$loc
                 console.log("Input to update /usersEventSchedule ", userEvent);
                 $http.put('/usersEventSchedule', userEvent).then(function (response) {
                     console.log("Output from update /usersEventSchedule ", response.data);
+                    if (response.data){
+                      $window.alert('Attendance submitted');
+                    }
                 });
                 $scope.usersEventSchedule[i].changed = false;
             }
@@ -926,8 +929,8 @@ app.controller('NavController',['$scope', 'ActiveProfileFactory', '$location', '
   };
 }]);
 
-app.controller("ProfileController", ["$scope", "$http", "ActiveProfileFactory", "$location", "$localstorage",
-  function($scope, $http, ActiveProfileFactory, $location, $localstorage){
+app.controller("ProfileController", ["$scope", "$http", "ActiveProfileFactory", "$location", "$localstorage","$window",
+  function($scope, $http, ActiveProfileFactory, $location, $localstorage, $window){
     var activeProfileFactory = ActiveProfileFactory;
     $scope.user = {};
     $scope.tempUser = {};
@@ -988,6 +991,7 @@ app.controller("ProfileController", ["$scope", "$http", "ActiveProfileFactory", 
 
         $http.put('/users', $scope.user).then(function (response) {
             console.log("Output from put /users ", response.data);
+            if (response.data) $window.alert('Profile Saved');
         });
     };
 

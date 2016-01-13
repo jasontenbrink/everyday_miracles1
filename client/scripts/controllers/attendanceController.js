@@ -1,5 +1,5 @@
-app.controller('AttendanceController',['$scope', '$http', '$localstorage', '$location',
-    function ($scope, $http, $localstorage, $location) {
+app.controller('AttendanceController',['$scope', '$http', '$localstorage', '$location', '$window',
+    function ($scope, $http, $localstorage, $location, $window) {
 
     $scope.usersEventSchedule = [];
     $scope.event = {};
@@ -41,6 +41,9 @@ app.controller('AttendanceController',['$scope', '$http', '$localstorage', '$loc
                 console.log("Input to update /usersEventSchedule ", userEvent);
                 $http.put('/usersEventSchedule', userEvent).then(function (response) {
                     console.log("Output from update /usersEventSchedule ", response.data);
+                    if (response.data){
+                      $window.alert('Attendance submitted');
+                    }
                 });
                 $scope.usersEventSchedule[i].changed = false;
             }
