@@ -15,11 +15,11 @@ app.config(['$routeProvider', '$httpProvider', function($routeProvider, $httpPro
         controller: "AddEventController"
       })
       .when('/addwalkin', {
-        templateUrl: '/templates/addwalkin.jade',
+        templateUrl: '/secure/templates/addwalkin.jade',
         controller: "AddWalkinController"
       })
       .when('/attendance', {
-        templateUrl: '/templates/attendance.jade',
+        templateUrl: '/secure/templates/attendance.jade',
         controller: "AttendanceController"
       })
       .when('/changepassword', {
@@ -31,11 +31,11 @@ app.config(['$routeProvider', '$httpProvider', function($routeProvider, $httpPro
         controller: "ChooseClassDatesController"
       })
       .when('/confirmclasssignup', {
-        templateUrl: '/templates/confirmclasssignup.jade',
+        templateUrl: '/secure/templates/confirmclasssignup.jade',
         controller: "ConfirmClassSignupController"
       })
       .when('/directory', {
-        templateUrl: '/templates/directory.jade',
+        templateUrl: '/secure/templates/directory.jade',
         controller: "DirectoryController"
       })
       .when('/eventdetails', {
@@ -43,7 +43,7 @@ app.config(['$routeProvider', '$httpProvider', function($routeProvider, $httpPro
         controller: "EventDetailsController"
       })
       .when('/findwalkin', {
-        templateUrl: '/templates/findwalkin.jade',
+        templateUrl: '/secure/templates/findwalkin.jade',
         controller: "FindWalkinController"
       })
       .when('/jade', {
@@ -55,15 +55,15 @@ app.config(['$routeProvider', '$httpProvider', function($routeProvider, $httpPro
         controller: "LoginController"
       })
       .when('/profile', {
-        templateUrl:'/templates/profile.jade',
+        templateUrl:'/secure/templates/profile.jade',
         controller: "ProfileController"
       })
       .when('/studentclasslist', {
-        templateUrl: '/templates/studentclasslist.jade',
+        templateUrl: '/secure/templates/studentclasslist.jade',
         controller: 'StudentClassListController'
       })
       .when('/testsql', {
-        templateUrl: "assets/views/routes/testsql.html",
+        templateUrl: "/secure/assets/views/routes/testsql.html",
         controller: "TestSqlController"
       })
       .when('/userregistration', {
