@@ -48,7 +48,7 @@ app.controller('AttendanceController',['$scope', '$http', '$localstorage', '$loc
                 $scope.usersEventSchedule[i].changed = false;
             }
         }
-    }
+    };
 
     $scope.findWalkin = function() {
         $location.path('/findwalkin');
