@@ -52,7 +52,8 @@ router.get('/byEventId', function(req,res){
 // Select
 router.get('/currentByEventId', function(req,res){
     var queryOptions = {
-        event_id: req.query.eventId
+        event_id: req.query.eventId,
+        schedule_date: req.query.fromDate
     };
 
     var results = [];
@@ -71,8 +72,8 @@ router.get('/currentByEventId', function(req,res){
             concat(first_name,' ',last_name) as teacher_name \
         FROM event_schedule \
         LEFT JOIN users on event_schedule.teacher_user_id = users.user_id \
-        WHERE schedule_date >= now() and event_id = $1 \
-        ORDER BY start_datetime;", [queryOptions.event_id]);
+        WHERE event_id = $1 and schedule_date >= $2 \
+        ORDER BY start_datetime;", [queryOptions.event_id, queryOptions.schedule_date]);
         //console.log(query);
         // Stream results back one row at a time, push into results arrayd
         query.on('row', function (row) {
