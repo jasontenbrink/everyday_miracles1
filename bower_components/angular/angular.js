@@ -14867,7 +14867,7 @@ function $RootScopeProvider() {
 
 /**
  * @description
- * Private service to sanitize uris for links and images. Used by $compile and $sanitize.
+ * Private service to sanitize uris for links and Images. Used by $compile and $sanitize.
  */
 function $$SanitizeUriProvider() {
   var aHrefSanitizationWhitelist = /^\s*(https?|ftp|mailto|tel|file):/,
