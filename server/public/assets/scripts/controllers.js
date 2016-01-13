@@ -354,6 +354,7 @@ app.controller('ChooseClassDatesController',['$scope', '$http', "$localstorage",
   console.log('hi, from choose class dates Controller');
 
   $scope.today = new Date();
+  $scope.title = "";
 
   $scope.userId = $localstorage.get("userId");
 
@@ -387,32 +388,47 @@ app.controller('ChooseClassDatesController',['$scope', '$http', "$localstorage",
   //get all class instances for this particular class
   $scope.loadEventData =  function() {
 
-    var eventId = {
-      eventId: $scope.eventId
+    var eventIds = {
+      eventId: $scope.eventId,
+      eventScheduleId: $scope.eventScheduleId
     };
-    console.log("Input to get /eventSchedule/byEventId ", eventId);
+    //get call to database to get event info
+    //use eventId in event object as the parameter
+    $http.get('/event/byEventIdEventScheduleId', {params: eventIds}).then(function(response){
+      console.log("Output from get /event/byEventIdEventScheduleId ", response.data);
 
-    $http.get('/eventSchedule/currentByEventId', {params: eventId})
-        .then(function(response){
+      $scope.title = response.data[0].title;
+
+      var eventId = {
+        eventId: $scope.eventId,
+        fromDate: response.data[0].schedule_date
+      };
+      console.log("Input to get /eventSchedule/byEventId ", eventId);
+
+      $http.get('/eventSchedule/currentByEventId', {params: eventId})
+          .then(function(response){
             console.log("Output from get /eventSchedule/currentByEventId ", response.data);
             $scope.event = response.data;
             $scope.getRegisteredClasses($scope.user);
-        });
+          });
+    });
   };
 
   //merge the registered classes with the event data
   $scope.checkRegisteredClasses = function() {
     console.log("checkRegisteredClasses fired");
-    for (var i = 0; i < $scope.registeredEvents.length; i++) {
-      for (var j = 0; j < $scope.event.length; j++) {
-        if ($scope.registeredEvents[i].event_schedule_id == $scope.event[j].event_schedule_id) {
-            $scope.event[j].addCheckbox = true;
-            //console.log("true");
+
+    for (var i = 0; i < $scope.event.length; i++) {
+      if ($scope.event[i].event_schedule_id == $scope.eventScheduleId) {
+        console.log("making sure the event clicked on is checked");
+        $scope.event[i].addCheckbox = true;
+      }
+      for (var j = 0; j < $scope.registeredEvents.length; j++) {
+        if ($scope.registeredEvents[j].event_schedule_id == $scope.event[i].event_schedule_id) {
+          $scope.event[i].addCheckbox = true;
+          //console.log("true");
         }
-        if ($scope.event[j].event_schedule_id == $scope.eventScheduleId) {
-          console.log("making sure the event clicked on is checked");
-          $scope.event[j].addCheckbox = true;
-        }
+
       }
     }
     console.log("$scope.event after for loops :",$scope.event);
