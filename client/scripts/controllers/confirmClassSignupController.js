@@ -16,9 +16,7 @@ app.controller('ConfirmClassSignupController',['$scope', '$http', "RegisterForCl
 
     var event3 = {eventId: $scope.eventId};
 
-    console.log("Input to get /event/byEventId ", event3);
     $http.get('/event/byEventId', {params: event3}).then(function(response){
-      console.log("Output from get /event/byEventId ", response.data);
       $scope.title = response.data[0].title;
     });
 

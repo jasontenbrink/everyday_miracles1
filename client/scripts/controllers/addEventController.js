@@ -43,7 +43,6 @@ app.controller('AddEventController',['$scope', '$http', '$localstorage', functio
     } else {
       // update data
       $http.put('/event', event).then(function (response) {
-        console.log("Output from update /event ", response.data);
       });
     }
   };
