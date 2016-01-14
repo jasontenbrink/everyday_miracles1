@@ -8,7 +8,7 @@ router.get('/text', function(req, res){
         message: req.query.message
     };
 
-    console.log(textMessage);
+    //console.log(textMessage);
     // Your accountSid and authToken from twilio.com/user/account
     var twilio = require('twilio');
     var client = new twilio.RestClient(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
@@ -45,7 +45,7 @@ router.get('/email', function(req, res){
         message: req.query.message
     };
 
-    console.log("email on server: ", emailMessage);
+    //console.log("email on server: ", emailMessage);
 
     var sendgrid = require("sendgrid")(process.env.SENDGRID_API_KEY);
     var email = new sendgrid.Email();

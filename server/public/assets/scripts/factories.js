@@ -5,11 +5,10 @@ app.factory("ActiveProfileFactory", ["$http", function($http){
   var publicApi = {
       setActiveProfileData: function(id) {
         profile.userId = id;
-        console.log('user: ', profile);
           return profile.user_id;
       },
       getActiveProfileData: function(){
-        console.log("active user from factory, ", profile);
+
           return profile;
       },
       setLoggedInUserToActiveProfile: function () {
@@ -47,7 +46,7 @@ function User() {
 app.factory("AuthenticationRedirectInjector", ['$location', function($location){
 var authenticationRedirect = {
           responseError: function (response) {
-            console.log('injector, response', response);
+
             if (response.status===401){
               $location.path('/login');
             }
@@ -78,9 +77,9 @@ app.factory("CalendarFactory", ["$http", function($http){
         };
 
         setDateRange();
-        console.log("Input to get /event/byDateRange ", dateRange);
+
         var promise = $http.get('/event/byDateRange', {params: dateRange}).then(function (response) {
-            console.log("Output from get /event/byDateRange ", response.data);
+
             events = response.data;
         });
         return promise;
@@ -143,7 +142,7 @@ app.factory("RegisterForClassFactory", ["$http", "$localstorage", function($http
     },
     getStudentEvents: function(){
       return $localstorage.getObject("studentEvents");
-      //return studentEvents;
+
     }
   };
 

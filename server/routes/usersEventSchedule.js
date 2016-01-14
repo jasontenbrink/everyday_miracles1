@@ -324,7 +324,7 @@ router.get('/classCancelled/data', function(req, res){
         comments: req.query.comments
     };
 
-    console.log(textMessage);
+    //console.log(textMessage);
     // Your accountSid and authToken from twilio.com/user/account
     var client = require('twilio')(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 
