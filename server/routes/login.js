@@ -8,7 +8,6 @@ var passport = require('passport');
 
 router.post('/',
         passport.authenticate('local'), function(req, res){
-          console.log('req body after successful login, ', req.originalUrl);
           res.send(req.user);
             // successRedirect: '/templates/routes/test.jade',
             // failureRedirect: '/assets/views/failure.html'

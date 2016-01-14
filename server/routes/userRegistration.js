@@ -22,26 +22,19 @@ router.post('/', function(req,res,next){
   if (req.body.roleId !== undefined){
     roleId = req.body.roleId;
   }
-  console.log('req.body.roleId in post', req.body.roleId);
-
 //  if(!user.isModified('password')) return next;
 
 
     bcrypt.genSaltAsync(SALT_WORK_FACTOR).then(function(salt){
       //  if(err) return next(err);
-        console.log('value of salt, before hash', salt);
-        console.log('value of pwd before hash', user.password);
         return bcrypt.hashAsync(user.password, salt);
       })
       .then(function(hash){
          req.body.password = hash;
-            console.log('pwd from inside bcrypt after hash', user.password);
             //next();
 
             pg.connect(connectionString, function (err, client, done) {
               if (err) console.log(err);
-              console.log('pwd from just before DB write req', req.body.password);
-
               client.query("INSERT INTO users (user_name, \
                   password, \
                   first_name, \
@@ -76,7 +69,6 @@ router.post('/', function(req,res,next){
                   function (err, response) {
                     client.end();
                     if (err) console.log(err);
-                    console.log('response from DB on inserting a new user', response.rows[0].user_id);
                   //res.json(1);
                     res.json({"userId":response.rows[0].user_id});
                   });

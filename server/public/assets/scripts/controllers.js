@@ -11,7 +11,6 @@ app.controller('AddEventController',['$scope', '$http', '$localstorage', functio
   $scope.eventInsertBoolean = $localstorage.get('eventInsertBoolean');
   $scope.event.eventId = $localstorage.get('eventId');
 
-  console.log("add event local storage ", $scope.eventInsertBoolean, $scope.event.eventId);
 
   $scope.submitEvent = function() {
     var event = {
@@ -33,9 +32,7 @@ app.controller('AddEventController',['$scope', '$http', '$localstorage', functio
 
     if ($scope.eventInsertBoolean=='true') {
       // insert data
-      console.log("Input to post /event ", event);
       $http.post('/event', event).then(function (response) {
-        console.log("Output from post /event ", response.data);
         $scope.event.eventId = response.data.rows[0].event_id;
         $scope.eventInsertBoolean = false;
 
@@ -45,7 +42,6 @@ app.controller('AddEventController',['$scope', '$http', '$localstorage', functio
       });
     } else {
       // update data
-      console.log("Input to update /event ", event);
       $http.put('/event', event).then(function (response) {
         console.log("Output from update /event ", response.data);
       });
@@ -55,9 +51,7 @@ app.controller('AddEventController',['$scope', '$http', '$localstorage', functio
   $scope.loadEventData = function() {
     var passingEvent = {eventId: $scope.event.eventId};
 
-    console.log("Input to get /event/byEventId ", passingEvent);
     $http.get('/event/byEventId', {params: passingEvent}).then(function(response){
-      console.log("Output from get /event/byEventId ", response.data);
       // Set scope values
       $scope.event.eventId = response.data[0].event_id;
       $scope.event.title = response.data[0].title;
@@ -86,7 +80,6 @@ app.controller('AddEventController',['$scope', '$http', '$localstorage', functio
   };
 
   if ($scope.eventInsertBoolean=='false') {
-    console.log("loading event");
     $scope.loadEventData();
   } else {
     // set the schedule date
@@ -96,9 +89,7 @@ app.controller('AddEventController',['$scope', '$http', '$localstorage', functio
   $scope.loadEventScheduleData = function() {
     var passingEvent = {eventId: $scope.event.eventId};
     // load up the event schedule grid
-    console.log("Input to get /eventSchedule/byEventId ", passingEvent);
     $http.get('/eventSchedule/byEventId', {params: passingEvent}).then(function(response){
-      console.log("Output from get /eventSchedule/byEventId ", response.data);
       $scope.eventSchedule = response.data;
 
       for (var i = 0; i < $scope.eventSchedule.length; i++) {
@@ -148,7 +139,6 @@ app.controller('AddEventController',['$scope', '$http', '$localstorage', functio
     var startDateTime = new Date(year, month, day, startHours, startMinutes, 0);
     var endDateTime = new Date(year, month, day, endHours, endMinutes, 0);
 
-    console.log("start date ", startDateTime, " end date ", endDateTime);
 
     var repeatType = $scope.event.repeatType;
     var repeatBoolean = true;
@@ -189,15 +179,12 @@ app.controller('AddEventController',['$scope', '$http', '$localstorage', functio
     } while (repeatBoolean);
 
     //do an insert always
-    console.log("Input to post /eventSchedule ", addEventScheduleArray);
     $http.post('/eventSchedule', addEventScheduleArray).then(function (response) {
-      console.log("Output from post /eventSchedule ", response.data);
       $scope.loadEventScheduleData();
     });
   };
 
   $scope.deleteEventSchedule = function(deleteObject) {
-    console.log("object ", deleteObject);
 
     var answer = confirm("Are you sure you want to delete event schedule id " + deleteObject.event_schedule_id + "?");
     if (answer){
@@ -225,9 +212,7 @@ app.controller('AddWalkinController',['$scope', '$http', '$localstorage', '$loca
         var event2 = {eventId: $scope.eventId,
             eventScheduleId: $scope.eventScheduleId};
 
-        console.log("Input to get /event/byEventIdEventScheduleId ", event2);
         $http.get('/event/byEventIdEventScheduleId', {params: event2}).then(function(response){
-            console.log("Output from get /event/byEventIdEventScheduleId ", response.data);
             $scope.event = response.data[0];
         });
 
@@ -248,9 +233,7 @@ app.controller('AddWalkinController',['$scope', '$http', '$localstorage', '$loca
                 //expectedBirthDate: 'null'
             };
 
-            console.log("Input to post /users ", insertuser);
             $http.post('/users', insertuser).then(function (response) {
-                console.log("Output from post /users ", response.data);
 
                 if (response.data.rows[0].user_id) {
                     // insert into users event schedule
@@ -261,9 +244,7 @@ app.controller('AddWalkinController',['$scope', '$http', '$localstorage', '$loca
                         comments: ''
                     };
 
-                    console.log("Input to post /usersEventSchedule ", userEvent);
                     $http.post('/usersEventSchedule', userEvent).then(function (response) {
-                        console.log("Output from post /usersEventSchedule ", response.data);
                         alert("Created student.  Redirecting to Attendance.");
                         $location.path('/attendance');
                     });
