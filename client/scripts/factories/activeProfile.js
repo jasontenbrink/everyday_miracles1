@@ -5,11 +5,10 @@ app.factory("ActiveProfileFactory", ["$http", function($http){
   var publicApi = {
       setActiveProfileData: function(id) {
         profile.userId = id;
-        console.log('user: ', profile);
           return profile.user_id;
       },
       getActiveProfileData: function(){
-        console.log("active user from factory, ", profile);
+
           return profile;
       },
       setLoggedInUserToActiveProfile: function () {

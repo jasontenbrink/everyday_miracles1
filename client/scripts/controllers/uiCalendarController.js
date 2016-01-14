@@ -1,6 +1,6 @@
 app.controller('UiCalendarController', ["$scope", "$http", "RegisterForClassFactory", "$location", "$localstorage",
     function($scope, $http, RegisterForClassFactory, $location, $localstorage) {
-    console.log("hi from ui calendar controller");
+
     /* config object */
     $scope.tempEvents;
     $scope.eventSources = {};
@@ -18,14 +18,14 @@ app.controller('UiCalendarController', ["$scope", "$http", "RegisterForClassFact
             $scope.year = $scope.today.getFullYear();
 
 
-            // the 0th day of the next month returns the last day of this month
+
 
             $scope.dateRange = {
                 startDate: new Date($scope.year - 1, $scope.month, 1),
                 endDate: new Date($scope.year + 1, $scope.month + 1, 0)
             };
 
-            console.log("date range ", $scope.dateRange);
+
 
         };
 
@@ -33,9 +33,9 @@ app.controller('UiCalendarController', ["$scope", "$http", "RegisterForClassFact
 
         //get the events to populate calendar
         $http.get('/event/byDateRange', {params: $scope.dateRange}).then(function (response) {
-            console.log("Output from get /event/byDateRange ", response.data);
+
             $scope.tempEvents = response.data;
-            console.log("the tempEvents", $scope.tempEvents);
+
             //loop through results from factory call to set event info into calendar
             for (var i = 0; i < $scope.tempEvents.length; i++) {
                 $scope.eventSources.events[i] = {};
@@ -83,24 +83,16 @@ app.controller('UiCalendarController', ["$scope", "$http", "RegisterForClassFact
         //saves the unique id of the clicked on class
         $scope.eventClick = function(event, jsEvent, view){
 
-            console.log("this is event: ",event);
+
             //$scope.registerForClassFactory.setEvent(event);
             $localstorage.set("eventId", event.eventId);
             $localstorage.set("eventScheduleId", event.eventScheduleId);
-            console.log("factory test: ", $scope.registerForClassFactory.getEvent());
+
 
             $location.path("/eventdetails");
 
         };
-        //$scope.alertEventOnClick = function(date, jsEvent, view) {
-        //    console.log("this is the date: ",date);
-        //    console.log("this is the jsEvent: ", jsEvent);
-        //
-        //    $localstorage.set('eventId', null);
-        //    $localstorage.set('eventDate', date.format());
-        //    $localstorage.set('eventInsertBoolean', true);
-        //    $location.path('/addevent');
-        //};
+
     };
 
 $scope.loadCalendar();
