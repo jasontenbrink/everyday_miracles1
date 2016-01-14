@@ -11,9 +11,7 @@ app.controller('AddWalkinController',['$scope', '$http', '$localstorage', '$loca
         var event2 = {eventId: $scope.eventId,
             eventScheduleId: $scope.eventScheduleId};
 
-        console.log("Input to get /event/byEventIdEventScheduleId ", event2);
         $http.get('/event/byEventIdEventScheduleId', {params: event2}).then(function(response){
-            console.log("Output from get /event/byEventIdEventScheduleId ", response.data);
             $scope.event = response.data[0];
         });
 
@@ -34,9 +32,7 @@ app.controller('AddWalkinController',['$scope', '$http', '$localstorage', '$loca
                 //expectedBirthDate: 'null'
             };
 
-            console.log("Input to post /users ", insertuser);
             $http.post('/users', insertuser).then(function (response) {
-                console.log("Output from post /users ", response.data);
 
                 if (response.data.rows[0].user_id) {
                     // insert into users event schedule
@@ -47,9 +43,7 @@ app.controller('AddWalkinController',['$scope', '$http', '$localstorage', '$loca
                         comments: ''
                     };
 
-                    console.log("Input to post /usersEventSchedule ", userEvent);
                     $http.post('/usersEventSchedule', userEvent).then(function (response) {
-                        console.log("Output from post /usersEventSchedule ", response.data);
                         alert("Created student.  Redirecting to Attendance.");
                         $location.path('/attendance');
                     });

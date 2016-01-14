@@ -64,7 +64,6 @@ passport.use('local', new localStrategy({
 
     }, function(req, username, password, done) {
       //make DB call to get userspassword. on the post body.
-    console.log('right before the DB call, req.body', req.body);
 
     //don't add in 'done' as the third parameter, it will eat the 'done' that
     //the callback strategy needs.
@@ -84,13 +83,11 @@ passport.use('local', new localStrategy({
         var dbPassword = response.rows[0].password;
         var user_id = response.rows[0].user_id;
         client.end();
-        console.log('the password from the DB', dbPassword);
 
           //compare passwords, bcrypt.compare hashes the first argument using
           //the salt factor that was already set up (set up in register.js for now)
             bcrypt.compare(req.body.password, dbPassword, function(err, isMatch){
                 if(err) return err;
-                console.log('isMatch value from compare', isMatch);
 
                 //this var gets sent to SerializeUser and is passed in as the
                 //user parameter. I think SerializeUser is what actually makes
