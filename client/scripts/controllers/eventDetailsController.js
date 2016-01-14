@@ -11,15 +11,12 @@ app.controller('EventDetailsController',['$scope', '$http', "RegisterForClassFac
   //should be event info corresponding to event clicked on in calendar view
   //$scope.eventFromFactory = $scope.registerForClassFactory.getEvent();
 
-  //console.log("scope.eventFromFactory: ",$scope.eventFromFactory);
-
   // set values in local storage
   //$localstorage.set('eventId', $scope.eventFromFactory.eventId);
   //$localstorage.set('eventScheduleId', $scope.eventFromFactory.eventScheduleId);
   $localstorage.set('eventInsertBoolean', false);
 
   $scope.getEventDetails = function(){
-    console.log("in getEventDetails");
     //set params for get call to database
     var eventIds = {
       eventId: $scope.eventId,
@@ -28,9 +25,7 @@ app.controller('EventDetailsController',['$scope', '$http', "RegisterForClassFac
     //get call to database to get event info
     //use eventId in event object as the parameter
     $http.get('/event/byEventIdEventScheduleId', {params: eventIds}).then(function(response){
-      console.log("Output from get /event/byEventIdEventScheduleId ", response.data);
       $scope.event = response.data[0];
-      console.log("$scope.event ",$scope.event);
     });
   };
 
@@ -50,11 +45,8 @@ app.controller('EventDetailsController',['$scope', '$http', "RegisterForClassFac
       //notify students
       // get student list for the class
       var eventSchedule = {eventScheduleId: $scope.eventScheduleId};
-      console.log("Input to get /usersEventSchedule/byEventScheduleId ", eventSchedule);
       $http.get('/usersEventSchedule/byEventScheduleId', {params: eventSchedule}).then(function(response){
-        //console.log("Output from get /usersEventSchedule/byEventScheduleId ", response.data);
         $scope.usersEventSchedule = response.data;
-        console.log("userseventschedule ", $scope.usersEventSchedule);
 
         var phoneNumberArray = [];
         var emailArray = [];
@@ -69,23 +61,17 @@ app.controller('EventDetailsController',['$scope', '$http', "RegisterForClassFac
           }
         }
 
-        console.log("phone array ", phoneNumberArray);
-        console.log("email array ", emailArray);
-
         var subject = "Everyday Miracles Class Cancellation Notice";
         var message = "Everyday Miracles Class " + $scope.event.title + " " +
           moment($scope.event.schedule_date).format("MM-DD-YYYY") + " " + moment($scope.event.start_datetime).format("h:mm a") +
             " - " + moment($scope.event.end_datetime).format("h:mm a") + " has been cancelled.";
-        console.log("message ", message);
         if (phoneNumberArray.length > 0) {
           var textMessage = {
             "phoneNumber[]": phoneNumberArray,
             message: message.substring(0, 159)
           };
 
-          console.log(textMessage);
           $http.get('/notifications/text', {params: textMessage}).then(function (response) {
-            console.log("output from /notifications/text ", response.data);
           });
         }
 
@@ -96,17 +82,13 @@ app.controller('EventDetailsController',['$scope', '$http', "RegisterForClassFac
             message: message
           };
 
-          console.log(emailMessage);
           $http.get('/notifications/email', {params: emailMessage}).then(function (response) {
-            console.log("output from /notifications/email ", response.data);
           });
         }
         $http.delete('/usersEventSchedule/deleteByEventScheduleId'+ $scope.eventScheduleId).then(function(response){
-          console.log("output from delete users eventSchedule by Event Schedule Id ", response.data);
           //delete the class
           if (response.data==true){
             $http.delete('/eventSchedule/delete'+ $scope.eventScheduleId).then(function(response){
-              console.log("output from delete eventSchedule ", response.data);
               if (response.data==true){
                 //return to calendar
                 $location.path('/uicalendar');

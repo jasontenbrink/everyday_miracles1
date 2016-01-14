@@ -1,5 +1,5 @@
 app.controller('JadeController',['$scope', '$http', function ($scope, $http) {
-  console.log('hi, from jade Controller');
+  //console.log('hi, from jade Controller');
   $scope.x = 'angular';
   $scope.y = 'bye';
   // $http.get('/jade')

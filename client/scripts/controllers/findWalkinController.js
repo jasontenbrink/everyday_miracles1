@@ -15,17 +15,13 @@ app.controller('FindWalkinController',['$scope', '$http', '$localstorage', '$loc
         var event2 = {eventId: $scope.eventId,
             eventScheduleId: $scope.eventScheduleId};
 
-        console.log("Input to get /event/byEventIdEventScheduleId ", event2);
         $http.get('/event/byEventIdEventScheduleId', {params: event2}).then(function(response){
-            console.log("Output from get /event/byEventIdEventScheduleId ", response.data);
             $scope.event = response.data[0];
         });
 
         $scope.findWalkin = function() {
 
-            console.log("Input to get /users/byNameOrPhone ", $scope.user);
             $http.get('/users/byNameOrPhone', {params: $scope.user}).then(function (response) {
-                console.log("Output from get /users/byNameOrPhone ", response.data);
                 $scope.foundUser = response.data[0];
                 if ($scope.foundUser.expected_birth_date != null) {
                     $scope.foundUser.expected_birth_date = new Date($scope.foundUser.expected_birth_date);
@@ -34,7 +30,6 @@ app.controller('FindWalkinController',['$scope', '$http', '$localstorage', '$loc
         };
 
         $scope.submitUser = function() {
-            console.log("submitting user ", $scope.foundUser);
 
             var updateUser = {
                 userId: $scope.foundUser.user_id,
@@ -53,9 +48,7 @@ app.controller('FindWalkinController',['$scope', '$http', '$localstorage', '$loc
             };
 
             // update the user information
-            console.log("Input to put /users ", updateUser);
             $http.put('/users', updateUser).then(function (response) {
-                console.log("Output from put /users ", response.data);
             });
 
             //insert into database
@@ -65,18 +58,14 @@ app.controller('FindWalkinController',['$scope', '$http', '$localstorage', '$loc
                 status: 'Attended',
                 comments: ''
             };
-            console.log("Input to post /usersEventSchedule ", userEvent);
 
             // see if the user is already in the class
             $http.get('/usersEventSchedule/byUserIdEventScheduleId', {params: userEvent}).then(function(response){
-                console.log("Output from get /usersEventSchedule/byUserIdEventScheduleId ", response.data);
                 if(response.data.length > 0) {
                     alert("Student already in the class.");
                 } else {
                     // insert into user event schedule table
-                    console.log("input to userseventschedule post ", userEvent);
                     $http.post('/usersEventSchedule', userEvent).then(function (response) {
-                        console.log("Output from post /usersEventSchedule ", response.data);
                         // go back to attendance page
                         if(response.data==true){
                             alert("Student submitted as attended.");

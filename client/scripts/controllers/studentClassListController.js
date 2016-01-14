@@ -44,7 +44,6 @@ app.controller('StudentClassListController', ["$scope", "$http", "$localstorage"
             userId: $scope.user1Id
         };
         $http.get('/users/byUserId', {params: user}).then(function (response) {
-            console.log("Output from get /users/byUserId ", response.data);
             $scope.user1 = response.data[0];
         });
     };
@@ -54,7 +53,6 @@ app.controller('StudentClassListController', ["$scope", "$http", "$localstorage"
             userId: $scope.user1Id
         };
         $http.get('/usersEventSchedule/byUserId', {params: userObject}).then(function(response){
-            console.log("Output from get /usersEventSchedule/byUserId ", response.data);
             $scope.allClasses = response.data;
             for (var i = 0; i < $scope.allClasses.length; i++) {
                 if ($scope.allClasses[i].status == "Registered") {
@@ -67,15 +65,12 @@ app.controller('StudentClassListController', ["$scope", "$http", "$localstorage"
     };
 
     $scope.deleteClass = function(someclass) {
-        console.log("someclass: ", someclass);
         //$scope.deleteUsersEventSchedule = function() {
         //
             var event = {userId: someclass.user_id,
                 eventScheduleId: someclass.event_schedule_id};
-        console.log("variable event: ", event);
         //
             $http.get('/usersEventSchedule/delete', {params: event}).then(function(response){
-                console.log("output from delete userseventSchedule ", response.data);
                 $scope.clearVariables();
                 $scope.getClasses();
             });
