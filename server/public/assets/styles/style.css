@@ -133,6 +133,8 @@ md-content.layout-padding.ng-scope {
   float: left;
 }
 
+/*calendarColor[event_category_id]*/
+/*class*/
 .calendarColor1,
 .calendarColor1 div,
 .calendarColor1 span {
@@ -140,7 +142,7 @@ md-content.layout-padding.ng-scope {
   border-color: white;     /* border color */
   color: white;           /* text color */
 }
-
+/*massage*/
 .calendarColor2,
 .calendarColor2 div,
 .calendarColor2 span {
@@ -148,11 +150,23 @@ md-content.layout-padding.ng-scope {
   border-color: white;     /* border color */
   color: white;           /* text color */
 }
-
+/*chiropractic*/
 .calendarColor3,
 .calendarColor3 div,
 .calendarColor3 span {
   background-color: #9bc8ea; /* background color */
   border-color: white;     /* border color */
   color: white;           /* text color */
+}
+/*event*/
+.calendarColor4,
+.calendarColor4 div,
+.calendarColor4 span {
+  background-color: #d1d3d9; /* background color */
+  border-color: white;     /* border color */
+  color: white;           /* text color */
+}
+.eventPageBorder {
+  border: 2px solid gray;
+  border-radius: 10px;
 }

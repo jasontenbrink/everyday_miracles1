@@ -90,7 +90,7 @@ app.controller('AddEventController',['$scope', '$http', '$localstorage', functio
     $scope.loadEventData();
   } else {
     // set the schedule date
-    $scope.eventScheduleAdd.scheduleDate = new Date($localstorage.get('eventDate'));
+    //$scope.eventScheduleAdd.scheduleDate = new Date($localstorage.get('eventDate'));
   }
 
   $scope.loadEventScheduleData = function() {

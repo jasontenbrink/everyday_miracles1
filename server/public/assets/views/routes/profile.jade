@@ -32,14 +32,16 @@ md-content(layout-padding)
          input(aria-label="Email Address" type = "text" ng-model = "user.emailAddress" disabled=(user.role!== "admin"&&user.role!=="student"))
 
        md-input-container
-         label Contact Type
-         input(aria-label="Contact Type" type = "text" ng-model = "user.contactType" disabled=(user.role!== "admin"&&user.role!=="student"))
+        label Contact Type
+        md-select(aria-label="Contact Type menu" class="" name="contacttype" ng-model = "user.contactType" disabled=(user.role!== "admin"&&user.role!=="student"))
+            md-option(aria-label="Email" value="email") Email
+            md-option(aria-label="Text" value="text") Text
 
        md-input-container
          md-radio-group(aria-label="Payment Type" ng-model = "user.paymentType" disabled=(user.role!== "admin"&&user.role!=="student"))
            label Payment Type
            md-radio-button(aria-label="Insurance Radio Button" value = "insurance") Insurance (I have state-funded insurance)
-           md-radio-button(aria-label="Cash Radio Butotn" value = "cash") Out of pocket (check or cash in-person)
+           md-radio-button(aria-label="Cash Radio Button" value = "cash") Out of pocket (check or cash in-person)
 
        md-input-container
          md-radio-group(aria-label="Everyday Miracles Client?" ng-model = "user.everydayMiraclesClientInd" disabled=(user.role!== "admin"&&user.role!=="student"))
@@ -47,14 +49,13 @@ md-content(layout-padding)
            md-radio-button(aria-label="Yes Radio Button" ng-value = "true" ) Yes
            md-radio-button(aria-label="No Radio Button" ng-value = "false" ) No
 
-
        md-input-container
          label Doula
          input(aria-label="Doula Name" type = "text" ng-model = "user.doulaName" disabled=(user.role!== "admin"&&user.role!=="student"))
 
        md-input-container
-         label Expected Birth Date
-         input(aria-label="Expected Birth Date calendar" type = "date" ng-model = "user.expectedBirthDate" disabled=(user.role!== "admin"&&user.role!=="student"))
+         label Expected Due Date
+         input(aria-label="Expected Due Date calendar" type = "date" ng-model = "user.expectedBirthDate" disabled=(user.role!== "admin"&&user.role!=="student"))
 
        .save-button
            md-button(aria-label="Save Button" class = "" ng-click = "saveProfile()") Save

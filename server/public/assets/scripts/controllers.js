@@ -90,7 +90,7 @@ app.controller('AddEventController',['$scope', '$http', '$localstorage', functio
     $scope.loadEventData();
   } else {
     // set the schedule date
-    $scope.eventScheduleAdd.scheduleDate = new Date($localstorage.get('eventDate'));
+    //$scope.eventScheduleAdd.scheduleDate = new Date($localstorage.get('eventDate'));
   }
 
   $scope.loadEventScheduleData = function() {
@@ -1638,9 +1638,14 @@ $scope.loadCalendar();
 
 app.controller('UserRegistrationController',['$scope', '$http', '$location', '$localstorage',
   function ($scope, $http, $location, $localstorage) {
-  console.log('hi, from UserRegistrationController');
+
   $scope.user={};
+  $scope.roles = [];
   var userId = $localstorage.get('userId');
+
+  $http.get('/users/roles').then(function (response) {
+    $scope.roles = response.data;
+  });
 
   $scope.submitRegistration = function () {
     console.log('data sent to server', $scope.user);
