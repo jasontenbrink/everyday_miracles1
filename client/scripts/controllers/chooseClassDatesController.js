@@ -1,7 +1,6 @@
 app.controller('ChooseClassDatesController',['$scope', '$http', "$localstorage", '$location', "ActiveProfileFactory",
   "RegisterForClassFactory",
   function ($scope, $http, $localstorage, $location, ActiveProfileFactory, RegisterForClassFactory) {
-  console.log('hi, from choose class dates Controller');
 
   $scope.today = new Date();
   $scope.title = "";
@@ -29,7 +28,6 @@ app.controller('ChooseClassDatesController',['$scope', '$http', "$localstorage",
 
     //console.log("in registered classes(). the event :",eventSchedule);
     $http.get('/usersEventSchedule/byEventIdUserId', {params: eventSchedule}).then(function(response){
-      console.log("Output from get /usersEventSchedule/byEventScheduleId ", response.data);
       $scope.registeredEvents = response.data;
       $scope.checkRegisteredClasses();
     });
@@ -45,7 +43,6 @@ app.controller('ChooseClassDatesController',['$scope', '$http', "$localstorage",
     //get call to database to get event info
     //use eventId in event object as the parameter
     $http.get('/event/byEventIdEventScheduleId', {params: eventIds}).then(function(response){
-      console.log("Output from get /event/byEventIdEventScheduleId ", response.data);
 
       $scope.title = response.data[0].title;
 
@@ -53,11 +50,9 @@ app.controller('ChooseClassDatesController',['$scope', '$http', "$localstorage",
         eventId: $scope.eventId,
         fromDate: response.data[0].schedule_date
       };
-      console.log("Input to get /eventSchedule/byEventId ", eventId);
 
       $http.get('/eventSchedule/currentByEventId', {params: eventId})
           .then(function(response){
-            console.log("Output from get /eventSchedule/currentByEventId ", response.data);
             $scope.event = response.data;
             $scope.getRegisteredClasses($scope.user);
           });
@@ -66,11 +61,9 @@ app.controller('ChooseClassDatesController',['$scope', '$http', "$localstorage",
 
   //merge the registered classes with the event data
   $scope.checkRegisteredClasses = function() {
-    console.log("checkRegisteredClasses fired");
 
     for (var i = 0; i < $scope.event.length; i++) {
       if ($scope.event[i].event_schedule_id == $scope.eventScheduleId) {
-        console.log("making sure the event clicked on is checked");
         $scope.event[i].addCheckbox = true;
       }
       for (var j = 0; j < $scope.registeredEvents.length; j++) {
@@ -81,7 +74,6 @@ app.controller('ChooseClassDatesController',['$scope', '$http', "$localstorage",
 
       }
     }
-    console.log("$scope.event after for loops :",$scope.event);
   };
 
   $scope.loadEventData();
@@ -95,10 +87,8 @@ app.controller('ChooseClassDatesController',['$scope', '$http', "$localstorage",
 
       }
     }
-    console.log("studentEvents loop ", $scope.studentEvents);
     $scope.registerForClassFactory.setStudentEvents({});
     $scope.registerForClassFactory.setStudentEvents($scope.studentEvents);
-    console.log("registerForClassFactory ", $scope.registerForClassFactory.getStudentEvents());
 
     $location.path('/confirmclasssignup');
   };

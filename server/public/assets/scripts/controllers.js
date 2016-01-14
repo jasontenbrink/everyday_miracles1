@@ -267,25 +267,20 @@ app.controller('AttendanceController',['$scope', '$http', '$localstorage', '$loc
     var event2 = {eventId: $scope.eventId,
         eventScheduleId: $scope.eventScheduleId};
 
-    console.log("Input to get /event/byEventIdEventScheduleId ", event2);
     $http.get('/event/byEventIdEventScheduleId', {params: event2}).then(function(response){
-        console.log("Output from get /event/byEventIdEventScheduleId ", response.data);
         $scope.event = response.data[0];
     });
 
     // get data from the database
     var eventSchedule = {eventScheduleId: $scope.eventScheduleId};
 
-    console.log("Input to get /usersEventSchedule/byEventScheduleId ", eventSchedule);
     $http.get('/usersEventSchedule/byEventScheduleId', {params: eventSchedule}).then(function(response){
-        console.log("Output from get /usersEventSchedule/byEventScheduleId ", response.data);
         $scope.usersEventSchedule = response.data;
     });
 
     $scope.submitAttendance = function() {
         for (var i = 0; i < $scope.usersEventSchedule.length; i++) {
 
-            console.log("changed ", $scope.usersEventSchedule[i].changed);
             if ($scope.usersEventSchedule[i].changed) {
 
                 var userEvent = {
@@ -295,9 +290,7 @@ app.controller('AttendanceController',['$scope', '$http', '$localstorage', '$loc
                     comments: ''
                 };
 
-                console.log("Input to update /usersEventSchedule ", userEvent);
                 $http.put('/usersEventSchedule', userEvent).then(function (response) {
-                    console.log("Output from update /usersEventSchedule ", response.data);
                     if (response.data){
                       $window.alert('Attendance submitted');
                     }
@@ -322,9 +315,7 @@ app.controller("ChangePasswordController", ["$scope", "$http", "$location", "Act
 
         $scope.user = activeProfileFactory.getActiveProfileData();
         $scope.confirmPassword = function(someuser){
-            console.log("the user and their password to change: ",$scope.user);
             $http.put('/changePassword', {params: $scope.user}).then(function(response){
-                console.log("Response from the change password attempt");
             });
         };
     }]);
@@ -332,7 +323,6 @@ app.controller("ChangePasswordController", ["$scope", "$http", "$location", "Act
 app.controller('ChooseClassDatesController',['$scope', '$http', "$localstorage", '$location', "ActiveProfileFactory",
   "RegisterForClassFactory",
   function ($scope, $http, $localstorage, $location, ActiveProfileFactory, RegisterForClassFactory) {
-  console.log('hi, from choose class dates Controller');
 
   $scope.today = new Date();
   $scope.title = "";
@@ -360,7 +350,6 @@ app.controller('ChooseClassDatesController',['$scope', '$http', "$localstorage",
 
     //console.log("in registered classes(). the event :",eventSchedule);
     $http.get('/usersEventSchedule/byEventIdUserId', {params: eventSchedule}).then(function(response){
-      console.log("Output from get /usersEventSchedule/byEventScheduleId ", response.data);
       $scope.registeredEvents = response.data;
       $scope.checkRegisteredClasses();
     });
@@ -376,7 +365,6 @@ app.controller('ChooseClassDatesController',['$scope', '$http', "$localstorage",
     //get call to database to get event info
     //use eventId in event object as the parameter
     $http.get('/event/byEventIdEventScheduleId', {params: eventIds}).then(function(response){
-      console.log("Output from get /event/byEventIdEventScheduleId ", response.data);
 
       $scope.title = response.data[0].title;
 
@@ -384,11 +372,9 @@ app.controller('ChooseClassDatesController',['$scope', '$http', "$localstorage",
         eventId: $scope.eventId,
         fromDate: response.data[0].schedule_date
       };
-      console.log("Input to get /eventSchedule/byEventId ", eventId);
 
       $http.get('/eventSchedule/currentByEventId', {params: eventId})
           .then(function(response){
-            console.log("Output from get /eventSchedule/currentByEventId ", response.data);
             $scope.event = response.data;
             $scope.getRegisteredClasses($scope.user);
           });
@@ -397,11 +383,9 @@ app.controller('ChooseClassDatesController',['$scope', '$http', "$localstorage",
 
   //merge the registered classes with the event data
   $scope.checkRegisteredClasses = function() {
-    console.log("checkRegisteredClasses fired");
 
     for (var i = 0; i < $scope.event.length; i++) {
       if ($scope.event[i].event_schedule_id == $scope.eventScheduleId) {
-        console.log("making sure the event clicked on is checked");
         $scope.event[i].addCheckbox = true;
       }
       for (var j = 0; j < $scope.registeredEvents.length; j++) {
@@ -412,7 +396,6 @@ app.controller('ChooseClassDatesController',['$scope', '$http', "$localstorage",
 
       }
     }
-    console.log("$scope.event after for loops :",$scope.event);
   };
 
   $scope.loadEventData();
@@ -426,10 +409,8 @@ app.controller('ChooseClassDatesController',['$scope', '$http', "$localstorage",
 
       }
     }
-    console.log("studentEvents loop ", $scope.studentEvents);
     $scope.registerForClassFactory.setStudentEvents({});
     $scope.registerForClassFactory.setStudentEvents($scope.studentEvents);
-    console.log("registerForClassFactory ", $scope.registerForClassFactory.getStudentEvents());
 
     $location.path('/confirmclasssignup');
   };
@@ -455,7 +436,6 @@ app.controller('ConfirmClassSignupController',['$scope', '$http', "RegisterForCl
   //$scope.user.userId = 1;
 
   $scope.studentEvents = $scope.registerForClassFactory.getStudentEvents();
-  console.log("$scope.studentEvents: ",$scope.studentEvents);
 
 
   $scope.getRegisteredClasses = function() {
@@ -465,19 +445,12 @@ app.controller('ConfirmClassSignupController',['$scope', '$http', "RegisterForCl
       eventId: $scope.eventId
     };
 
-    console.log("in registered classes(). the event :",eventSchedule);
     $http.get('/usersEventSchedule/byEventIdUserId', {params: eventSchedule}).then(function(response){
-      console.log("Output from get /usersEventSchedule/byEventScheduleId ", response.data);
       $scope.registeredEvents = response.data;
     });
   };
 
   $scope.confirmClass = function(userEvents, comments, registeredClasses) {
-
-    console.log("this is the class registered for: ", userEvents);
-    console.log("these are the comments: ", comments);
-    console.log("these are the registeredClasses: ", registeredClasses);
-
     for (var j = 0; j < registeredClasses.length; j++) {
       for (var i = 0; i < userEvents.length; i++) {
         userEvents[i].comments = comments;
@@ -490,11 +463,8 @@ app.controller('ConfirmClassSignupController',['$scope', '$http', "RegisterForCl
       }
     }
 
-    console.log("the userEvents: ", userEvents);
-
     for (i = 0; i < userEvents.length; i++) {
       if (userEvents[i].registered == true) {
-        console.log("the event has been registered");
       } else {
         var userEvent = {
           userId: $scope.userId,
@@ -502,53 +472,37 @@ app.controller('ConfirmClassSignupController',['$scope', '$http', "RegisterForCl
           status: "Registered",
           comments: userEvents[i].comments
         };
-        console.log("Event to post to the database: ", userEvent);
         $http.post('/usersEventSchedule', userEvent).then(function (response) {
-          console.log("Output from post /usersEventSchedule ", response.data);
           //send text or email here
           //get users contact info
           var user1 = {
             userId: $scope.userId
           };
-          console.log("Input to get /users/byUserId ", user1);
           $http.get('/users/byUserId', {params: user1}).then(function (response) {
-            console.log("Output from get /users/byUserId ", response.data);
-
             var obj = response.data[0];
-            console.log("the obj :", obj);
-
             //construct message
             var subject = "Everyday Miracles Class Registration Confirmation";
             var message = "You have successfully registered for Everyday Miracles Class " + $scope.registeredEvents[0].title + " " +
                 moment(userEvents[0].schedule_date).format("MM-DD-YYYY") + " " + moment(userEvents[0].start_datetime).format("h:mm a") +
                 " - " + moment(userEvents[0].end_datetime).format("h:mm a") + ".";
-            console.log("message ", message);
-
             //check type of contact method and send message
             if (obj.contact_type=="email" && obj.email_address != null){
-              console.log("they have an email address!");
               var emailMessage = {
                 "sendTo[]": [obj.email_address],
                 subject: subject,
                 message: message
               };
-
-              console.log(emailMessage);
               $http.get('/notifications/email', {params: emailMessage}).then(function (response) {
-                console.log("output from /notifications/email ", response.data);
               });
 
               //emailArray.push(obj.email_address);
             }else if (obj.contact_type=="text" && obj.phone_number != null){
-              console.log("they have a phone number!");
               var textMessage = {
                 "phoneNumber[]": [obj.phone_number],
                 message: message.substring(0, 159)
               };
 
-              console.log(textMessage);
               $http.get('/notifications/text', {params: textMessage}).then(function (response) {
-                console.log("output from /notifications/text ", response.data);
               });
               //phoneNumberArray.push(obj.phone_number);
             }
@@ -566,7 +520,6 @@ app.controller('ConfirmClassSignupController',['$scope', '$http', "RegisterForCl
 
   $scope.goBack = function() {
     $location.path('/chooseclassdates');
-    console.log("I hit the go back button: ");
   };
 
   $scope.getRegisteredClasses();
@@ -578,16 +531,13 @@ app.controller('DirectoryController',['$scope', '$http', 'ActiveProfileFactory',
   function ($scope, $http, ActiveProfileFactory, uiGridConstants, $localstorage, $location) {
 
   var activeProfileFactory = ActiveProfileFactory;
-  console.log('hi, from Directory Controller');
   $scope.searchObject = new SearchObject();
   $scope.gridOptions = {};
 
 //sets user on activeProfile Factory
   $scope.sendSelectedMemberInfo = function(id) {
-    console.log('this is the searchUser id', id);
     //activeProfileFactory.setActiveProfileData(id);
     $localstorage.set("searchUserId", id);
-      console.log("the searchUserId: ",$localstorage.get("searchUserId"));
     $location.path('/profile');
   };
 
@@ -615,25 +565,21 @@ app.controller('DirectoryController',['$scope', '$http', 'ActiveProfileFactory',
 
   $scope.getResults = function () {
 
-    console.log("search object, ", $scope.searchObject);
     $http.get('/users/byNameOrPhone',
         {params: $scope.searchObject}
       )
       .then(
         function (response) {
-          console.log('response from server', response.data);
           $scope.gridOptions.data = response.data;
         }
       );
   };
   var getData = function (queryParams) {
-    console.log('heading out from factory', queryParams);
     var promise = $http.get('/data',
       {params: queryParams}
     )
     .then(
       function (response) {
-        console.log('response from server', response.data);
         data = response.data;
       }
     );
@@ -673,7 +619,6 @@ app.controller('EventDetailsController',['$scope', '$http', "RegisterForClassFac
   $localstorage.set('eventInsertBoolean', false);
 
   $scope.getEventDetails = function(){
-    console.log("in getEventDetails");
     //set params for get call to database
     var eventIds = {
       eventId: $scope.eventId,
@@ -682,9 +627,7 @@ app.controller('EventDetailsController',['$scope', '$http', "RegisterForClassFac
     //get call to database to get event info
     //use eventId in event object as the parameter
     $http.get('/event/byEventIdEventScheduleId', {params: eventIds}).then(function(response){
-      console.log("Output from get /event/byEventIdEventScheduleId ", response.data);
       $scope.event = response.data[0];
-      console.log("$scope.event ",$scope.event);
     });
   };
 
@@ -704,11 +647,9 @@ app.controller('EventDetailsController',['$scope', '$http', "RegisterForClassFac
       //notify students
       // get student list for the class
       var eventSchedule = {eventScheduleId: $scope.eventScheduleId};
-      console.log("Input to get /usersEventSchedule/byEventScheduleId ", eventSchedule);
       $http.get('/usersEventSchedule/byEventScheduleId', {params: eventSchedule}).then(function(response){
         //console.log("Output from get /usersEventSchedule/byEventScheduleId ", response.data);
         $scope.usersEventSchedule = response.data;
-        console.log("userseventschedule ", $scope.usersEventSchedule);
 
         var phoneNumberArray = [];
         var emailArray = [];
@@ -723,23 +664,17 @@ app.controller('EventDetailsController',['$scope', '$http', "RegisterForClassFac
           }
         }
 
-        console.log("phone array ", phoneNumberArray);
-        console.log("email array ", emailArray);
-
         var subject = "Everyday Miracles Class Cancellation Notice";
         var message = "Everyday Miracles Class " + $scope.event.title + " " +
           moment($scope.event.schedule_date).format("MM-DD-YYYY") + " " + moment($scope.event.start_datetime).format("h:mm a") +
             " - " + moment($scope.event.end_datetime).format("h:mm a") + " has been cancelled.";
-        console.log("message ", message);
         if (phoneNumberArray.length > 0) {
           var textMessage = {
             "phoneNumber[]": phoneNumberArray,
             message: message.substring(0, 159)
           };
 
-          console.log(textMessage);
           $http.get('/notifications/text', {params: textMessage}).then(function (response) {
-            console.log("output from /notifications/text ", response.data);
           });
         }
 
@@ -750,17 +685,13 @@ app.controller('EventDetailsController',['$scope', '$http', "RegisterForClassFac
             message: message
           };
 
-          console.log(emailMessage);
           $http.get('/notifications/email', {params: emailMessage}).then(function (response) {
-            console.log("output from /notifications/email ", response.data);
           });
         }
         $http.delete('/usersEventSchedule/deleteByEventScheduleId'+ $scope.eventScheduleId).then(function(response){
-          console.log("output from delete users eventSchedule by Event Schedule Id ", response.data);
           //delete the class
           if (response.data==true){
             $http.delete('/eventSchedule/delete'+ $scope.eventScheduleId).then(function(response){
-              console.log("output from delete eventSchedule ", response.data);
               if (response.data==true){
                 //return to calendar
                 $location.path('/uicalendar');
