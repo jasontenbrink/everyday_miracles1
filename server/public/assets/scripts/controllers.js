@@ -437,6 +437,13 @@ app.controller('ConfirmClassSignupController',['$scope', '$http', "RegisterForCl
 
   $scope.studentEvents = $scope.registerForClassFactory.getStudentEvents();
 
+    var event3 = {eventId: $scope.eventId};
+
+    console.log("Input to get /event/byEventId ", event3);
+    $http.get('/event/byEventId', {params: event3}).then(function(response){
+      console.log("Output from get /event/byEventId ", response.data);
+      $scope.title = response.data[0].title;
+    });
 
   $scope.getRegisteredClasses = function() {
 
@@ -447,6 +454,7 @@ app.controller('ConfirmClassSignupController',['$scope', '$http', "RegisterForCl
 
     $http.get('/usersEventSchedule/byEventIdUserId', {params: eventSchedule}).then(function(response){
       $scope.registeredEvents = response.data;
+
     });
   };
 
@@ -482,7 +490,7 @@ app.controller('ConfirmClassSignupController',['$scope', '$http', "RegisterForCl
             var obj = response.data[0];
             //construct message
             var subject = "Everyday Miracles Class Registration Confirmation";
-            var message = "You have successfully registered for Everyday Miracles Class " + $scope.registeredEvents[0].title + " " +
+            var message = "You have successfully registered for Everyday Miracles Class " + $scope.title + " " +
                 moment(userEvents[0].schedule_date).format("MM-DD-YYYY") + " " + moment(userEvents[0].start_datetime).format("h:mm a") +
                 " - " + moment(userEvents[0].end_datetime).format("h:mm a") + ".";
             //check type of contact method and send message
