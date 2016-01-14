@@ -20,20 +20,20 @@ md-content(layout-padding)
     md-button(aria-label="Save Event Button" ng-click="submitEvent()" class="" ng-disabled="addEventForm.$invalid") Save Event
     .layout-row
       md-input-container(flex)
-        label Repeat Type
+        label Repeats
         md-select(aria-label="Repeat Type Pulldown" name='repeattype' ng-model="event.repeatType")
           md-option(aria-label="None" value='None') None
           md-option(aria-label="Daily" value='Daily') Daily
           md-option(aria-label="Weekly" value='Weekly') Weekly
           md-option(aria-label="Monthly" value='Monthly') Monthly
       md-input-container(flex)
-        label Repeat To Date
+        label Repeats Until
         input(aria-label="Repeat to Date Calendar" type='date' name='title' ng-model="event.repeatToDate" ng-required="event.repeatType")
 
   form(aria-label="Add Event Schedule Form" name='addEventScheduleForm')
     .layout-column
       md-input-container(flex)
-        label Schedule Date
+        label Starts On
         input(aria-label="Schedule Date" type='date' name='scheduledate' ng-model="eventScheduleAdd.scheduleDate" required)
       .layout-row
         md-input-container(flex)
