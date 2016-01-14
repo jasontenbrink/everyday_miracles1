@@ -20,9 +20,9 @@ app.factory("CalendarFactory", ["$http", function($http){
         };
 
         setDateRange();
-        console.log("Input to get /event/byDateRange ", dateRange);
+
         var promise = $http.get('/event/byDateRange', {params: dateRange}).then(function (response) {
-            console.log("Output from get /event/byDateRange ", response.data);
+
             events = response.data;
         });
         return promise;

@@ -25,7 +25,7 @@ app.factory("RegisterForClassFactory", ["$http", "$localstorage", function($http
     },
     getStudentEvents: function(){
       return $localstorage.getObject("studentEvents");
-      //return studentEvents;
+
     }
   };
 

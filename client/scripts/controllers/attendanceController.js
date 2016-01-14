@@ -10,25 +10,20 @@ app.controller('AttendanceController',['$scope', '$http', '$localstorage', '$loc
     var event2 = {eventId: $scope.eventId,
         eventScheduleId: $scope.eventScheduleId};
 
-    console.log("Input to get /event/byEventIdEventScheduleId ", event2);
     $http.get('/event/byEventIdEventScheduleId', {params: event2}).then(function(response){
-        console.log("Output from get /event/byEventIdEventScheduleId ", response.data);
         $scope.event = response.data[0];
     });
 
     // get data from the database
     var eventSchedule = {eventScheduleId: $scope.eventScheduleId};
 
-    console.log("Input to get /usersEventSchedule/byEventScheduleId ", eventSchedule);
     $http.get('/usersEventSchedule/byEventScheduleId', {params: eventSchedule}).then(function(response){
-        console.log("Output from get /usersEventSchedule/byEventScheduleId ", response.data);
         $scope.usersEventSchedule = response.data;
     });
 
     $scope.submitAttendance = function() {
         for (var i = 0; i < $scope.usersEventSchedule.length; i++) {
 
-            console.log("changed ", $scope.usersEventSchedule[i].changed);
             if ($scope.usersEventSchedule[i].changed) {
 
                 var userEvent = {
@@ -38,9 +33,7 @@ app.controller('AttendanceController',['$scope', '$http', '$localstorage', '$loc
                     comments: ''
                 };
 
-                console.log("Input to update /usersEventSchedule ", userEvent);
                 $http.put('/usersEventSchedule', userEvent).then(function (response) {
-                    console.log("Output from update /usersEventSchedule ", response.data);
                     if (response.data){
                       $window.alert('Attendance submitted');
                     }

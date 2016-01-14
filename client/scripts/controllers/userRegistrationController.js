@@ -10,11 +10,10 @@ app.controller('UserRegistrationController',['$scope', '$http', '$location', '$l
   });
 
   $scope.submitRegistration = function () {
-    console.log('data sent to server', $scope.user);
+
     $http.post('/userregistration', $scope.user)
       .then(function (response) {
-        //console.log('is this html?', response.data);
-        console.log('response userIdis', response);
+
         if (response.status===200 && userId){
           $localstorage.set('searchUserId', response.data.userId);
           $location.path('/profile');
