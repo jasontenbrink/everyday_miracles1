@@ -2,28 +2,28 @@ md-content(layout-padding)
   h1 Register
   md-input-container
     input(aria-label="First Name" required ng-model="user.firstName")
-    label first name
+    label First Name
   md-input-container
     input(aria-label="Last Name" type="text" required ng-model="user.lastName")
-    label last name
+    label Last Name
   md-input-container
     input(aria-label="Username" ng-model="user.username" type="text")
-    label username
+    label Username
   md-input-container
     input(aria-label="Password" type="password" ng-model="user.password")
-    label password
+    label Password
   //- md-input-container
   //-   input(aria-label="Confirm Password" type="password" ng-model="user.password")
   //-   label confirm password
   md-input-container
     input(aria-label="dateOfBirth " type="date" ng-model="user.dateOfBirth")
-    label date of birth
+    label Date of Birth
   md-input-container
     input(aria-label="phoneNumber" type="text" required ng-model="user.phoneNumber")
-    label phone number
+    label Phone Number
   md-input-container
     input(aria-label="emailAddress" type="text" ng-model="user.emailAddress")
-    label email address
+    label Email Address
   md-input-container
     label Contact Type
     md-select(aria-label="Contact Type menu" class="" name="contacttype" ng-model = "user.contactType")
@@ -41,14 +41,14 @@ md-content(layout-padding)
       md-radio-button(aria-label="No Radio Button" ng-value = "false" ) No
   md-input-container
     input(aria-label="doulaName" type="text" ng-model="user.doulaName")
-    label doula name 
+    label Doula Name
   md-input-container
     input(aria-label="expectedBirthDate" type="date" ng-model="user.expectedBirthDate")
-    label expected due date
+    label Expected Due Date
   if(user !== undefined && user.role === 'admin')
     md-input-container
-      label role
+      label Role
       md-select(aria-label="Role menu" ng-model = "user.roleId" disabled=user.role!== "admin")
         md-option(ng-repeat="role in roles" value="{{role.role_id}}") {{role.name}}
-  md-button(aria-label="Submit Button" ng-click="submitRegistration()") submit
+  md-button(aria-label="Submit Button" ng-click="submitRegistration()") Submit
   
