@@ -19,9 +19,9 @@ md-content(layout-padding)
           div(aria-label="User Phone Number")  Phone Number: {{foundUser.phone_number}}
           md-input-container(class='md-block')
               label Contact Type
-              select(aria-label="Contact Type menu" class="" name="contacttype" ng-model="foundUser.contact_type" required)
-                  option(aria-label="Email" value="email") Email
-                  option(aria-label="Text" value="text") Text
+              md-select(aria-label="Contact Type menu" class="" name="contacttype" ng-model="foundUser.contact_type" required)
+                  md-option(aria-label="Email" value="email") Email
+                  md-option(aria-label="Text" value="text") Text
           md-input-container(class='md-block')
               md-radio-group(aria-label="Payment Type" ng-model = "foundUser.payment_type" required)
                   label Payment Type

@@ -90,7 +90,7 @@ app.controller('AddEventController',['$scope', '$http', '$localstorage', functio
     $scope.loadEventData();
   } else {
     // set the schedule date
-    $scope.eventScheduleAdd.scheduleDate = new Date($localstorage.get('eventDate'));
+    //$scope.eventScheduleAdd.scheduleDate = new Date($localstorage.get('eventDate'));
   }
 
   $scope.loadEventScheduleData = function() {
@@ -324,7 +324,7 @@ app.controller('AttendanceController',['$scope', '$http', '$localstorage', '$loc
                 $scope.usersEventSchedule[i].changed = false;
             }
         }
-    }
+    };
 
     $scope.findWalkin = function() {
         $location.path('/findwalkin');
@@ -524,6 +524,58 @@ app.controller('ConfirmClassSignupController',['$scope', '$http', "RegisterForCl
         console.log("Event to post to the database: ", userEvent);
         $http.post('/usersEventSchedule', userEvent).then(function (response) {
           console.log("Output from post /usersEventSchedule ", response.data);
+          //send text or email here
+          //get users contact info
+          var user1 = {
+            userId: $scope.userId
+          };
+          console.log("Input to get /users/byUserId ", user1);
+          $http.get('/users/byUserId', {params: user1}).then(function (response) {
+            console.log("Output from get /users/byUserId ", response.data);
+
+            var obj = response.data[0];
+            console.log("the obj :", obj);
+
+            //construct message
+            var subject = "Everyday Miracles Class Registration Confirmation";
+            var message = "You have successfully registered for Everyday Miracles Class " + $scope.registeredEvents[0].title + " " +
+                moment(userEvents[0].schedule_date).format("MM-DD-YYYY") + " " + moment(userEvents[0].start_datetime).format("h:mm a") +
+                " - " + moment(userEvents[0].end_datetime).format("h:mm a") + ".";
+            console.log("message ", message);
+
+            //check type of contact method and send message
+            if (obj.contact_type=="email" && obj.email_address != null){
+              console.log("they have an email address!");
+              var emailMessage = {
+                "sendTo[]": [obj.email_address],
+                subject: subject,
+                message: message
+              };
+
+              console.log(emailMessage);
+              $http.get('/notifications/email', {params: emailMessage}).then(function (response) {
+                console.log("output from /notifications/email ", response.data);
+              });
+
+              //emailArray.push(obj.email_address);
+            }else if (obj.contact_type=="text" && obj.phone_number != null){
+              console.log("they have a phone number!");
+              var textMessage = {
+                "phoneNumber[]": [obj.phone_number],
+                message: message.substring(0, 159)
+              };
+
+              console.log(textMessage);
+              $http.get('/notifications/text', {params: textMessage}).then(function (response) {
+                console.log("output from /notifications/text ", response.data);
+              });
+              //phoneNumberArray.push(obj.phone_number);
+            }
+
+
+          });
+
+
         });
       }
     }
@@ -1513,6 +1565,9 @@ app.controller('UiCalendarController', ["$scope", "$http", "RegisterForClassFact
                 $scope.eventSources.events[i].start = new Date($scope.tempEvents[i].start_datetime);
                 $scope.eventSources.events[i].end = new Date($scope.tempEvents[i].end_datetime);
 
+                // set class name to modify color in css calendarColor1, calendarColor2, etc
+                $scope.eventSources.events[i].className = 'calendarColor' + $scope.tempEvents[i].event_category_id;
+
                 //$scope.eventSources.events[i].description = $scope.tempEvents[i].description;
 
                 //unique id for a event
@@ -1575,9 +1630,14 @@ $scope.loadCalendar();
 
 app.controller('UserRegistrationController',['$scope', '$http', '$location', '$localstorage',
   function ($scope, $http, $location, $localstorage) {
-  console.log('hi, from UserRegistrationController');
+
   $scope.user={};
+  $scope.roles = [];
   var userId = $localstorage.get('userId');
+
+  $http.get('/users/roles').then(function (response) {
+    $scope.roles = response.data;
+  });
 
   $scope.submitRegistration = function () {
     console.log('data sent to server', $scope.user);
