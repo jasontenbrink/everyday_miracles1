@@ -5,7 +5,6 @@ var path = require('path');
 
 router.get('/:name', function (req, res) {
   var name = req.params.name;
-  console.log('on the secured Templates route. ', name);
 
   if (name === 'nav.jade'){
     res.render('templates/' + name, {user: req.user});
